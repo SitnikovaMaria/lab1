@@ -1,12 +1,12 @@
 package com.company;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Storage {
 
     private static Storage instance;
-    private ArrayList<Book> bookList = new ArrayList<>();
-    private ArrayList<CopyOfTheBook> copyOfTheBookList = new ArrayList<>();
+    private HashMap<Long, Book> bookList = new HashMap<>();
+    private HashMap<Long, CopyOfTheBook> copyOfTheBookList = new HashMap<>();
 
     private Storage(){
     }
@@ -18,19 +18,19 @@ public class Storage {
         return instance;
     }
 
-    public void setBookList(ArrayList<Book> bookList){
+    public void setBookList(HashMap<Long, Book> bookList){
         this.bookList = bookList;
     }
 
-    public ArrayList<Book> getBookList(){
+    public HashMap<Long, Book> getBookList(){
         return bookList;
     }
 
-    public void setCopyOfTheBookList(ArrayList<CopyOfTheBook> copyOfTheBookList){
+    public void setCopyOfTheBookList(HashMap<Long, CopyOfTheBook> copyOfTheBookList){
         this.copyOfTheBookList = copyOfTheBookList;
     }
 
-    public ArrayList<CopyOfTheBook> getCopyOfTheBookList(){
+    public HashMap<Long, CopyOfTheBook> getCopyOfTheBookList(){
         return copyOfTheBookList;
     }
 }

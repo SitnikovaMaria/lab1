@@ -38,14 +38,12 @@ public class CopyOfTheBook implements Serializable{
         return issue;
     }
 
-    public void info(){
-        System.out.println("Инвентарный номер: " + inventoryNumber);
-        System.out.println("Идентификатор книги: " + idBook);
-        if(issue==true){
-            System.out.println("Информация о выдаче: выдана");
+    public String toString(){
+        if(issue == true){
+            return "Инвентарный номер: " + inventoryNumber + ";   книга: " + idBook + ";   выдана или нет: выдана.";
         }
         else{
-            System.out.println("Информация о выдаче: не выдана");
+            return "Инвентарный номер: " + inventoryNumber + ";   книга: " + idBook + ";   выдана или нет: нет.";
         }
     }
 }

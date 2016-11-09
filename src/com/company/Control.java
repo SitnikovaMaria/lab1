@@ -1,137 +1,242 @@
 package com.company;
 
-import java.util.ArrayList;
+import java.util.Map;
 
 public class Control {
 
-   // private static final int ;
-    private Storage stor1 = Storage.getInstance(); //поменять название TODO
     private View view1;
     private Storage storage;
+    private boolean quit = false;
 
-    public Control(Storage stor1, View view1){
+    public Control(Storage storage){
         view1 = new View(this); //ссылка на текущий объект
-        storage = Storage.getInstance();
+        //storage = Storage.getInstance();
+        this.storage = storage;
+        view1.read();
+    }
+
+    public boolean getStatus(){
+        return quit;
     }
 
     public void reviewBook(){ //просмотр книг
         view1.print("Книги:");
-        for(Book i: storage.getBookList()) {
-            view1.print(i.toString());
+        for(Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
+            view1.print(entry.getValue().toString());
         }
     }
 
     public void reviewCopyOfTheBook(){ //просмотр экземпляров книг
         view1.print("Экземпляры книг:");
-        for(CopyOfTheBook i: storage.getCopyOfTheBookList()) {
-            view1.print(i.toString());
+        for(Map.Entry<Long, CopyOfTheBook> entry : storage.getCopyOfTheBookList().entrySet()) {
+            view1.print(entry.getValue().toString());
         }
     }
-    /*
-    public void addBook(Book b) { //добавление в Book
+
+    public boolean addBook() { //добавление в Book
         view1.print("Добавление книги");
-        //считать с консоли index и obj
-        bookList.add(index, obj);
-        view1.print("Книга успешно добавлена!");
+        view1.print("Введите идентификатор книги: ");
+        try{
+            long idBook = Long.valueOf(view1.input());
+            if (!storage.getBookList().containsKey(idBook)){
+                view1.print("Введите авторов книги: ");
+                String authors = view1.input();
+                view1.print("Введите название книги: ");
+                String name = view1.input();
+                view1.print("Введите год издания: ");
+                int year = Integer.valueOf(view1.input());
+                view1.print("Введите количество страниц: ");
+                int pages = Integer.valueOf(view1.input());
+                Book book1 = new Book(idBook, authors, name, year, pages);
+                storage.getBookList().put(idBook, book1);
+                view1.print("Книга успешно добавлена!");
+                return true;
+            }
+            else {
+                view1.print("Книга с таким идентификатором уже существует!");
+                return false;
+            }
+        }
+        catch(NumberFormatException E) {
+            view1.print("Проверьте правильность введённых Вами данных");
+            return false;
+        }
     }
 
-    public void addCopyOfTheBook() { //добавление в CopyOfTheBook
+    public boolean addCopyOfTheBook() { //добавление в CopyOfTheBook
         view1.print("Добавление экземпляра книги");
-        //считать с консоли index и obj
-        copyOfTheBookList.add(index, obj);
-        view1.print("Экземпляр книги успешно добавлен!");
+        view1.print("Введите инвентарный номер книги: ");
+        try{
+            long inventoryNumber = Long.valueOf(view1.input());
+            if(!storage.getCopyOfTheBookList().containsKey(inventoryNumber)){
+                view1.print("Введите идентификатор книги: ");
+                long idBook = Long.valueOf(view1.input());
+                view1.print("Выдана книга или нет: (true - выдана, false - нет)");
+                boolean issue = Boolean.valueOf(view1.input());
+                CopyOfTheBook copyOfTheBook1 = new CopyOfTheBook(inventoryNumber, idBook, issue);
+                storage.getCopyOfTheBookList().put(inventoryNumber, copyOfTheBook1);
+                view1.print("Экземпляр книги успешно добавлен!");
+                return true;
+            }
+            else{
+                view1.print("Книга с таким инвентарным номером уже существует!");
+                return false;
+            }
+        }
+        catch(NumberFormatException E) {
+            view1.print("Проверьте правильность введённых Вами данных");
+            return false;
+        }
     }
 
-    public void changeBook(){ //изменение Book
+    public boolean changeBook(){ //изменение Book
         view1.print("Изменение книги");
-        //считать с консоли index и obj
-        bookList.set(index, obj);
-        view1.print("Книга с id=" + index + " успешно изменена!");
+        view1.print("Введите идентификатор книги: ");
+        try{
+            long idBook = Long.valueOf(view1.input());
+            if(storage.getBookList().containsKey(idBook)){
+                Book book0 = storage.getBookList().get(idBook);
+                view1.print(book0.toString());
+                view1.print("Введите авторов книги: ");
+                String authors = view1.input();
+                if(!authors.equals("")){
+                    book0.setAuthors(authors);
+                }
+                view1.print("Введите название книги: ");
+                String name = view1.input();
+                if(!name.equals("")){
+                    book0.setName(name);
+                }
+                view1.print("Введите год издания: ");
+                String strYear = view1.input();
+                if(!strYear.equals("")){
+                    book0.setYear(Integer.valueOf(strYear));
+                }
+                view1.print("Введите количество страниц: ");
+                String strPages = view1.input();
+                if(!strPages.equals("")){
+                    book0.setPages(Integer.valueOf(strPages));
+                }
+                view1.print("Книга успешно изменена!");
+                return true;
+            }
+            else{
+                view1.print("Книга с таким инвентарным номером не существует!");
+                return false;
+            }
+        }
+        catch(NumberFormatException E) {
+            view1.print("Проверьте правильность введённых Вами данных");
+            return false;
+        }
     }
 
-    public void changeCopyOfTheBook(){ //изменение CopyOfTheBook
+    public boolean changeCopyOfTheBook(){ //изменение CopyOfTheBook
         view1.print("Изменение экземпляра книги");
-        //считать с консоли index и obj
-        copyOfTheBookList.set(index, obj);
-        view1.print("Книга с №=" + index + " успешно изменена!");
-    }*/
+        view1.print("Введите инвентарный номер книги: ");
+        try{
+            long inventoryNumber = Long.valueOf(view1.input());
+            if(storage.getCopyOfTheBookList().containsKey(inventoryNumber)){
+                CopyOfTheBook copyOfTheBook0 = storage.getCopyOfTheBookList().get(inventoryNumber);
+                view1.print(copyOfTheBook0.toString());
+                view1.print("Введите идентификатор книги: ");
+                String strIdBook = view1.input();
+                if(!strIdBook.equals("")){
+                    copyOfTheBook0.setIdBook(Integer.valueOf(strIdBook));
+                }
+                view1.print("Выдана книга или нет: (true - выдана, false - нет)");
+                String strIssue = view1.input();
+                if(!strIssue.equals("")){
+                    copyOfTheBook0.setIssue(Boolean.valueOf(strIssue));
+                }
+                view1.print("Книга с №=" + inventoryNumber + " успешно изменена!");
+                return true;
+            }
+            else{
+                view1.print("Книга с таким инвентарным номером не существует!");
+                return false;
+            }
+        }
+        catch(NumberFormatException E) {
+            view1.print("Проверьте правильность введённых Вами данных");
+            return false;
+        }
+    }
 
-    public void removeBook(int index){ //удаление из Book
+    public boolean removeBook(){ //удаление из Book
         view1.print("Удаление книги");
         view1.print("Введите идентификатор книги: ");
-
         try{
-            storage.getBookList().remove(index);
+            long index = Long.valueOf(view1.input());
+            if(storage.getBookList().remove(index) == null){
+                view1.print("Книга с таким идентификатором не существует!");
+                return false;
+            }
+            view1.print("Книга с id=" + index + " успешно удалена!");
+            return true;
         }
-        catch (IndexOutOfBoundsException E){
-            view1.print("Книги с таким идентификатором не существует!");
-            removeBook();
+        catch(NumberFormatException E) {
+            view1.print("Проверьте правильность введённых Вами данных");
+            return false;
         }
-        view1.print("Книга с id=" + index + " успешно удалена!");
     }
 
-    public void removeCopyOfTheBook(int index){ //удаление из CopyOfTheBook
+    public boolean removeCopyOfTheBook(){ //удаление из CopyOfTheBook
         view1.print("Удаление экземпляра книги");
         view1.print("Введите инвентарный номер книги: ");
         try{
-            storage.getCopyOfTheBookList().remove(index);
+            long index = Long.valueOf(view1.input());
+            if(storage.getCopyOfTheBookList().remove(index) == null){
+                view1.print("Книга с таким инвентарным номером не существует!");
+                return false;
+            }
+            view1.print("Книга с №=" + index + " успешно удалена!");
+            return true;
         }
-        catch (IndexOutOfBoundsException E){
-            view1.print("Экземпляра книги с таким инвентарным номером не существует!");
-            removeCopyOfTheBook();
+        catch(NumberFormatException E) {
+            view1.print("Проверьте правильность введённых Вами данных");
+            return false;
         }
-        view1.print("Книга с №=" + index + " успешно удалена!");
     }
 
-    public void operation(String action, int act){
+    public void operation(String action){
         try{
-            act = Integer.valueOf(action);
+            int act = Integer.valueOf(action);
             switch (act) {
                 case 1: //просмотр книг
                     reviewBook();
-                    act = 0;
                     break;
                 case 2: //просмотр экземпляров книг
                     reviewCopyOfTheBook();
-                    act = 0;
                     break;
-                /*case 3: //добавление книги
+                case 3: //добавление книги
                     addBook();
-                    act = 0;
                     break;
                 case 4: //добавление экземпляра книги
                     addCopyOfTheBook();
-                    act = 0;
                     break;
                 case 5: //изменение книги
                     changeBook();
-                    act = 0;
                     break;
                 case 6: //изменение экземпляра книги
                     changeCopyOfTheBook();
-                    act = 0;
-                    break;*/
+                    break;
                 case 7: //удаление книги
                     removeBook();
-                    act = 0;
                     break;
                 case 8: //удаление экземпляра книги
                     removeCopyOfTheBook();
-                    act = 0;
+                    break;
+                case 0:
+                    quit = true;
+                    break;
+                default:
+                    view1.print("Проверьте правильность введённых Вами данных");
                     break;
             }
-            view1.print("Выберите действие:");
-            view1.print("1. Просмотр книг");
-            view1.print("2. Просмотр экземпляров книг");
-            view1.print("3. Добавить книгу");
-            view1.print("4. Добавить экземпляр книги");
-            view1.print("5. Изменить книгу");
-            view1.print("6. Изменить экземпляр книги");
-            view1.print("7. Удалить книгу");
-            view1.print("8. Удалить экземпляр книги");
         }
         catch(NumberFormatException E) {
-            view1.print("Проверьте правильность введённых вами данных");
+            view1.print("Проверьте правильность введённых Вами данных");
         }
     }
 }
