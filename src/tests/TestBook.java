@@ -1,9 +1,9 @@
 package tests;
 
 import com.company.Book;
-import static org.junit.Assert.*;
+import junit.framework.TestCase;
 
-public class TestBook extends TestCase {
+public class TestBook extends TestCase{
 
     private Book testBook;
 
@@ -111,4 +111,3 @@ public class TestBook extends TestCase {
         fail("Fail in toString");
     }
 }
-

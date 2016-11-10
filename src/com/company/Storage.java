@@ -5,8 +5,8 @@ import java.util.HashMap;
 public class Storage {
 
     private static Storage instance;
-    private HashMap<Long, Book> bookList = new HashMap<>();
-    private HashMap<Long, CopyOfTheBook> copyOfTheBookList = new HashMap<>();
+    private HashMap<Long, Book> bookList = new HashMap<Long, Book>();
+    private HashMap<Long, CopyOfTheBook> copyOfTheBookList = new HashMap<Long, CopyOfTheBook>();
 
     private Storage(){
     }
@@ -34,3 +34,4 @@ public class Storage {
         return copyOfTheBookList;
     }
 }
+

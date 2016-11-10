@@ -13,10 +13,10 @@ public class Main {
         CopyOfTheBook copyOfTheBook3 = new CopyOfTheBook(3, 1, false);
         CopyOfTheBook copyOfTheBook4 = new CopyOfTheBook(4, 2, true);
         CopyOfTheBook copyOfTheBook5 = new CopyOfTheBook(5, 2, false);
-        HashMap<Long, Book> bookList = new HashMap<>();
+        HashMap<Long, Book> bookList = new HashMap<Long, Book>();
         bookList.put(book1.getIdBook(), book1);
         bookList.put(book2.getIdBook(), book2);
-        HashMap<Long, CopyOfTheBook> copyOfTheBookList = new HashMap<>();
+        HashMap<Long, CopyOfTheBook> copyOfTheBookList = new HashMap<Long, CopyOfTheBook>();
         copyOfTheBookList.put(copyOfTheBook1.getInventoryNumber(), copyOfTheBook1);
         copyOfTheBookList.put(copyOfTheBook2.getInventoryNumber(), copyOfTheBook2);
         copyOfTheBookList.put(copyOfTheBook3.getInventoryNumber(), copyOfTheBook3);
@@ -28,3 +28,4 @@ public class Main {
         Control controller = new Control(storage);
     }
 }
+
