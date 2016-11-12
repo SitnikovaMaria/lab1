@@ -7,6 +7,7 @@ public class TestCopy  extends TestCase {
 
     private CopyOfTheBook tmp= new CopyOfTheBook(1, 1, false);
 
+    @Test
     public void testGetNumber() {
         System.out.println("set and get");
         tmp= new CopyOfTheBook(1, 1, false);
@@ -16,6 +17,7 @@ public class TestCopy  extends TestCase {
         fail("Fail in getInventoryNumber.");
     }
 
+    @Test
     public void testSetAndGetNumber() {
         System.out.println("set and get");
         long expresult=3;
@@ -25,6 +27,7 @@ public class TestCopy  extends TestCase {
         fail("Fail in setInventoryNumber or getInventoryNumber");
     }
 
+    @Test
     public void testGetId() {
         System.out.println("set and get");
         tmp= new CopyOfTheBook(1, 1, false);
@@ -34,6 +37,7 @@ public class TestCopy  extends TestCase {
         fail("Fail in getIdBook.");
     }
 
+    @Test
     public void testSetAndGetId() {
         System.out.println("set and get");
         long expresult=3;
@@ -43,15 +47,17 @@ public class TestCopy  extends TestCase {
         fail("Fail in setIdBook or getIdBook");
     }
 
+    @Test
     public void testGetIssue() {
         System.out.println("set and get");
         tmp= new CopyOfTheBook(1, 1, false);
-        long expresult=1;
-        long result = getIssue();
+        boolean expresult=false;
+        boolean result = getIssue();
         assertEquals (expresult, result);
         fail("Fail in getIssue.");
     }
 
+    @Test
     public void testSetAndGetIssue() {
         System.out.println("set and get");
         boolean expresult=true;
