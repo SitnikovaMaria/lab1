@@ -1,11 +1,9 @@
-package com.company;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+package com.company;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout; 
@@ -114,10 +112,10 @@ public class WindowView extends JFrame implements View{
         Vector<String> newRow = new Vector<String>();
         for (Book tmp:list){
             newRow.clear();
-            newRow.add(book.getName());
-            newRow.add(book.getAuthors());
-            newRow.add(Integer.toString(book.getYear()));
-            newRow.add(Integer.toString(book.getPages()));
+            newRow.add(tmp.getName());
+            newRow.add(tmp.getAuthors());
+            newRow.add(Integer.toString(tmp.getYear()));
+            newRow.add(Integer.toString(tmp.getPages()));
             b.addRow(newRow);
         }
     }
@@ -130,15 +128,16 @@ public class WindowView extends JFrame implements View{
         Vector<String> newRow = new Vector<String>();
         for (CopyOfTheBook tmp:book){
             newRow.clear();
-            newRow.add(Long.toString(book.getInventoryNumber()));
-            newRow.add(Long.toString(book.getIdBook()));
-            newRow.add(Boolean.toString(book.getIssue()));
+            newRow.add(Long.toString(tmp.getInventoryNumber()));
+            newRow.add(Long.toString(tmp.getIdBook()));
+            newRow.add(Boolean.toString(tmp.getIssue()));
             b.addRow(newRow);
         }
     }
 
     public static void main(String[] args) {
       WindowView w = new WindowView();
+      w.setBounds(400, 400, 400, 200);
       w.setVisible(true);
 
     }

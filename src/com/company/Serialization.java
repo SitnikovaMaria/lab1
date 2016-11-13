@@ -3,6 +3,7 @@ package com.company;
 import java.io.ObjectOutputStream;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.ObjectInputStream;
 import java.io.OutputStream;
 
@@ -10,7 +11,7 @@ public class Serialization {
 
     
 
-public void saveObjectBook(Book tmp)
+public void saveObjectBook(Book tmp) throws FileNotFoundException
 {
     FileOutputStream fos = new FileOutputStream("tempBook.out");
     OutputStream os = new OutputStream();
