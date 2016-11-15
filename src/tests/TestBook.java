@@ -7,6 +7,7 @@ public class TestBook extends TestCase{
 
     private Book testBook;
 
+    @Test
     public void testGetIdBook() {
         System.out.println("Test getIdBook");
         testBook = new Book(6, "Avtory", "Nazvanie", 1999, 13);
@@ -16,6 +17,7 @@ public class TestBook extends TestCase{
         fail("Fail in getIdBook");
     }
 
+    @Test
     public void testSetAndGetIdBook() {
         System.out.println("Test setIdBook and getIdBook");
         testBook = new Book(6, "Avtory", "Nazvanie", 1999, 13);
@@ -26,6 +28,7 @@ public class TestBook extends TestCase{
         fail("Fail in setIdBook or getIdBook");
     }
 
+    @Test
     public void testGetAuthors() {
         System.out.println("Test getAuthors");
         testBook = new Book(6, "Avtory", "Nazvanie", 1999, 13);
@@ -35,6 +38,7 @@ public class TestBook extends TestCase{
         fail("Fail in getAuthors");
     }
 
+    @Test
     public void testSetAndGetAuthors() {
         System.out.println("Test setAuthors and getAuthors");
         testBook = new Book(6, "Avtory", "Nazvanie", 1999, 13);
@@ -45,6 +49,7 @@ public class TestBook extends TestCase{
         fail("Fail in setAuthors or getAuthors");
     }
 
+    @Test
     public void testGetName() {
         System.out.println("Test getName");
         testBook = new Book(6, "Avtory", "Nazvanie", 1999, 13);
@@ -54,6 +59,7 @@ public class TestBook extends TestCase{
         fail("Fail in getName");
     }
 
+    @Test
     public void testSetAndGetName() {
         System.out.println("Test setName and getName");
         testBook = new Book(6, "Avtory", "Nazvanie", 1999, 13);
@@ -64,6 +70,7 @@ public class TestBook extends TestCase{
         fail("Fail in setName or getName");
     }
 
+    @Test
     public void testGetYear() {
         System.out.println("Test getYear");
         testBook = new Book(6, "Avtory", "Nazvanie", 1999, 13);
@@ -73,6 +80,7 @@ public class TestBook extends TestCase{
         fail("Fail in getYear");
     }
 
+    @Test
     public void testSetAndGetYear() {
         System.out.println("Test setYear and getYear");
         testBook = new Book(6, "Avtory", "Nazvanie", 1999, 13);
@@ -83,6 +91,7 @@ public class TestBook extends TestCase{
         fail("Fail in setYear or getYear");
     }
 
+    @Test
     public void testPages() {
         System.out.println("Test getPages");
         testBook = new Book(6, "Avtory", "Nazvanie", 1999, 13);
@@ -92,6 +101,7 @@ public class TestBook extends TestCase{
         fail("Fail in getPages");
     }
 
+    @Test
     public void testSetAndGetPages() {
         System.out.println("Test setPages and getPages");
         testBook = new Book(6, "Avtory", "Nazvanie", 1999, 13);
@@ -102,6 +112,7 @@ public class TestBook extends TestCase{
         fail("Fail in setPages or getPages");
     }
 
+    @Test
     public void testToString() {
         System.out.println("Test toString");
         testBook = new Book(6, "Avtory", "Nazvanie", 1999, 13);

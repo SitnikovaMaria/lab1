@@ -146,7 +146,6 @@ public class Control {
             if (searcher == 0){
                 view1.print("По Вашему запросу ничего не найдено!");
             }
-            searcher = 0;
         }
     }
 
@@ -154,16 +153,15 @@ public class Control {
         view1.print("Поиск экзмепляров книг по информации о выдаче");
         view1.print("Введите информацию о выдаче: (true - выдана, false - нет)");
         boolean issue = Boolean.valueOf(view1.input());
-        int searcher = 0;
+        boolean searcher = false;
         for(Map.Entry<Long, CopyOfTheBook> entry : storage.getCopyOfTheBookList().entrySet()) {
             if (entry.getValue().getIssue() == issue){
                 view1.print(entry.getValue().toString());
-                searcher++;
+                searcher = true;
             }
-            if (searcher == 0){
-                view1.print("По Вашему запросу ничего не найдено!");
-            }
-            searcher = 0;
+        }
+        if (!searcher){
+            view1.print("По Вашему запросу ничего не найдено!");
         }
     }
 
