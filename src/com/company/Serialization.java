@@ -1,45 +1,36 @@
 package com.company;
 
-import java.io.ObjectOutputStream;
-import java.io.FileOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.ObjectInputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 public class Serialization {
 
     
 
-public void saveObjectBook(Book tmp) throws FileNotFoundException
+public void saveObjectBook(Book tmp, String fileName) throws IOException
 {
-    FileOutputStream fos = new FileOutputStream("tempBook.out");
-    OutputStream os = new OutputStream();
-    ObjectOutputStream oos = new ObjectOutputStream(fos);
-    oos.writeObject(tmp);    
-    oos.flush();
-    oos.close();
-}
-
-public void loadObjectBook()
-{
-    FileInputStream fis = new FileInputStream("tempBook.in");
-    ObjectInputStream oin = new ObjectInputStream(fis);
-    Book tmp = (Book) oin.readObject();
-}
-
-public void saveObjectCopy(CopyOfTheBook tmp)
-{
-    FileOutputStream fos = new FileOutputStream("tempCopy.out");
+    FileOutputStream fos = new FileOutputStream(fileName);
     ObjectOutputStream oos = new ObjectOutputStream(fos);
     oos.writeObject(tmp);
     oos.flush();
     oos.close();
 }
 
-public void loadObjectCopy()
-{
-    FileInputStream fis = new FileInputStream("tempCopy.in");
+public void loadObjectBook(String filename) throws IOException, ClassNotFoundException {
+    FileInputStream fis = new FileInputStream(filename);
+    ObjectInputStream oin = new ObjectInputStream(fis);
+    Book tmp = (Book) oin.readObject();
+}
+
+public void saveObjectCopy(CopyOfTheBook tmp, String filename) throws IOException {
+    FileOutputStream fos = new FileOutputStream(filename);
+    ObjectOutputStream oos = new ObjectOutputStream(fos);
+    oos.writeObject(tmp);
+    oos.flush();
+    oos.close();
+}
+
+public void loadObjectCopy(String filename) throws IOException, ClassNotFoundException {
+    FileInputStream fis = new FileInputStream(filename);
     ObjectInputStream oin = new ObjectInputStream(fis);
     CopyOfTheBook tmp = (CopyOfTheBook) oin.readObject();
 }
