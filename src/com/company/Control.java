@@ -33,6 +33,140 @@ public class Control {
         }
     }
 
+    public void searchByIdBook(){ //поиск книги по идентификатору
+        view1.print("Поиск книги по идентификатору");
+        view1.print("Введите идентификатор:");
+        long idBook = Long.valueOf(view1.input());
+        int searcher = 0;
+        for(Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
+            if (entry.getValue().getIdBook() == idBook){
+                view1.print(entry.getValue().toString());
+                searcher++;
+            }
+            if (searcher == 0){
+                view1.print("По Вашему запросу ничего не найдено!");
+            }
+            searcher = 0;
+        }
+    }
+
+    public void searchByName(){ //поиск книг по названию
+        view1.print("Поиск книги по названию");
+        view1.print("Введите название:");
+        String name = view1.input();
+        int searcher = 0;
+        for(Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
+            if (entry.getValue().getName().toString().equals(name)){
+                view1.print(entry.getValue().toString());
+                searcher++;
+            }
+            if (searcher == 0){
+                view1.print("По Вашему запросу ничего не найдено!");
+            }
+            searcher = 0;
+        }
+    }
+
+    public void searchByAuthors(){ //поиск книг по авторам
+        view1.print("Поиск книги по авторам");
+        view1.print("Введите авторов: (И. О. Фамилия1, И. О. Фамилия2 и т.д.)");
+        String authors = view1.input();
+        int searcher = 0;
+        for(Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
+            if (entry.getValue().getAuthors().toString().equals(authors)){
+                view1.print(entry.getValue().toString());
+                searcher++;
+            }
+            if (searcher == 0){
+                view1.print("По Вашему запросу ничего не найдено!");
+            }
+            searcher = 0;
+        }
+    }
+
+    public void searchByYear(){ //поиск книг по году
+        view1.print("Поиск книги по году");
+        view1.print("Введите год:");
+        int year = Integer.valueOf(view1.input()), searcher = 0;
+        for(Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
+            if (entry.getValue().getYear() == year){
+                view1.print(entry.getValue().toString());
+                searcher++;
+            }
+            if (searcher == 0){
+                view1.print("По Вашему запросу ничего не найдено!");
+            }
+            searcher = 0;
+        }
+    }
+
+    public void searchByPages(){ //поиск книг по страницам
+        view1.print("Поиск книги по страницам");
+        view1.print("Введите количество страниц:");
+        int pages = Integer.valueOf(view1.input()), searcher = 0;
+        for(Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
+            if (entry.getValue().getPages() == pages){
+                view1.print(entry.getValue().toString());
+                searcher++;
+            }
+            if (searcher == 0){
+                view1.print("По Вашему запросу ничего не найдено!");
+            }
+            searcher = 0;
+        }
+    }
+
+    public void searchByInventoryNumber(){ //поиск экземпляра книги по инвентарному номеру
+        view1.print("Поиск экземпляра книги по инвентарному номеру");
+        view1.print("Введите инвентарный номер:");
+        long inventoryNumber = Long.valueOf(view1.input());
+        int searcher = 0;
+        for(Map.Entry<Long, CopyOfTheBook> entry : storage.getCopyOfTheBookList().entrySet()) {
+            if (entry.getValue().getInventoryNumber() == inventoryNumber){
+                view1.print(entry.getValue().toString());
+                searcher++;
+            }
+            if (searcher == 0){
+                view1.print("По Вашему запросу ничего не найдено!");
+            }
+            searcher = 0;
+        }
+    }
+
+    public void searchByBook(){ //поиск экземпляров книги по книге
+        view1.print("Поиск экземпляров книг по книге");
+        view1.print("Введите идентификатор книги:");
+        long idBook = Long.valueOf(view1.input());
+        int searcher = 0;
+        for(Map.Entry<Long, CopyOfTheBook> entry : storage.getCopyOfTheBookList().entrySet()) {
+            if (entry.getValue().getIdBook() == idBook){
+                view1.print(entry.getValue().toString());
+                searcher++;
+            }
+            if (searcher == 0){
+                view1.print("По Вашему запросу ничего не найдено!");
+            }
+            searcher = 0;
+        }
+    }
+
+    public void searchByIssue(){ //поиск экземпляров книг по информации о выдаче
+        view1.print("Поиск экзмепляров книг по информации о выдаче");
+        view1.print("Введите информацию о выдаче: (true - выдана, false - нет)");
+        boolean issue = Boolean.valueOf(view1.input());
+        int searcher = 0;
+        for(Map.Entry<Long, CopyOfTheBook> entry : storage.getCopyOfTheBookList().entrySet()) {
+            if (entry.getValue().getIssue() == issue){
+                view1.print(entry.getValue().toString());
+                searcher++;
+            }
+            if (searcher == 0){
+                view1.print("По Вашему запросу ничего не найдено!");
+            }
+            searcher = 0;
+        }
+    }
+
     public boolean addBook() { //добавление в Book
         view1.print("Добавление книги");
         view1.print("Введите идентификатор книги: ");
@@ -227,6 +361,29 @@ public class Control {
                 case 8: //удаление экземпляра книги
                     removeCopyOfTheBook();
                     break;
+                case 9: //поиск книги по идентификатору
+                    searchByIdBook();
+                    break;
+                case 10: //поиск книг по названию
+                    searchByName();
+                    break;
+                case 11: //поиск книг по авторам
+                    searchByAuthors();
+                    break;
+                case 12: //поиск книг по году
+                    searchByYear();
+                    break;
+                case 13: //поиск книг по количеству страниц
+                    searchByPages();
+                    break;
+                case 14: //поиск экземпляров книг по инвентарному номеру
+                    searchByInventoryNumber();
+                    break;
+                case 15: //поиск экземпляров книг по книге
+                    searchByBook();
+                    break;
+                case 16: //поиск экземпляров книг по информации о выдаче
+                    searchByIssue();
                 case 0:
                     quit = true;
                     break;
