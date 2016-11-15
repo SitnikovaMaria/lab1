@@ -10,6 +10,7 @@ public class Book implements Serializable{
     private int year;
     private int pages;
 
+    public Book(){}
     public Book(long idBook, String authors, String name, int year, int pages){
         this.idBook = idBook;
         this.authors = authors;

@@ -8,6 +8,8 @@ public class CopyOfTheBook implements Serializable{
     private long idBook;
     private boolean issue;
 
+    public CopyOfTheBook(){}
+
     public CopyOfTheBook(long inventoryNumber, long idBook, boolean issue){
         this.inventoryNumber = inventoryNumber;
         this.idBook = idBook;
