@@ -20,6 +20,9 @@ public class WindowView extends JFrame implements View {
     private DefaultTableModel b = new DefaultTableModel();
     private DefaultTableModel c = new DefaultTableModel();
     private DefaultTableModel s = new DefaultTableModel();
+    private JTextField saveLine = new JTextField();
+    private JTextField searchBook = new JTextField(30);
+    private JTextField searchCopyOfTheBook = new JTextField(30);
 
     public void print(String s) {
         System.out.println(s);
@@ -31,10 +34,6 @@ public class WindowView extends JFrame implements View {
     public String input() {
         return "1";
     }
-
-    private JTextField saveLine = new JTextField();
-    private JTextField searchBook = new JTextField(30);
-    private JTextField searchCopyOfTheBook = new JTextField(30);
 
     /**
      * Конструктор - создание нового объекта

@@ -4,12 +4,12 @@ import java.util.Map;
 
 public class Control {
 
-    private View view1;
+    private WindowView view1;
     private Storage storage;
     private boolean quit = false;
 
     public Control(Storage storage){
-        view1 = new View(this); //ссылка на текущий объект
+        view1 = new View(); //ссылка на текущий объект
         //storage = Storage.getInstance();
         this.storage = storage;
         view1.read();
@@ -43,10 +43,9 @@ public class Control {
                 view1.print(entry.getValue().toString());
                 searcher++;
             }
-            if (searcher == 0){
-                view1.print("По Вашему запросу ничего не найдено!");
-            }
-            searcher = 0;
+        }
+        if (searcher == 0){
+            view1.print("По Вашему запросу ничего не найдено!");
         }
     }
 
@@ -60,10 +59,9 @@ public class Control {
                 view1.print(entry.getValue().toString());
                 searcher++;
             }
-            if (searcher == 0){
-                view1.print("По Вашему запросу ничего не найдено!");
-            }
-            searcher = 0;
+        }
+        if (searcher == 0){
+            view1.print("По Вашему запросу ничего не найдено!");
         }
     }
 
@@ -77,10 +75,9 @@ public class Control {
                 view1.print(entry.getValue().toString());
                 searcher++;
             }
-            if (searcher == 0){
-                view1.print("По Вашему запросу ничего не найдено!");
-            }
-            searcher = 0;
+        }
+        if (searcher == 0){
+            view1.print("По Вашему запросу ничего не найдено!");
         }
     }
 
@@ -93,10 +90,9 @@ public class Control {
                 view1.print(entry.getValue().toString());
                 searcher++;
             }
-            if (searcher == 0){
-                view1.print("По Вашему запросу ничего не найдено!");
-            }
-            searcher = 0;
+        }
+        if (searcher == 0){
+            view1.print("По Вашему запросу ничего не найдено!");
         }
     }
 
@@ -109,10 +105,9 @@ public class Control {
                 view1.print(entry.getValue().toString());
                 searcher++;
             }
-            if (searcher == 0){
-                view1.print("По Вашему запросу ничего не найдено!");
-            }
-            searcher = 0;
+        }
+        if (searcher == 0){
+            view1.print("По Вашему запросу ничего не найдено!");
         }
     }
 
@@ -126,10 +121,9 @@ public class Control {
                 view1.print(entry.getValue().toString());
                 searcher++;
             }
-            if (searcher == 0){
-                view1.print("По Вашему запросу ничего не найдено!");
-            }
-            searcher = 0;
+        }
+        if (searcher == 0){
+            view1.print("По Вашему запросу ничего не найдено!");
         }
     }
 
@@ -143,9 +137,9 @@ public class Control {
                 view1.print(entry.getValue().toString());
                 searcher++;
             }
-            if (searcher == 0){
-                view1.print("По Вашему запросу ничего не найдено!");
-            }
+        }
+        if (searcher == 0){
+            view1.print("По Вашему запросу ничего не найдено!");
         }
     }
 
@@ -153,14 +147,14 @@ public class Control {
         view1.print("Поиск экзмепляров книг по информации о выдаче");
         view1.print("Введите информацию о выдаче: (true - выдана, false - нет)");
         boolean issue = Boolean.valueOf(view1.input());
-        boolean searcher = false;
+        int searcher = 0;
         for(Map.Entry<Long, CopyOfTheBook> entry : storage.getCopyOfTheBookList().entrySet()) {
             if (entry.getValue().getIssue() == issue){
                 view1.print(entry.getValue().toString());
-                searcher = true;
+                searcher++;
             }
         }
-        if (!searcher){
+        if (searcher == 0){
             view1.print("По Вашему запросу ничего не найдено!");
         }
     }
