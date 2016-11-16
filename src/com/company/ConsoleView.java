@@ -2,7 +2,7 @@ package com.company;
 
 import java.util.ArrayList;
 
-public class ConsoleView implements View {
+public class ConsoleView /*implements View*/ {
 
     public void viewBook(Book book){
         System.out.print(book.getName()/*.name*/);
@@ -48,4 +48,3 @@ public class ConsoleView implements View {
         }
     }
 }
-

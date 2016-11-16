@@ -2,43 +2,44 @@
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.Dimension;
-import java.awt.Color;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
 import javax.swing.*;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.event.TableModelEvent;
 
 public class WindowView extends JFrame implements View {
+    private Control controller;
+    private Storage storage = Storage.getInstance();
     private DefaultTableModel b = new DefaultTableModel();
     private DefaultTableModel c = new DefaultTableModel();
     private DefaultTableModel s = new DefaultTableModel();
     private JTextField saveLine = new JTextField();
     private JTextField searchBook = new JTextField(40);
     private JTextField searchCopyOfTheBook = new JTextField(40);
-    String[] itemsBook = {
+    private String[] itemsBook = {
             "ID",
             "Name",
             "Authors",
             "Year",
             "Pages"
     };
-    String[] itemsCopyOfTheBook = {
+    private String[] itemsCopyOfTheBook = {
             "ID",
             "Name",
             "Authors",
             "Year",
             "Pages"
     };
-    JComboBox searchParameterBook = new JComboBox(itemsBook);
-    JComboBox searchParameterCopyOfTheBook = new JComboBox(itemsCopyOfTheBook);
+    private JComboBox searchParameterBook = new JComboBox(itemsBook);
+    private JComboBox searchParameterCopyOfTheBook = new JComboBox(itemsCopyOfTheBook);
+    private ActionListener actionListenerBook = new TestActionListenerBook();
+    private ActionListener actionListenerCopyOfTheBook = new TestActionListenerCopyOfTheBook();
+    private JTable bookTable;
+    private JTable copyOfTheBookTable;
 
     public void print(String s) {
         System.out.println(s);
@@ -55,6 +56,8 @@ public class WindowView extends JFrame implements View {
      * Конструктор - создание нового объекта
      */
     public WindowView() {
+        controller = new Control(storage, this);
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //остановка программы при закрытии окна
         setTitle("Library");
 
@@ -64,12 +67,12 @@ public class WindowView extends JFrame implements View {
         copyTab.setLayout(new BorderLayout());
         JPanel saveTab = new JPanel();
         saveTab.setLayout(new BorderLayout());
-        JTable book = new JTable(b);
-        JTable copyOfTheBook = new JTable(c);
         JTable saveAndLoad = new JTable(s);
+        bookTable = new JTable(b);
+        copyOfTheBookTable = new JTable(c);
         JScrollPane scrollPaneS = new JScrollPane(saveAndLoad);
-        JScrollPane scrollPaneB = new JScrollPane(book);
-        JScrollPane scrollPaneC = new JScrollPane(copyOfTheBook);
+        JScrollPane scrollPaneB = new JScrollPane(bookTable);
+        JScrollPane scrollPaneC = new JScrollPane(copyOfTheBookTable);
         JPanel bookFunctionButtons = new JPanel();
         bookFunctionButtons.setLayout(new FlowLayout());
         JButton button1 = new JButton("Add");
@@ -91,12 +94,12 @@ public class WindowView extends JFrame implements View {
         saveAndLoadButtons.add(saveButton);
         saveAndLoadButtons.add(loadButton);
 
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                saveToFile();
-            }
-        });
+            saveButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    saveToFile();
+                }
+            });
         saveLine = new JTextField();
 
         bookTab.add(bookFunctionButtons, BorderLayout.SOUTH);
@@ -111,6 +114,7 @@ public class WindowView extends JFrame implements View {
         searchPanelBook.add(searchBookButton);
         searchPanelBook.add(searchBook);
         searchPanelBook.add(searchParameterBook);
+        searchBookButton.addActionListener(actionListenerBook);
 
         /* панель для поиска экземпляров книг по выбранному параметру */
         JPanel searchPanelCopyOfTheBook = new JPanel();
@@ -120,6 +124,7 @@ public class WindowView extends JFrame implements View {
         searchPanelCopyOfTheBook.add(searchCopyOfTheBookButton);
         searchPanelCopyOfTheBook.add(searchCopyOfTheBook);
         searchPanelCopyOfTheBook.add(searchParameterCopyOfTheBook);
+        searchCopyOfTheBookButton.addActionListener(actionListenerCopyOfTheBook);
 
         saveTab.add(saveLine, BorderLayout.NORTH);
         JTabbedPane jtp = new JTabbedPane();
@@ -144,11 +149,34 @@ public class WindowView extends JFrame implements View {
         s.addColumn("File Name");
 
         add(jtp);
+
+        /*  заполним HashMap для проверки */
+	/*
+        Book book1 = new Book(1, "И. С. Тургенев", "Отцы и дети", 1971, 188);
+        Book book2 = new Book(2, "Н. В. Гоголь", "Мертвые души", 1972, 416);
+        CopyOfTheBook copyOfTheBook1 = new CopyOfTheBook(1, 1, true);
+        CopyOfTheBook copyOfTheBook2 = new CopyOfTheBook(2, 1, false);
+        CopyOfTheBook copyOfTheBook3 = new CopyOfTheBook(3, 1, false);
+        CopyOfTheBook copyOfTheBook4 = new CopyOfTheBook(4, 2, true);
+        CopyOfTheBook copyOfTheBook5 = new CopyOfTheBook(5, 2, false);
+        HashMap<Long, Book> bookList = new HashMap<>();
+        bookList.put(book1.getIdBook(), book1);
+        bookList.put(book2.getIdBook(), book2);
+        HashMap<Long, CopyOfTheBook> copyOfTheBookList = new HashMap<>();
+        copyOfTheBookList.put(copyOfTheBook1.getInventoryNumber(), copyOfTheBook1);
+        copyOfTheBookList.put(copyOfTheBook2.getInventoryNumber(), copyOfTheBook2);
+        copyOfTheBookList.put(copyOfTheBook3.getInventoryNumber(), copyOfTheBook3);
+        copyOfTheBookList.put(copyOfTheBook4.getInventoryNumber(), copyOfTheBook4);
+        copyOfTheBookList.put(copyOfTheBook5.getInventoryNumber(), copyOfTheBook5);
+        Storage storage = Storage.getInstance();
+        storage.setBookList(bookList);
+        storage.setCopyOfTheBookList(copyOfTheBookList);
+        fillTableBook(bookList);
+        fillTableCopyOfTheBook(copyOfTheBookList);*/
     }
 
     /**
      * Процедура добавления в таблицу одной книги
-     *
      * @param book - книга
      */
     public void viewBook(Book book) {
@@ -162,49 +190,15 @@ public class WindowView extends JFrame implements View {
 
     /**
      * Процедура добавления в таблицу одного экземпляра книги
-     *
-     * @param book - экземпляр книги
+     * @param book - экземпляры книги
      */
     public void viewCopyOfTheBook(CopyOfTheBook book) {
         Vector<String> newRow = new Vector<String>();
+        newRow.clear();
         newRow.add(Long.toString(book.getInventoryNumber()));
         newRow.add(Long.toString(book.getIdBook()));
         newRow.add(Boolean.toString(book.getIssue()));
-        b.addRow(newRow);
-    }
-
-    /**
-     * Процедура добавления в таблицу нескольких книг
-     *
-     * @param list - массив книг
-     */
-    public void viewList(ArrayList<Book> list) {
-        Vector<String> newRow = new Vector<String>();
-        for (Book tmp : list) {
-            newRow.clear();
-            newRow.add(tmp.getName());
-            newRow.add(tmp.getAuthors());
-            newRow.add(Integer.toString(tmp.getYear()));
-            newRow.add(Integer.toString(tmp.getPages()));
-            c.addRow(newRow);
-        }
-    }
-
-    /**
-     * Процедура добавления в таблицу нескольких экземпляров
-     книги
-     *
-     * @param book - экземпляры книги
-     */
-    public void viewCopyOfTheBook(ArrayList<CopyOfTheBook> book) {
-        Vector<String> newRow = new Vector<String>();
-        for (CopyOfTheBook tmp : book) {
-            newRow.clear();
-            newRow.add(Long.toString(tmp.getInventoryNumber()));
-            newRow.add(Long.toString(tmp.getIdBook()));
-            newRow.add(Boolean.toString(tmp.getIssue()));
-            c.addRow(newRow);
-        }
+        c.addRow(newRow);
     }
 
     public void saveToFile() {
@@ -233,12 +227,117 @@ public class WindowView extends JFrame implements View {
         }
     }
 
+    public void clearTableBook(){ //очистка Book
+        if (b.getRowCount() > 0) {
+            for (int i = b.getRowCount() - 1; i > -1; i--) {
+                b.removeRow(i);
+            }
+        }
+        //bookTable.revalidate();
+        //bookTable.repaint(); //здесь должна быть перерисовка
+        //bookTable.updateUI();
+    }
+
+    public void clearTableCopyOfTheBook(){ //очистка CopyOfTheBook
+        if (c.getRowCount() > 0) {
+            for (int i = c.getRowCount() - 1; i > -1; i--) {
+                c.removeRow(i);
+            }
+        }
+        //copyOfTheBookTable.revalidate();
+        //copyOfTheBookTable.repaint(); //здесь должна быть перерисовка
+        //copyOfTheBookTable.updateUI();
+    }
+
+    public void fillTableBook(HashMap<Long, Book> result){ //вывод содержимого HashMap Book на экран
+        clearTableBook();
+        for(Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
+            Vector<String> newRow = new Vector<String>();
+            newRow.add(Long.toString(entry.getKey()));
+            newRow.add(entry.getValue().getName());
+            newRow.add(entry.getValue().getAuthors());
+            newRow.add(Integer.toString(entry.getValue().getYear()));
+            newRow.add(Integer.toString(entry.getValue().getPages()));
+            b.addRow(newRow);
+        }
+        //bookTable.revalidate();
+        //bookTable.repaint(); //здесь должна быть перерисовка
+        //bookTable.updateUI();
+    }
+
+    public void fillTableCopyOfTheBook(HashMap<Long, CopyOfTheBook> result){ //вывод содержимого HashMap CopyOfTheBook на экран
+        clearTableCopyOfTheBook();
+        for(Map.Entry<Long, CopyOfTheBook> entry : storage.getCopyOfTheBookList().entrySet()) {
+            Vector<String> newRow = new Vector<String>();
+            newRow.add(Long.toString(entry.getKey()));
+            newRow.add(Long.toString(entry.getValue().getIdBook()));
+            newRow.add(Boolean.toString(entry.getValue().getIssue()));
+            c.addRow(newRow);
+        }
+        //copyOfTheBookTable.revalidate();
+        //copyOfTheBookTable.repaint(); //здесь должна быть перерисовка
+        //copyOfTheBookTable.updateUI();
+    }
+
+    public class TestActionListenerBook implements ActionListener { //при нажатии на кнопку Search в Book
+        public void actionPerformed(ActionEvent e) {
+            String date = searchBook.getText();
+            int act = 0;
+            String action = searchParameterBook.getSelectedItem().toString();
+            if (date.equals("")){
+                act = 1;
+            }
+            else {
+                switch (action) {
+                    case "ID":
+                        act = 9;
+                        break;
+                    case "Name":
+                        act = 10;
+                        break;
+                    case "Authors":
+                        act = 11;
+                        break;
+                    case "Year":
+                        act = 12;
+                        break;
+                    case "Pages":
+                        act = 13;
+                        break;
+                }
+            }
+            controller.operation(act, date);
+        }
+    }
+
+    public class TestActionListenerCopyOfTheBook implements ActionListener { //при нажатии на кнопку Search в CopyOfBook
+        public void actionPerformed(ActionEvent e) {
+            String date = searchCopyOfTheBook.getText();
+            int act = 0;
+            String action = searchParameterCopyOfTheBook.getSelectedItem().toString();
+            if (date.equals("")){
+                act = 2;
+            }
+            else {
+                switch (action) {
+                    case "Inventory Number":
+                        act = 14;
+                        break;
+                    case "Book ID":
+                        act = 15;
+                        break;
+                    case "Issue":
+                        act = 16;
+                        break;
+                }
+            }
+            controller.operation(act, date);
+        }
+    }
+
     public static void main(String[] args) {
         WindowView w = new WindowView();
         w.setBounds(400, 250, 700, 300);
         w.setVisible(true);
     }
 }
-
-
-
