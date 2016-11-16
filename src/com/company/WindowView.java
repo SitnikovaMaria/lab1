@@ -1,4 +1,4 @@
-package com.company;
+﻿package com.company;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -21,8 +21,24 @@ public class WindowView extends JFrame implements View {
     private DefaultTableModel c = new DefaultTableModel();
     private DefaultTableModel s = new DefaultTableModel();
     private JTextField saveLine = new JTextField();
-    private JTextField searchBook = new JTextField(30);
-    private JTextField searchCopyOfTheBook = new JTextField(30);
+    private JTextField searchBook = new JTextField(40);
+    private JTextField searchCopyOfTheBook = new JTextField(40);
+    String[] itemsBook = {
+            "ID",
+            "Name",
+            "Authors",
+            "Year",
+            "Pages"
+    };
+    String[] itemsCopyOfTheBook = {
+            "ID",
+            "Name",
+            "Authors",
+            "Year",
+            "Pages"
+    };
+    JComboBox searchParameterBook = new JComboBox(itemsBook);
+    JComboBox searchParameterCopyOfTheBook = new JComboBox(itemsCopyOfTheBook);
 
     public void print(String s) {
         System.out.println(s);
@@ -91,34 +107,18 @@ public class WindowView extends JFrame implements View {
         JPanel searchPanelBook = new JPanel();
         bookTab.add(searchPanelBook, BorderLayout.NORTH);
         searchPanelBook.setLayout(new FlowLayout());
-        JLabel searchTextBook = new JLabel("Search");
-        searchPanelBook.add(searchTextBook);
+        JButton searchBookButton = new JButton("Search");
+        searchPanelBook.add(searchBookButton);
         searchPanelBook.add(searchBook);
-        String[] itemsBook = {
-                "ID",
-                "Name",
-                "Authors",
-                "Year",
-                "Pages"
-        };
-        JComboBox searchParameterBook = new JComboBox(itemsBook);
         searchPanelBook.add(searchParameterBook);
 
         /* панель для поиска экземпляров книг по выбранному параметру */
         JPanel searchPanelCopyOfTheBook = new JPanel();
         copyTab.add(searchPanelCopyOfTheBook, BorderLayout.NORTH);
         searchPanelCopyOfTheBook.setLayout(new FlowLayout());
-        JLabel searchTextCopyOfTheBook = new JLabel("Search");
-        searchPanelCopyOfTheBook.add(searchTextCopyOfTheBook);
+        JButton searchCopyOfTheBookButton = new JButton("Search");
+        searchPanelCopyOfTheBook.add(searchCopyOfTheBookButton);
         searchPanelCopyOfTheBook.add(searchCopyOfTheBook);
-        String[] itemsCopyOfTheBook = {
-                "ID",
-                "Name",
-                "Authors",
-                "Year",
-                "Pages"
-        };
-        JComboBox searchParameterCopyOfTheBook = new JComboBox(itemsCopyOfTheBook);
         searchPanelCopyOfTheBook.add(searchParameterCopyOfTheBook);
 
         saveTab.add(saveLine, BorderLayout.NORTH);
@@ -235,7 +235,7 @@ public class WindowView extends JFrame implements View {
 
     public static void main(String[] args) {
         WindowView w = new WindowView();
-        w.setBounds(400, 250, 500, 300);
+        w.setBounds(400, 250, 700, 300);
         w.setVisible(true);
     }
 }
