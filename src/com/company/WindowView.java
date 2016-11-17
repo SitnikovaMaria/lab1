@@ -28,11 +28,9 @@ public class WindowView extends JFrame implements View {
             "Pages"
     };
     private String[] itemsCopyOfTheBook = {
-            "ID",
-            "Name",
-            "Authors",
-            "Year",
-            "Pages"
+            "Inventory Number",
+            "Book ID",
+            "Issue"
     };
     private JComboBox searchParameterBook = new JComboBox(itemsBook);
     private JComboBox searchParameterCopyOfTheBook = new JComboBox(itemsCopyOfTheBook);
@@ -233,9 +231,6 @@ public class WindowView extends JFrame implements View {
                 b.removeRow(i);
             }
         }
-        //bookTable.revalidate();
-        //bookTable.repaint(); //здесь должна быть перерисовка
-        //bookTable.updateUI();
     }
 
     public void clearTableCopyOfTheBook(){ //очистка CopyOfTheBook
@@ -244,14 +239,11 @@ public class WindowView extends JFrame implements View {
                 c.removeRow(i);
             }
         }
-        //copyOfTheBookTable.revalidate();
-        //copyOfTheBookTable.repaint(); //здесь должна быть перерисовка
-        //copyOfTheBookTable.updateUI();
     }
 
     public void fillTableBook(HashMap<Long, Book> result){ //вывод содержимого HashMap Book на экран
         clearTableBook();
-        for(Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
+        for(Map.Entry<Long, Book> entry : result.entrySet()) {
             Vector<String> newRow = new Vector<String>();
             newRow.add(Long.toString(entry.getKey()));
             newRow.add(entry.getValue().getName());
@@ -260,23 +252,17 @@ public class WindowView extends JFrame implements View {
             newRow.add(Integer.toString(entry.getValue().getPages()));
             b.addRow(newRow);
         }
-        //bookTable.revalidate();
-        //bookTable.repaint(); //здесь должна быть перерисовка
-        //bookTable.updateUI();
     }
 
     public void fillTableCopyOfTheBook(HashMap<Long, CopyOfTheBook> result){ //вывод содержимого HashMap CopyOfTheBook на экран
         clearTableCopyOfTheBook();
-        for(Map.Entry<Long, CopyOfTheBook> entry : storage.getCopyOfTheBookList().entrySet()) {
+        for(Map.Entry<Long, CopyOfTheBook> entry : result.entrySet()) {
             Vector<String> newRow = new Vector<String>();
             newRow.add(Long.toString(entry.getKey()));
             newRow.add(Long.toString(entry.getValue().getIdBook()));
             newRow.add(Boolean.toString(entry.getValue().getIssue()));
             c.addRow(newRow);
         }
-        //copyOfTheBookTable.revalidate();
-        //copyOfTheBookTable.repaint(); //здесь должна быть перерисовка
-        //copyOfTheBookTable.updateUI();
     }
 
     public class TestActionListenerBook implements ActionListener { //при нажатии на кнопку Search в Book
