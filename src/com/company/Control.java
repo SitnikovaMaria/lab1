@@ -1,4 +1,4 @@
-﻿package com.company;
+package com.company;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -120,151 +120,129 @@ public class Control {
         view1.fillTableCopyOfTheBook(result);
     }
 
-    public boolean addBook() { //добавление в Book
+    public void addBook(String date1, String date2, String date3, String date4, String date5) { //добавление в Book
         try {
-            long idBook = Long.valueOf(view1.input());
+            long idBook = Long.valueOf(date1);
             if (!storage.getBookList().containsKey(idBook)) {
-                view1.print("Введите авторов книги: ");
-                String authors = view1.input();
-                view1.print("Введите название книги: ");
-                String name = view1.input();
-                view1.print("Введите год издания: ");
-                int year = Integer.valueOf(view1.input());
-                view1.print("Введите количество страниц: ");
-                int pages = Integer.valueOf(view1.input());
-                Book book1 = new Book(idBook, authors, name, year, pages);
+                int year = Integer.valueOf(date4);
+                int pages = Integer.valueOf(date5);
+                Book book1 = new Book(idBook, date2, date3, year, pages);
                 storage.getBookList().put(idBook, book1);
-                view1.print("Книга успешно добавлена!");
-                return true;
+                /* книга успешно добавлена */
+                //вызываем метод из вью для вывода новых значений
             } else {
-                view1.print("Книга с таким идентификатором уже существует!");
-                return false;
+                /* книга с таким идентификатором уже существует */
+                //вызываем метод из вью для вывода старых значений
             }
         } catch (NumberFormatException E) {
-            view1.print("Проверьте правильность введённых Вами данных");
-            return false;
+            /* проверьте правильность введённых Вами данных */
+            //вызываем метод из вью для вывода старых значений
         }
     }
 
-    public boolean addCopyOfTheBook() { //добавление в CopyOfTheBook
+    public void addCopyOfTheBook(String date1, String date2, String date3) { //добавление в CopyOfTheBook
         try {
-            long inventoryNumber = Long.valueOf(view1.input());
+            long inventoryNumber = Long.valueOf(date1);
             if (!storage.getCopyOfTheBookList().containsKey(inventoryNumber)) {
-                view1.print("Введите идентификатор книги: ");
-                long idBook = Long.valueOf(view1.input());
-                view1.print("Выдана книга или нет: (true - выдана, false - нет)");
-                boolean issue = Boolean.valueOf(view1.input());
+                long idBook = Long.valueOf(date2);
+                boolean issue = Boolean.valueOf(date3);
                 CopyOfTheBook copyOfTheBook1 = new CopyOfTheBook(inventoryNumber, idBook, issue);
                 storage.getCopyOfTheBookList().put(inventoryNumber, copyOfTheBook1);
-                view1.print("Экземпляр книги успешно добавлен!");
-                return true;
+                /* книга успешно добавлена */
+                //вызываем метод из вью для вывода новых значений
             } else {
-                view1.print("Книга с таким инвентарным номером уже существует!");
-                return false;
+                /* книга с таким инвентарным номером уже существует */
+                //вызываем метод из вью для вывода старых значений
             }
         } catch (NumberFormatException E) {
-            view1.print("Проверьте правильность введённых Вами данных");
-            return false;
+            /* проверьте правильность введённых Вами данных */
+            //вызываем метод из вью для вывода старых значений
         }
     }
 
-    public boolean changeBook() { //изменение Book
+    public void changeBook(String date1, String date2, String date3, String date4, String date5) { //изменение Book
         try {
-            long idBook = Long.valueOf(view1.input());
+            long idBook = Long.valueOf(date1);
             if (storage.getBookList().containsKey(idBook)) {
                 Book book0 = storage.getBookList().get(idBook);
-                view1.print(book0.toString());
-                view1.print("Введите авторов книги: ");
-                String authors = view1.input();
-                if (!authors.equals("")) {
-                    book0.setAuthors(authors);
+                if (!date2.equals("")) {
+                    book0.setAuthors(date1);
                 }
-                view1.print("Введите название книги: ");
-                String name = view1.input();
-                if (!name.equals("")) {
-                    book0.setName(name);
+                if (!date3.equals("")) {
+                    book0.setName(date3);
                 }
-                view1.print("Введите год издания: ");
-                String strYear = view1.input();
-                if (!strYear.equals("")) {
-                    book0.setYear(Integer.valueOf(strYear));
+                if (!date4.equals("")) {
+                    book0.setYear(Integer.valueOf(date4));
                 }
-                view1.print("Введите количество страниц: ");
-                String strPages = view1.input();
-                if (!strPages.equals("")) {
-                    book0.setPages(Integer.valueOf(strPages));
+                if (!date5.equals("")) {
+                    book0.setPages(Integer.valueOf(date5));
                 }
-                view1.print("Книга успешно изменена!");
-                return true;
+                /* книга успешно изменена */;
+                //вызываем метод из вью для вывода новых значений
             } else {
-                view1.print("Книга с таким инвентарным номером не существует!");
-                return false;
+                /* книга с таким идентификатором уже существует */
+                //вызываем метод из вью для вывода старых значений
             }
         } catch (NumberFormatException E) {
-            view1.print("Проверьте правильность введённых Вами данных");
-            return false;
+            /* проверьте правильность введённых Вами данных */
+            //вызываем метод из вью для вывода старых значений
         }
     }
 
-    public boolean changeCopyOfTheBook() { //изменение CopyOfTheBook
+    public void changeCopyOfTheBook(String date1, String date2, String date3) { //изменение CopyOfTheBook
         try {
-            long inventoryNumber = Long.valueOf(view1.input());
+            long inventoryNumber = Long.valueOf(date1);
             if (storage.getCopyOfTheBookList().containsKey(inventoryNumber)) {
                 CopyOfTheBook copyOfTheBook0 = storage.getCopyOfTheBookList().get(inventoryNumber);
-                view1.print(copyOfTheBook0.toString());
-                view1.print("Введите идентификатор книги: ");
-                String strIdBook = view1.input();
-                if (!strIdBook.equals("")) {
-                    copyOfTheBook0.setIdBook(Integer.valueOf(strIdBook));
+                if (!date2.equals("")) {
+                    copyOfTheBook0.setIdBook(Integer.valueOf(date2));
                 }
-                view1.print("Выдана книга или нет: (true - выдана, false - нет)");
-                String strIssue = view1.input();
-                if (!strIssue.equals("")) {
-                    copyOfTheBook0.setIssue(Boolean.valueOf(strIssue));
+                if (!date3.equals("")) {
+                    copyOfTheBook0.setIssue(Boolean.valueOf(date3));
                 }
-                view1.print("Книга с №=" + inventoryNumber + " успешно изменена!");
-                return true;
+                /* книга успешно изменена */
+                //вызываем метод из вью для вывода новых значений
             } else {
-                view1.print("Книга с таким инвентарным номером не существует!");
-                return false;
+                /* книга с таким инвентарным номером уже существует */
+                //вызываем метод из вью для вывода старых значений
             }
         } catch (NumberFormatException E) {
-            view1.print("Проверьте правильность введённых Вами данных");
-            return false;
+            /* проверьте правильность введённых Вами данных */
+            //вызываем метод из вью для вывода старых значений
         }
     }
 
-    public boolean removeBook() { //удаление из Book
+    public void removeBook(String date1) { //удаление из Book
         try {
-            long index = Long.valueOf(view1.input());
+            long index = Long.valueOf(date1);
             if (storage.getBookList().remove(index) == null) {
-                view1.print("Книга с таким идентификатором не существует!");
-                return false;
+                /* книга с таким идентификатором не существует */
+                //вызываем метод из вью для вывода старых значений
             }
-            view1.print("Книга с id=" + index + " успешно удалена!");
-            return true;
+            /* книга успешно удалена */
+            //вызываем метод из вью для вывода новых значений
         } catch (NumberFormatException E) {
-            view1.print("Проверьте правильность введённых Вами данных");
-            return false;
+            /* проверьте правильность введённых Вами данных */
+            //вызываем метод из вью для вывода старых значений
         }
     }
 
-    public boolean removeCopyOfTheBook() { //удаление из CopyOfTheBook
+    public void removeCopyOfTheBook(String date1) { //удаление из CopyOfTheBook
         try {
-            long index = Long.valueOf(view1.input());
+            long index = Long.valueOf(date1);
             if (storage.getCopyOfTheBookList().remove(index) == null) {
-                view1.print("Книга с таким инвентарным номером не существует!");
-                return false;
+                /* книга с таким инвентарным номером не существует */
+                //вызываем метод из вью для вывода старых значений
             }
-            view1.print("Книга с №=" + index + " успешно удалена!");
-            return true;
+            /* книга успешно удалена */
+            //вызываем метод из вью для вывода новых значений
         } catch (NumberFormatException E) {
-            view1.print("Проверьте правильность введённых Вами данных");
-            return false;
+            /* проверьте правильность введённых Вами данных */
+            //вызываем метод из вью для вывода старых значений
         }
     }
 
-    public void operation(int act, String date) {
+    public void operation(int act, String date1, String date2, String date3, String date4, String date5) {
         switch (act) {
             case 1: //просмотр книг
                 reviewBook();
@@ -273,46 +251,46 @@ public class Control {
                 reviewCopyOfTheBook();
                 break;
             case 3: //добавление книги
-                addBook();
+                addBook(date1, date2, date3, date4, date5);
                 break;
             case 4: //добавление экземпляра книги
-                addCopyOfTheBook();
+                addCopyOfTheBook(date1, date2, date3);
                 break;
             case 5: //изменение книги
-                changeBook();
+                changeBook(date1, date2, date3, date4, date5);
                 break;
             case 6: //изменение экземпляра книги
-                changeCopyOfTheBook();
+                changeCopyOfTheBook(date1, date2, date3);
                 break;
             case 7: //удаление книги
-                removeBook();
+                removeBook(date1);
                 break;
             case 8: //удаление экземпляра книги
-                removeCopyOfTheBook();
+                removeCopyOfTheBook(date1);
                 break;
             case 9: //поиск книги по идентификатору
-                searchByIdBook(date);
+                searchByIdBook(date1);
                 break;
             case 10: //поиск книг по названию
-                searchByName(date);
+                searchByName(date1);
                 break;
             case 11: //поиск книг по авторам
-                searchByAuthors(date);
+                searchByAuthors(date1);
                 break;
             case 12: //поиск книг по году
-                searchByYear(date);
+                searchByYear(date1);
                 break;
             case 13: //поиск книг по количеству страниц
-                searchByPages(date);
+                searchByPages(date1);
                 break;
             case 14: //поиск экземпляров книг по инвентарному номеру
-                searchByInventoryNumber(date);
+                searchByInventoryNumber(date1);
                 break;
             case 15: //поиск экземпляров книг по книге
-                searchByBook(date);
+                searchByBook(date1);
                 break;
             case 16: //поиск экземпляров книг по информации о выдаче
-                searchByIssue(date);
+                searchByIssue(date1);
                 break;
             case 0:
                 quit = true;

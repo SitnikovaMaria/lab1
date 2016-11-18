@@ -1,4 +1,4 @@
-﻿package com.company;
+package com.company;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -7,6 +7,9 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.HashMap;
+import java.text.SimpleDateFormat;
+import java.io.File;
+import java.text.DateFormat;
 import java.util.Map;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
@@ -20,6 +23,13 @@ public class WindowView extends JFrame implements View {
     private JTextField saveLine = new JTextField();
     private JTextField searchBook = new JTextField(40);
     private JTextField searchCopyOfTheBook = new JTextField(40);
+    private JTable saveAndLoad;
+
+
+    public String getFileName(){return(saveLine.getText());
+
+    }
+
     private String[] itemsBook = {
             "ID",
             "Name",
@@ -65,7 +75,7 @@ public class WindowView extends JFrame implements View {
         copyTab.setLayout(new BorderLayout());
         JPanel saveTab = new JPanel();
         saveTab.setLayout(new BorderLayout());
-        JTable saveAndLoad = new JTable(s);
+        saveAndLoad = new JTable(s);
         bookTable = new JTable(b);
         copyOfTheBookTable = new JTable(c);
         JScrollPane scrollPaneS = new JScrollPane(saveAndLoad);
@@ -92,12 +102,20 @@ public class WindowView extends JFrame implements View {
         saveAndLoadButtons.add(saveButton);
         saveAndLoadButtons.add(loadButton);
 
-            saveButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    saveToFile();
-                }
-            });
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveToFile();
+            }
+        });
+
+        loadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loadFromFile();
+            }
+        });
+
         saveLine = new JTextField();
 
         bookTab.add(bookFunctionButtons, BorderLayout.SOUTH);
@@ -145,11 +163,24 @@ public class WindowView extends JFrame implements View {
         c.addColumn("Issue");
 
         s.addColumn("File Name");
+        s.addColumn("Date change");
+
+        File folderLoad = new File("../ncLab");
+        File[] files = folderLoad.listFiles();
+        for (File f:files) {
+            if (f.getName().endsWith("ini")) {
+                Vector<String> newrow = new Vector<>();
+                newrow.add(f.getName());
+                DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+                String reportDate = df.format(f.lastModified());
+                newrow.add(reportDate);
+                s.addRow(newrow);
+            }
+        }
 
         add(jtp);
 
         /*  заполним HashMap для проверки */
-	/*
         Book book1 = new Book(1, "И. С. Тургенев", "Отцы и дети", 1971, 188);
         Book book2 = new Book(2, "Н. В. Гоголь", "Мертвые души", 1972, 416);
         CopyOfTheBook copyOfTheBook1 = new CopyOfTheBook(1, 1, true);
@@ -170,7 +201,7 @@ public class WindowView extends JFrame implements View {
         storage.setBookList(bookList);
         storage.setCopyOfTheBookList(copyOfTheBookList);
         fillTableBook(bookList);
-        fillTableCopyOfTheBook(copyOfTheBookList);*/
+        fillTableCopyOfTheBook(copyOfTheBookList);
     }
 
     /**
@@ -198,32 +229,111 @@ public class WindowView extends JFrame implements View {
         newRow.add(Boolean.toString(book.getIssue()));
         c.addRow(newRow);
     }
-
     public void saveToFile() {
-        if (saveLine.getText() != "") {
-            Serialization a = new Serialization();
-            try {
-                Book tmp = new Book();
-                for (int i = 0; i < b.getRowCount(); i++) {
-                    tmp.setName((String) b.getValueAt(i, 1));
-                    tmp.setAuthors((String) b.getValueAt(i, 2));
-                    tmp.setYear((Integer) b.getValueAt(i, 3));
-                    tmp.setPages((Integer) b.getValueAt(i, 4));
-                    a.saveObjectBook(tmp,saveLine.getText()+"Book.txt");
-                }
 
-                CopyOfTheBook temp = new CopyOfTheBook();
-                for (int i = 0; i < c.getRowCount(); i++) {
-                    temp.setIdBook((Long) c.getValueAt(i, 1));
-                    temp.setInventoryNumber((Long) c.getValueAt(i, 2));
-                    temp.setIssue((Boolean) b.getValueAt(i, 3));
-                    a.saveObjectCopy(temp,saveLine.getText()+"CopyOfTheBook.txt");
-                }
+        if (getFileName() != "") {
+            Serialization a = new Serialization();
+
+
+            Storage tmp = new Storage();
+            HashMap<Long, Book> tmpBook = new HashMap<>();
+
+            for (int i = 0; i < b.getRowCount(); i++)
+            {
+                Book tmpB = new Book();
+                tmpB.setIdBook(Long.valueOf((String) (b.getValueAt(i, 0))));
+                tmpB.setName((String) b.getValueAt(i, 1));
+                tmpB.setAuthors((String) b.getValueAt(i, 2));
+                tmpB.setYear(Integer.valueOf((String) (b.getValueAt(i, 3))));
+                tmpB.setPages(Integer.valueOf((String) (b.getValueAt(i, 4))));
+
+                tmpBook.put(tmpB.getIdBook(),tmpB );
             }
-            catch (IOException ex) {
+
+            tmp.setBookList(tmpBook);
+
+            HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<>();
+            for (int i = 0; i < c.getRowCount(); i++) {
+                CopyOfTheBook tmpC = new CopyOfTheBook();
+                tmpC.setIdBook(Long.valueOf((String) c.getValueAt(i, 0)));
+                tmpC.setInventoryNumber(Long.valueOf((String) c.getValueAt(i, 1)));
+                tmpC.setIssue(Boolean.valueOf((String) c.getValueAt(i, 2)));
+                tmpCopy.put(tmpC.getIdBook(),tmpC);
+            }
+
+            tmp.setCopyOfTheBookList(tmpCopy);
+            try {
+                a.saveObjectStorage(tmp,(getFileName()+".ini"));
+            }
+            catch (IOException ex){}
+
+
+            while(s.getRowCount()>0){
+                s.removeRow(0);
+            }
+            File folderLoad = new File("../nc");
+            File[] files = folderLoad.listFiles();
+            for (File f:files) {
+                if (f.getName().endsWith(".ini")) {
+                    Vector<String> newr = new Vector<String>();
+                    newr.add(f.getName());
+                    DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+                    String reportDate = df.format(f.lastModified());
+                    newr.add(reportDate);
+                    s.addRow(newr);
+                }
             }
         }
     }
+
+    public void loadFromFile() {
+        Serialization a = new Serialization();
+
+        while(b.getRowCount()>0){
+            b.removeRow(0);
+        }
+        while(c.getRowCount()>0){
+            c.removeRow(0);
+        }
+        HashMap<Long, Book> tmpBook = new HashMap<>();
+        tmpBook.clear();
+        Storage tmp = new Storage();
+        try {
+            tmp = a.loadObjectBook((String) s.getValueAt(saveAndLoad.getSelectedRow(), 0));
+        }
+        catch (IOException ex) {
+        }
+        catch (ClassNotFoundException ex){
+        }
+
+        tmp.hashCode();
+
+        tmpBook = tmp.getBookList();
+
+        for ( Book tmpB : tmpBook.values()) {
+            Vector<String> newRow = new Vector<String>();
+            newRow.add(Long.toString(tmpB.getIdBook()));
+            newRow.add(tmpB.getName());
+            newRow.add(tmpB.getAuthors());
+            newRow.add(Integer.toString(tmpB.getYear()));
+            newRow.add(Integer.toString(tmpB.getPages()));
+            b.addRow(newRow);
+        }
+
+
+        HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<>();
+        tmpCopy = tmp.getCopyOfTheBookList();
+
+        for ( CopyOfTheBook tmpC : tmpCopy.values()) {
+            Vector<String> newRow = new Vector<String>();
+            newRow.add(Long.toString(tmpC.getIdBook()));
+            newRow.add(Long.toString(tmpC.getInventoryNumber()));
+            newRow.add(Boolean.toString(tmpC.getIssue()));
+            c.addRow(newRow);
+        }
+
+    }
+
 
     public void clearTableBook(){ //очистка Book
         if (b.getRowCount() > 0) {
@@ -292,7 +402,7 @@ public class WindowView extends JFrame implements View {
                         break;
                 }
             }
-            controller.operation(act, date);
+            controller.operation(act, date, "", "", "", "");
         }
     }
 
@@ -317,7 +427,7 @@ public class WindowView extends JFrame implements View {
                         break;
                 }
             }
-            controller.operation(act, date);
+            controller.operation(act, date, "", "", "", "");
         }
     }
 
@@ -327,3 +437,6 @@ public class WindowView extends JFrame implements View {
         w.setVisible(true);
     }
 }
+
+
+

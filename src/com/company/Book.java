@@ -10,7 +10,8 @@ public class Book implements Serializable{
     private int year;
     private int pages;
 
-    public Book(){}
+    Book(){}
+
     public Book(long idBook, String authors, String name, int year, int pages){
         this.idBook = idBook;
         this.authors = authors;
@@ -65,3 +66,6 @@ public class Book implements Serializable{
         return "id: " + idBook + ";   авторы: " + authors + ";   название: " + name + ";   год издания: " + year + ";   страницы: " + pages + ".";
     }
 }
+
+
+

@@ -1,14 +1,15 @@
 package com.company;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Storage {
+public class Storage implements Serializable{
 
     private static Storage instance;
-    private HashMap<Long, Book> bookList = new HashMap<Long, Book>();
-    private HashMap<Long, CopyOfTheBook> copyOfTheBookList = new HashMap<Long, CopyOfTheBook>();
+    private HashMap<Long, Book> bookList = new HashMap<>();
+    private HashMap<Long, CopyOfTheBook> copyOfTheBookList = new HashMap<>();
 
-    private Storage(){
+    public Storage(){
     }
 
     public static synchronized Storage getInstance() {
@@ -34,4 +35,3 @@ public class Storage {
         return copyOfTheBookList;
     }
 }
-

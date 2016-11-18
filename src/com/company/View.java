@@ -8,3 +8,4 @@ public interface View{
     public void fillTableBook(HashMap<Long, Book> result);
     public void fillTableCopyOfTheBook(HashMap<Long, CopyOfTheBook> result);
 }
+
