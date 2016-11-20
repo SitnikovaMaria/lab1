@@ -37,6 +37,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
     private DefaultTableModel s = new DefaultTableModel();
     private JButton button2;
     private JButton changeCopyButton;
+    private JButton deleteB;
+    private JButton deleteC;
     private JTextField saveLine = new JTextField();
     private JTextField searchBook = new JTextField(40);
     private JTextField searchCopyOfTheBook = new JTextField(40);
@@ -102,6 +104,14 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         JScrollPane scrollPaneC = new JScrollPane(copyOfTheBookTable);
         JPanel bookFunctionButtons = new JPanel();
         bookFunctionButtons.setLayout(new FlowLayout());
+        deleteB = new JButton("Delete");
+        deleteB.setEnabled(false);
+        deleteB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.operation(7,(String) b.getValueAt(bookTable.getSelectedRow(), 0),"","","","");
+            }
+        });
         JButton button1 = new JButton("Add");
         button1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -293,11 +303,20 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         });
         bookFunctionButtons.add(button1);
         bookFunctionButtons.add(button2);
+        bookFunctionButtons.add(deleteB);
+
 
         JPanel copyFunctionButtons = new JPanel();
         copyFunctionButtons.setLayout(new FlowLayout());
         JButton addCopyButton = new JButton("Add");
-
+        deleteC = new JButton("Delete");
+        deleteC.setEnabled(false);
+        deleteC.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.operation(8,(String) c.getValueAt(copyOfTheBookTable.getSelectedRow(), 0),"","","","");
+            }
+        });
         addCopyButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 final JFrame addFormCopy = new JFrame("ADD COPY OF BOOK");
@@ -444,6 +463,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
 
         copyFunctionButtons.add(addCopyButton);
         copyFunctionButtons.add(changeCopyButton);
+        copyFunctionButtons.add(deleteC);
 
         JPanel saveAndLoadButtons = new JPanel();
         saveAndLoadButtons.setLayout(new FlowLayout());
@@ -775,14 +795,16 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         if (e.getSource() == bookTable.getSelectionModel() && e.getFirstIndex() >= 0) {
             if (bookTable.getSelectedRowCount()!=0){
                 button2.setEnabled(true);
+                deleteB.setEnabled(true);
             }
-            else {button2.setEnabled(false);}
+            else {button2.setEnabled(false); deleteB.setEnabled(false);}
         }
         if (e.getSource() == copyOfTheBookTable.getSelectionModel() && e.getFirstIndex() >= 0) {
             if (copyOfTheBookTable.getSelectedRowCount()!=0){
                 changeCopyButton.setEnabled(true);
+                deleteC.setEnabled(true);
             }
-            else {changeCopyButton.setEnabled(false);}
+            else {changeCopyButton.setEnabled(false); deleteC.setEnabled(false);}
         }
     }
 
