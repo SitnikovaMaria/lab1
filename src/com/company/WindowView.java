@@ -1,4 +1,4 @@
-package com.company;
+﻿package com.company;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -10,9 +10,11 @@ import java.util.HashMap;
 import java.text.SimpleDateFormat;
 import java.io.File;
 import java.text.DateFormat;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
+import java.util.Set;
 
 public class WindowView extends JFrame implements View {
     private Control controller;
@@ -26,8 +28,8 @@ public class WindowView extends JFrame implements View {
     private JTable saveAndLoad;
 
 
-    public String getFileName(){return(saveLine.getText());
-
+    public String getFileName(){
+        return(saveLine.getText());
     }
 
     private String[] itemsBook = {
@@ -48,17 +50,6 @@ public class WindowView extends JFrame implements View {
     private ActionListener actionListenerCopyOfTheBook = new TestActionListenerCopyOfTheBook();
     private JTable bookTable;
     private JTable copyOfTheBookTable;
-
-    public void print(String s) {
-        System.out.println(s);
-    }
-
-    public void read() {
-    }
-
-    public String input() {
-        return "1";
-    }
 
     /**
      * Конструктор - создание нового объекта
@@ -165,10 +156,10 @@ public class WindowView extends JFrame implements View {
         s.addColumn("File Name");
         s.addColumn("Date change");
 
-        File folderLoad = new File("../ncLab");
+        File folderLoad = new File("D:\\ncLab");
         File[] files = folderLoad.listFiles();
         for (File f:files) {
-            if (f.getName().endsWith("ini")) {
+            if (f.getName().endsWith("ini")){
                 Vector<String> newrow = new Vector<>();
                 newrow.add(f.getName());
                 DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
@@ -182,7 +173,7 @@ public class WindowView extends JFrame implements View {
 
         /*  заполним HashMap для проверки */
         Book book1 = new Book(1, "И. С. Тургенев", "Отцы и дети", 1971, 188);
-        Book book2 = new Book(2, "Н. В. Гоголь", "Мертвые души", 1972, 416);
+        Book book2 = new Book(10, "Н. В. Гоголь", "Мертвые души", 1972, 416);
         CopyOfTheBook copyOfTheBook1 = new CopyOfTheBook(1, 1, true);
         CopyOfTheBook copyOfTheBook2 = new CopyOfTheBook(2, 1, false);
         CopyOfTheBook copyOfTheBook3 = new CopyOfTheBook(3, 1, false);
@@ -267,7 +258,7 @@ public class WindowView extends JFrame implements View {
             while(s.getRowCount()>0){
                 s.removeRow(0);
             }
-            File folderLoad = new File("../nc");
+            File folderLoad = new File("D:\\ncLab");
             File[] files = folderLoad.listFiles();
             for (File f:files) {
                 if (f.getName().endsWith(".ini")) {
@@ -327,7 +318,6 @@ public class WindowView extends JFrame implements View {
             newRow.add(Boolean.toString(tmpC.getIssue()));
             c.addRow(newRow);
         }
-
     }
 
 
@@ -349,24 +339,32 @@ public class WindowView extends JFrame implements View {
 
     public void fillTableBook(HashMap<Long, Book> result){ //вывод содержимого HashMap Book на экран
         clearTableBook();
-        for(Map.Entry<Long, Book> entry : result.entrySet()) {
+        Set set = result.entrySet();
+        Iterator iterator = set.iterator();
+        while(iterator.hasNext()) {
             Vector<String> newRow = new Vector<String>();
-            newRow.add(Long.toString(entry.getKey()));
-            newRow.add(entry.getValue().getName());
-            newRow.add(entry.getValue().getAuthors());
-            newRow.add(Integer.toString(entry.getValue().getYear()));
-            newRow.add(Integer.toString(entry.getValue().getPages()));
+            Map.Entry me = (Map.Entry)iterator.next();
+            newRow.add(me.getKey().toString());
+            Book book = (Book) me.getValue();
+            newRow.add(book.getName());
+            newRow.add(book.getAuthors());
+            newRow.add(Integer.toString(book.getYear()));
+            newRow.add(Integer.toString(book.getPages()));
             b.addRow(newRow);
         }
     }
 
     public void fillTableCopyOfTheBook(HashMap<Long, CopyOfTheBook> result){ //вывод содержимого HashMap CopyOfTheBook на экран
         clearTableCopyOfTheBook();
-        for(Map.Entry<Long, CopyOfTheBook> entry : result.entrySet()) {
+        Set set = result.entrySet();
+        Iterator iterator = set.iterator();
+        while(iterator.hasNext()) {
             Vector<String> newRow = new Vector<String>();
-            newRow.add(Long.toString(entry.getKey()));
-            newRow.add(Long.toString(entry.getValue().getIdBook()));
-            newRow.add(Boolean.toString(entry.getValue().getIssue()));
+            Map.Entry me = (Map.Entry)iterator.next();
+            newRow.add(me.getKey().toString());
+            CopyOfTheBook copyOfTheBook = (CopyOfTheBook) me.getValue();
+            newRow.add(Long.toString(copyOfTheBook.getIdBook()));
+            newRow.add(Boolean.toString(copyOfTheBook.getIssue()));
             c.addRow(newRow);
         }
     }
