@@ -264,14 +264,11 @@ public class Control {
     public void removeBook(String date1) { //удаление из Book
         try {
             long index = Long.valueOf(date1);
-            if (storage.getBookList().remove(index) == null) {
-                /* книга с таким идентификатором не существует */
-                view1.fillTableBook(storage.getBookList());
-            }
+            storage.getBookList().remove(index);
             /* книга успешно удалена */
-            view1.fillTableBook(storage.getBookList());
         } catch (NumberFormatException E) {
             /* проверьте правильность введённых Вами данных */
+        } finally{
             view1.fillTableBook(storage.getBookList());
         }
     }
@@ -279,14 +276,11 @@ public class Control {
     public void removeCopyOfTheBook(String date1) { //удаление из CopyOfTheBook
         try {
             long index = Long.valueOf(date1);
-            if (storage.getCopyOfTheBookList().remove(index) == null) {
-                /* книга с таким инвентарным номером не существует */
-                view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
-            }
+            storage.getCopyOfTheBookList().remove(index);
             /* книга успешно удалена */
-            view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
         } catch (NumberFormatException E) {
             /* проверьте правильность введённых Вами данных */
+        } finally {
             view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
         }
     }
