@@ -105,13 +105,13 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         JButton button1 = new JButton("Add");
         button1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JFrame addForm = new JFrame("ADD BOOK");
+                final JFrame addForm = new JFrame("ADD BOOK");
                 addForm.setBounds(400, 300, 600, 150);
                 JPanel addPanel = new JPanel();
                 addPanel.setLayout(new BorderLayout());
-                JTextField nameLine = new JTextField(9);
-                JTextField authorLine = new JTextField(9);
-                JTextField yearLine = new JTextField(9);
+                final JTextField nameLine = new JTextField(9);
+                final JTextField authorLine = new JTextField(9);
+                final JTextField yearLine = new JTextField(9);
                 yearLine.setDocument(new PlainDocument() {
                     String chars = "0123456789";
                     @Override
@@ -123,7 +123,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                         }
                     }
                 });
-                JTextField pagesLine = new JTextField(9);
+                final JTextField pagesLine = new JTextField(9);
                 pagesLine.setDocument(new PlainDocument() {
                     String chars = "0123456789";
                     @Override
@@ -135,7 +135,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                         }
                     }
                 });
-                JTextField bookIdLine = new JTextField(9);
+                final JTextField bookIdLine = new JTextField(9);
                 bookIdLine.setDocument(new PlainDocument() {
                     String chars = "0123456789";
                     @Override
@@ -181,6 +181,13 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
 
                 JButton ok = new JButton();
                 ok.setText("OK");
+                ok.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        controller.operation(3,bookIdLine.getText(),nameLine.getText(),authorLine.getText(),yearLine.getText(),pagesLine.getText());
+                        addForm.setVisible(false);
+                    }
+                });
                 ok.setSize(10,5);
                 buttonPanel.add(ok);
                 addPanel.add(buttonPanel, BorderLayout.SOUTH);
@@ -192,15 +199,15 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         button2.setEnabled(false);
         button2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JFrame addForm = new JFrame("CHANGE BOOK");
+                final JFrame addForm = new JFrame("CHANGE BOOK");
                 addForm.setBounds(400, 300, 600, 150);
                 JPanel addPanel = new JPanel();
                 addPanel.setLayout(new BorderLayout());
-                JTextField nameLine = new JTextField(9);
+                final JTextField nameLine = new JTextField(9);
                 nameLine.setText((String) b.getValueAt(bookTable.getSelectedRow(),1));
-                JTextField authorLine = new JTextField(9);
+                final JTextField authorLine = new JTextField(9);
                 authorLine.setText((String) b.getValueAt(bookTable.getSelectedRow(),2));
-                JTextField yearLine = new JTextField(9);
+                final JTextField yearLine = new JTextField(9);
                 yearLine.setDocument(new PlainDocument() {
                     String chars = "0123456789";
                     @Override
@@ -212,7 +219,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                         }
                     }
                 });
-                JTextField pagesLine = new JTextField(9);
+                final JTextField pagesLine = new JTextField(9);
                 pagesLine.setDocument(new PlainDocument() {
                     String chars = "0123456789";
                     @Override
@@ -224,7 +231,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                         }
                     }
                 });
-                JTextField bookIdLine = new JTextField(9);
+                final JTextField bookIdLine = new JTextField(9);
                 bookIdLine.setDocument(new PlainDocument() {
                     String chars = "0123456789";
                     @Override
@@ -247,7 +254,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 JPanel textPanel = new JPanel(new FlowLayout());
                 addPanel.add(labelPanel,BorderLayout.CENTER);
                 addPanel.add(textPanel,BorderLayout.NORTH);
-                JLabel nameLabel = new JLabel("Name");
+                final JLabel nameLabel = new JLabel("Name");
                 nameLabel.setPreferredSize(new Dimension(100,20));
                 nameLabel.setHorizontalAlignment(JLabel.CENTER);
                 JLabel authorLabel = new JLabel("Authors");
@@ -271,6 +278,13 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 JButton ok = new JButton();
                 ok.setText("OK");
                 ok.setSize(10,5);
+                ok.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        controller.operation(5,bookIdLine.getText(),nameLine.getText(),authorLine.getText(),yearLine.getText(),pagesLine.getText());
+                        addForm.setVisible(false);
+                    }
+                });
                 buttonPanel.add(ok);
                 addPanel.add(buttonPanel, BorderLayout.SOUTH);
                 addForm.add(addPanel);
@@ -286,11 +300,11 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
 
         addCopyButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JFrame addFormCopy = new JFrame("ADD COPY OF BOOK");
+                final JFrame addFormCopy = new JFrame("ADD COPY OF BOOK");
                 addFormCopy.setBounds(400, 300, 400, 150);
                 JPanel addPanel = new JPanel();
                 addPanel.setLayout(new BorderLayout());
-                JTextField inventoryNumberLine = new JTextField(9);
+                final JTextField inventoryNumberLine = new JTextField(9);
                 inventoryNumberLine.setDocument(new PlainDocument() {
                     String chars = "0123456789";
                     @Override
@@ -302,7 +316,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                         }
                     }
                 });
-                JTextField bookIdLine = new JTextField(9);
+                final JTextField bookIdLine = new JTextField(9);
                 bookIdLine.setDocument(new PlainDocument() {
                     String chars = "0123456789";
                     @Override
@@ -315,7 +329,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                     }
                 });
 
-                JTextField issueLine = new JTextField(9);
+                final JTextField issueLine = new JTextField(9);
                 JPanel labelPanel = new JPanel();
                 JPanel textPanel = new JPanel(new FlowLayout());
                 addPanel.add(labelPanel,BorderLayout.CENTER);
@@ -340,6 +354,13 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 JButton ok = new JButton();
                 ok.setText("OK");
                 ok.setSize(10,5);
+                ok.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        controller.operation(4,inventoryNumberLine.getText(),bookIdLine.getText(),issueLine.getText(),"","");
+                        addFormCopy.setVisible(false);
+                    }
+                });
                 buttonPanel.add(ok);
                 addPanel.add(buttonPanel, BorderLayout.SOUTH);
                 addFormCopy.add(addPanel);
@@ -352,11 +373,11 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
 
         changeCopyButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JFrame addFormCopy = new JFrame("CHANGE COPY OF BOOK");
+                final JFrame addFormCopy = new JFrame("CHANGE COPY OF BOOK");
                 addFormCopy.setBounds(400, 300, 400, 150);
                 JPanel addPanel = new JPanel();
                 addPanel.setLayout(new BorderLayout());
-                JTextField inventoryNumberLine = new JTextField(9);
+                final JTextField inventoryNumberLine = new JTextField(9);
                 inventoryNumberLine.setDocument(new PlainDocument() {
                     String chars = "0123456789";
                     @Override
@@ -368,7 +389,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                         }
                     }
                 });
-                JTextField bookIdLine = new JTextField(9);
+                final JTextField bookIdLine = new JTextField(9);
                 bookIdLine.setDocument(new PlainDocument() {
                     String chars = "0123456789";
                     @Override
@@ -381,7 +402,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                     }
                 });
 
-                JTextField issueLine = new JTextField(9);
+                final JTextField issueLine = new JTextField(9);
                 issueLine.setText((String) c.getValueAt(copyOfTheBookTable.getSelectedRow(),2));
                 JPanel labelPanel = new JPanel();
                 JPanel textPanel = new JPanel(new FlowLayout());
@@ -392,7 +413,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 labelPanel.add(bookIdLine);
                 labelPanel.add(issueLine);
                 JPanel buttonPanel = new JPanel();
-                JLabel inventoryNumberLabel = new JLabel("Inventory Number");
+                final JLabel inventoryNumberLabel = new JLabel("Inventory Number");
                 inventoryNumberLabel.setPreferredSize(new Dimension(100,20));
                 inventoryNumberLabel.setHorizontalAlignment(JLabel.CENTER);
                 JLabel idBookLabel = new JLabel("Book ID");
@@ -407,6 +428,13 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 JButton ok = new JButton();
                 ok.setText("OK");
                 ok.setSize(10,5);
+                ok.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        controller.operation(6,inventoryNumberLine.getText(),bookIdLine.getText(),issueLine.getText(),"","");
+                        addFormCopy.setVisible(false);
+                    }
+                });
                 buttonPanel.add(ok);
                 addPanel.add(buttonPanel, BorderLayout.SOUTH);
                 addFormCopy.add(addPanel);

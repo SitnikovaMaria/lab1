@@ -2,6 +2,7 @@ package com.company;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.*;
 
 public class Control {
 
@@ -35,10 +36,14 @@ public class Control {
     }
 
     public void searchByIdBook(String date) { //поиск книги по идентификатору
-        long idBook = Long.valueOf(date);
         HashMap<Long, Book> result = new HashMap<Long, Book>();
+        Pattern p = Pattern.compile(date);
+        Matcher m;
+        String text;
         for (Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
-            if (entry.getKey() == idBook) {
+            text = String.valueOf(entry.getValue().getIdBook());
+            m = p.matcher(text);
+            if (m.find()) {
                 result.put(entry.getKey(), entry.getValue());
             }
         }
@@ -47,8 +52,13 @@ public class Control {
 
     public void searchByName(String date) { //поиск книг по названию
         HashMap<Long, Book> result = new HashMap<Long, Book>();
+        Pattern p = Pattern.compile(date);
+        Matcher m;
+        String text;
         for (Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
-            if (entry.getValue().getName().equals(date)) {
+            text = entry.getValue().getName();
+            m = p.matcher(text);
+            if (m.find()) {
                 result.put(entry.getKey(), entry.getValue());
             }
         }
@@ -57,8 +67,13 @@ public class Control {
 
     public void searchByAuthors(String date) { //поиск книг по авторам
         HashMap<Long, Book> result = new HashMap<Long, Book>();
+        Pattern p = Pattern.compile(date);
+        Matcher m;
+        String text;
         for (Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
-            if (entry.getValue().getAuthors().equals(date)) {
+            text = entry.getValue().getAuthors();
+            m = p.matcher(text);
+            if (m.find()) {
                 result.put(entry.getKey(), entry.getValue());
             }
         }
@@ -66,10 +81,14 @@ public class Control {
     }
 
     public void searchByYear(String date) { //поиск книг по году
-        int year = Integer.valueOf(date);
         HashMap<Long, Book> result = new HashMap<Long, Book>();
+        Pattern p = Pattern.compile(date);
+        Matcher m;
+        String text;
         for (Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
-            if (entry.getValue().getYear() == year) {
+            text = String.valueOf(entry.getValue().getYear());
+            m = p.matcher(text);
+            if (m.find()) {
                 result.put(entry.getKey(), entry.getValue());
             }
         }
@@ -77,10 +96,14 @@ public class Control {
     }
 
     public void searchByPages(String date) { //поиск книг по страницам
-        int pages = Integer.valueOf(date);
         HashMap<Long, Book> result = new HashMap<Long, Book>();
+        Pattern p = Pattern.compile(date);
+        Matcher m;
+        String text;
         for (Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
-            if (entry.getValue().getPages() == pages) {
+            text = String.valueOf(entry.getValue().getPages());
+            m = p.matcher(text);
+            if (m.find()) {
                 result.put(entry.getKey(), entry.getValue());
             }
         }
@@ -88,10 +111,14 @@ public class Control {
     }
 
     public void searchByInventoryNumber(String date) { //поиск экземпляра книги по инвентарному номеру
-        long inventoryNumber = Long.valueOf(date);
         HashMap<Long, CopyOfTheBook> result = new HashMap<Long, CopyOfTheBook>();
+        Pattern p = Pattern.compile(date);
+        Matcher m;
+        String text;
         for (Map.Entry<Long, CopyOfTheBook> entry : storage.getCopyOfTheBookList().entrySet()) {
-            if (entry.getKey() == inventoryNumber) {
+            text = String.valueOf(entry.getValue().getInventoryNumber());
+            m = p.matcher(text);
+            if (m.find()) {
                 result.put(entry.getKey(), entry.getValue());
             }
         }
@@ -99,10 +126,14 @@ public class Control {
     }
 
     public void searchByBook(String date) { //поиск экземпляров книги по книге
-        long idBook = Long.valueOf(date);
         HashMap<Long, CopyOfTheBook> result = new HashMap<Long, CopyOfTheBook>();
+        Pattern p = Pattern.compile(date);
+        Matcher m;
+        String text;
         for (Map.Entry<Long, CopyOfTheBook> entry : storage.getCopyOfTheBookList().entrySet()) {
-            if (entry.getValue().getIdBook() == idBook) {
+            text = String.valueOf(entry.getValue().getIdBook());
+            m = p.matcher(text);
+            if (m.find()) {
                 result.put(entry.getKey(), entry.getValue());
             }
         }
@@ -110,10 +141,14 @@ public class Control {
     }
 
     public void searchByIssue(String date) { //поиск экземпляров книг по информации о выдаче
-        boolean issue = Boolean.valueOf(date);
         HashMap<Long, CopyOfTheBook> result = new HashMap<Long, CopyOfTheBook>();
+        Pattern p = Pattern.compile(date);
+        Matcher m;
+        String text;
         for (Map.Entry<Long, CopyOfTheBook> entry : storage.getCopyOfTheBookList().entrySet()) {
-            if (entry.getValue().getIssue() == issue) {
+            text = String.valueOf(entry.getValue().getIssue());
+            m = p.matcher(text);
+            if (m.find()) {
                 result.put(entry.getKey(), entry.getValue());
             }
         }
@@ -126,17 +161,23 @@ public class Control {
             if (!storage.getBookList().containsKey(idBook)) {
                 int year = Integer.valueOf(date4);
                 int pages = Integer.valueOf(date5);
-                Book book1 = new Book(idBook, date2, date3, year, pages);
-                storage.getBookList().put(idBook, book1);
-                /* книга успешно добавлена */
-                //вызываем метод из вью для вывода новых значений
-            } else {
-                /* книга с таким идентификатором уже существует */
-                //вызываем метод из вью для вывода старых значений
+                boolean bool = false;
+                for (Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
+                    if (entry.getValue().getAuthors().equals(date2) && entry.getValue().getName().equals(date3) && (entry.getValue().getYear() == year) && (entry.getValue().getPages() == pages)) {
+                        /* книга стакими данными уже существует */
+                        bool = true;
+                    }
+                }
+                if (!bool) {
+                    Book book1 = new Book(idBook, date2, date3, year, pages);
+                    storage.getBookList().put(idBook, book1);
+                    /* книга успешно добавлена */
+                }
             }
         } catch (NumberFormatException E) {
             /* проверьте правильность введённых Вами данных */
-            //вызываем метод из вью для вывода старых значений
+        } finally {
+            view1.fillTableBook(storage.getBookList());
         }
     }
 
@@ -149,14 +190,14 @@ public class Control {
                 CopyOfTheBook copyOfTheBook1 = new CopyOfTheBook(inventoryNumber, idBook, issue);
                 storage.getCopyOfTheBookList().put(inventoryNumber, copyOfTheBook1);
                 /* книга успешно добавлена */
-                //вызываем метод из вью для вывода новых значений
+                view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
             } else {
                 /* книга с таким инвентарным номером уже существует */
-                //вызываем метод из вью для вывода старых значений
+                view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
             }
         } catch (NumberFormatException E) {
             /* проверьте правильность введённых Вами данных */
-            //вызываем метод из вью для вывода старых значений
+            view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
         }
     }
 
@@ -164,28 +205,36 @@ public class Control {
         try {
             long idBook = Long.valueOf(date1);
             if (storage.getBookList().containsKey(idBook)) {
-                Book book0 = storage.getBookList().get(idBook);
-                if (!date2.equals("")) {
-                    book0.setAuthors(date1);
+                int year = Integer.valueOf(date4);
+                int pages = Integer.valueOf(date5);
+                boolean bool = false;
+                for (Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
+                    if (entry.getValue().getAuthors().equals(date2) && entry.getValue().getName().equals(date3) && (entry.getValue().getYear() == year) && (entry.getValue().getPages() == pages)) {
+                        /* книга стакими данными уже существует */
+                        bool = true;
+                    }
                 }
-                if (!date3.equals("")) {
-                    book0.setName(date3);
+                if (!bool) {
+                    Book book0 = storage.getBookList().get(idBook);
+                    if (!date2.equals("")) {
+                        book0.setAuthors(date1);
+                    }
+                    if (!date3.equals("")) {
+                        book0.setName(date3);
+                    }
+                    if (!date4.equals("")) {
+                        book0.setYear(year);
+                    }
+                    if (!date5.equals("")) {
+                        book0.setPages(pages);
+                    }
+                    /* книга успешно изменена */
                 }
-                if (!date4.equals("")) {
-                    book0.setYear(Integer.valueOf(date4));
-                }
-                if (!date5.equals("")) {
-                    book0.setPages(Integer.valueOf(date5));
-                }
-                /* книга успешно изменена */;
-                //вызываем метод из вью для вывода новых значений
-            } else {
-                /* книга с таким идентификатором уже существует */
-                //вызываем метод из вью для вывода старых значений
             }
         } catch (NumberFormatException E) {
             /* проверьте правильность введённых Вами данных */
-            //вызываем метод из вью для вывода старых значений
+        } finally {
+            view1.fillTableBook(storage.getBookList());
         }
     }
 
@@ -201,14 +250,14 @@ public class Control {
                     copyOfTheBook0.setIssue(Boolean.valueOf(date3));
                 }
                 /* книга успешно изменена */
-                //вызываем метод из вью для вывода новых значений
+                view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
             } else {
                 /* книга с таким инвентарным номером уже существует */
-                //вызываем метод из вью для вывода старых значений
+                view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
             }
         } catch (NumberFormatException E) {
             /* проверьте правильность введённых Вами данных */
-            //вызываем метод из вью для вывода старых значений
+            view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
         }
     }
 
@@ -217,13 +266,13 @@ public class Control {
             long index = Long.valueOf(date1);
             if (storage.getBookList().remove(index) == null) {
                 /* книга с таким идентификатором не существует */
-                //вызываем метод из вью для вывода старых значений
+                view1.fillTableBook(storage.getBookList());
             }
             /* книга успешно удалена */
-            //вызываем метод из вью для вывода новых значений
+            view1.fillTableBook(storage.getBookList());
         } catch (NumberFormatException E) {
             /* проверьте правильность введённых Вами данных */
-            //вызываем метод из вью для вывода старых значений
+            view1.fillTableBook(storage.getBookList());
         }
     }
 
@@ -232,13 +281,13 @@ public class Control {
             long index = Long.valueOf(date1);
             if (storage.getCopyOfTheBookList().remove(index) == null) {
                 /* книга с таким инвентарным номером не существует */
-                //вызываем метод из вью для вывода старых значений
+                view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
             }
             /* книга успешно удалена */
-            //вызываем метод из вью для вывода новых значений
+            view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
         } catch (NumberFormatException E) {
             /* проверьте правильность введённых Вами данных */
-            //вызываем метод из вью для вывода старых значений
+            view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
         }
     }
 
