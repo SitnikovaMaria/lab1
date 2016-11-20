@@ -234,19 +234,16 @@ public class WindowView extends JFrame implements View {
         if (getFileName() != "") {
             Serialization a = new Serialization();
 
-
             Storage tmp = new Storage();
             HashMap<Long, Book> tmpBook = new HashMap<>();
 
-            for (int i = 0; i < b.getRowCount(); i++)
-            {
+            for (int i = 0; i < b.getRowCount(); i++){
                 Book tmpB = new Book();
                 tmpB.setIdBook(Long.valueOf((String) (b.getValueAt(i, 0))));
                 tmpB.setName((String) b.getValueAt(i, 1));
                 tmpB.setAuthors((String) b.getValueAt(i, 2));
                 tmpB.setYear(Integer.valueOf((String) (b.getValueAt(i, 3))));
                 tmpB.setPages(Integer.valueOf((String) (b.getValueAt(i, 4))));
-
                 tmpBook.put(tmpB.getIdBook(),tmpB );
             }
 
@@ -266,7 +263,6 @@ public class WindowView extends JFrame implements View {
                 a.saveObjectStorage(tmp,(getFileName()+".ini"));
             }
             catch (IOException ex){}
-
 
             while(s.getRowCount()>0){
                 s.removeRow(0);
