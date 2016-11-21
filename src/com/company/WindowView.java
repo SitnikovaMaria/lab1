@@ -1,7 +1,6 @@
 ﻿package com.company;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -12,9 +11,12 @@ import java.io.File;
 import java.text.DateFormat;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
-import java.util.Set;
+import javax.swing.text.PlainDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
 
 public class WindowView extends JFrame implements View {
     private Control controller;
@@ -22,6 +24,10 @@ public class WindowView extends JFrame implements View {
     private DefaultTableModel b = new DefaultTableModel();
     private DefaultTableModel c = new DefaultTableModel();
     private DefaultTableModel s = new DefaultTableModel();
+    private JButton changeBookButton;
+    private JButton changeCopyButton;
+    private JButton deleteB;
+    private JButton deleteC;
     private JTextField saveLine = new JTextField();
     private JTextField searchBook = new JTextField(40);
     private JTextField searchCopyOfTheBook = new JTextField(40);
@@ -69,46 +75,392 @@ public class WindowView extends JFrame implements View {
         saveAndLoad = new JTable(s);
         bookTable = new JTable(b);
         copyOfTheBookTable = new JTable(c);
+        //bookTable.getSelectionModel().addListSelectionListener(this);
+        //copyOfTheBookTable.getSelectionModel().addListSelectionListener(this);
         JScrollPane scrollPaneS = new JScrollPane(saveAndLoad);
         JScrollPane scrollPaneB = new JScrollPane(bookTable);
         JScrollPane scrollPaneC = new JScrollPane(copyOfTheBookTable);
         JPanel bookFunctionButtons = new JPanel();
         bookFunctionButtons.setLayout(new FlowLayout());
-        JButton button1 = new JButton("Add");
-        JButton button2 = new JButton("Change");
-        bookFunctionButtons.add(button1);
-        bookFunctionButtons.add(button2);
-
+        deleteB = new JButton("Delete");
+        deleteB.setEnabled(true);
+        deleteB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.operation(7,(String) b.getValueAt(bookTable.getSelectedRow(), 0),"","","","");
+            }
+        });
+        JButton addBookButton = new JButton("Add");
+        addBookButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                final JFrame addForm = new JFrame("ADD BOOK");
+                addForm.setBounds(400, 300, 600, 150);
+                JPanel addPanel = new JPanel();
+                addPanel.setLayout(new BorderLayout());
+                final JTextField nameLine = new JTextField(9);
+                final JTextField authorLine = new JTextField(9);
+                final JTextField yearLine = new JTextField(9);
+                yearLine.setDocument(new PlainDocument() {
+                    String chars = "0123456789";
+                    @Override
+                    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+                        if (chars.indexOf(str) != -1) {
+                            if (getLength()< 10) {
+                                super.insertString(offs, str, a);
+                            }
+                        }
+                    }
+                });
+                final JTextField pagesLine = new JTextField(9);
+                pagesLine.setDocument(new PlainDocument() {
+                    String chars = "0123456789";
+                    @Override
+                    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+                        if (chars.indexOf(str) != -1) {
+                            if (getLength()< 10) {
+                                super.insertString(offs, str, a);
+                            }
+                        }
+                    }
+                });
+                final JTextField bookIdLine = new JTextField(9);
+                bookIdLine.setDocument(new PlainDocument() {
+                    String chars = "0123456789";
+                    @Override
+                    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+                        if (chars.indexOf(str) != -1) {
+                            if (getLength()< 10) {
+                                super.insertString(offs, str, a);
+                            }
+                        }
+                    }
+                });
+                JPanel labelPanel = new JPanel();
+                labelPanel.setLayout(new FlowLayout());
+                labelPanel.add(bookIdLine);
+                labelPanel.add(nameLine);
+                labelPanel.add(authorLine);
+                labelPanel.add(yearLine);
+                labelPanel.add(pagesLine);
+                JPanel buttonPanel = new JPanel();
+                JPanel textPanel = new JPanel(new FlowLayout());
+                addPanel.add(labelPanel,BorderLayout.CENTER);
+                addPanel.add(textPanel,BorderLayout.NORTH);
+                JLabel nameLabel = new JLabel("Name");
+                nameLabel.setPreferredSize(new Dimension(100,20));
+                nameLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel authorLabel = new JLabel("Authors");
+                authorLabel.setPreferredSize(new Dimension(100,20));
+                authorLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel yearLabel = new JLabel("Year");
+                yearLabel.setPreferredSize(new Dimension(100,20));
+                yearLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel pagesLabel = new JLabel("Pages");
+                pagesLabel.setPreferredSize(new Dimension(100,20));
+                pagesLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel idBookLabel = new JLabel("IdBook");
+                idBookLabel.setPreferredSize(new Dimension(100,20));
+                idBookLabel.setHorizontalAlignment(JLabel.CENTER);
+                textPanel.add(idBookLabel);
+                textPanel.add(nameLabel);
+                textPanel.add(authorLabel);
+                textPanel.add(yearLabel);
+                textPanel.add(pagesLabel);
+                JButton ok = new JButton();
+                ok.setText("OK");
+                ok.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        controller.operation(3,bookIdLine.getText(),nameLine.getText(),authorLine.getText(),yearLine.getText(),pagesLine.getText());
+                        addForm.setVisible(false);
+                    }
+                });
+                ok.setSize(10,5);
+                buttonPanel.add(ok);
+                addPanel.add(buttonPanel, BorderLayout.SOUTH);
+                addForm.add(addPanel);
+                addForm.setVisible(true);
+            }
+        });
+        changeBookButton = new JButton("Change");
+        changeBookButton.setEnabled(true);
+        changeBookButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                final JFrame addForm = new JFrame("CHANGE BOOK");
+                addForm.setBounds(400, 300, 600, 150);
+                JPanel addPanel = new JPanel();
+                addPanel.setLayout(new BorderLayout());
+                final JTextField nameLine = new JTextField(9);
+                nameLine.setText((String) b.getValueAt(bookTable.getSelectedRow(),1));
+                final JTextField authorLine = new JTextField(9);
+                authorLine.setText((String) b.getValueAt(bookTable.getSelectedRow(),2));
+                final JTextField yearLine = new JTextField(9);
+                yearLine.setDocument(new PlainDocument() {
+                    String chars = "0123456789";
+                    @Override
+                    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+                        if (chars.indexOf(str) != -1) {
+                            if (getLength()< 10) {
+                                super.insertString(offs, str, a);
+                            }
+                        }
+                    }
+                });
+                final JTextField pagesLine = new JTextField(9);
+                pagesLine.setDocument(new PlainDocument() {
+                    String chars = "0123456789";
+                    @Override
+                    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+                        if (chars.indexOf(str) != -1) {
+                            if (getLength()< 10) {
+                                super.insertString(offs, str, a);
+                            }
+                        }
+                    }
+                });
+                final JTextField bookIdLine = new JTextField(9);
+                bookIdLine.setDocument(new PlainDocument() {
+                    String chars = "0123456789";
+                    @Override
+                    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+                        if (chars.indexOf(str) != -1) {
+                            if (getLength()< 10) {
+                                super.insertString(offs, str, a);
+                            }
+                        }
+                    }
+                });
+                JPanel labelPanel = new JPanel();
+                labelPanel.setLayout(new FlowLayout());
+                labelPanel.add(bookIdLine);
+                labelPanel.add(nameLine);
+                labelPanel.add(authorLine);
+                labelPanel.add(yearLine);
+                labelPanel.add(pagesLine);
+                JPanel buttonPanel = new JPanel();
+                JPanel textPanel = new JPanel(new FlowLayout());
+                addPanel.add(labelPanel,BorderLayout.CENTER);
+                addPanel.add(textPanel,BorderLayout.NORTH);
+                final JLabel nameLabel = new JLabel("Name");
+                nameLabel.setPreferredSize(new Dimension(100,20));
+                nameLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel authorLabel = new JLabel("Authors");
+                authorLabel.setPreferredSize(new Dimension(100,20));
+                authorLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel yearLabel = new JLabel("Year");
+                yearLabel.setPreferredSize(new Dimension(100,20));
+                yearLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel pagesLabel = new JLabel("Pages");
+                pagesLabel.setPreferredSize(new Dimension(100,20));
+                pagesLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel idBookLabel = new JLabel("ID");
+                idBookLabel.setPreferredSize(new Dimension(100,20));
+                idBookLabel.setHorizontalAlignment(JLabel.CENTER);
+                textPanel.add(idBookLabel);
+                textPanel.add(nameLabel);
+                textPanel.add(authorLabel);
+                textPanel.add(yearLabel);
+                textPanel.add(pagesLabel);
+                JButton ok = new JButton();
+                ok.setText("OK");
+                ok.setSize(10,5);
+                ok.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        controller.operation(5,bookIdLine.getText(),nameLine.getText(),authorLine.getText(),yearLine.getText(),pagesLine.getText());
+                        addForm.setVisible(false);
+                    }
+                });
+                buttonPanel.add(ok);
+                addPanel.add(buttonPanel, BorderLayout.SOUTH);
+                addForm.add(addPanel);
+                addForm.setVisible(true);
+            }
+        });
+        bookFunctionButtons.add(addBookButton);
+        bookFunctionButtons.add(changeBookButton);
+        bookFunctionButtons.add(deleteB);
         JPanel copyFunctionButtons = new JPanel();
         copyFunctionButtons.setLayout(new FlowLayout());
         JButton addCopyButton = new JButton("Add");
-        JButton changeCopyButton = new JButton("Change");
+        deleteC = new JButton("Delete");
+        deleteC.setEnabled(true);
+        deleteC.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.operation(8,(String) c.getValueAt(copyOfTheBookTable.getSelectedRow(), 0),"","","","");
+            }
+        });
+        addCopyButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                final JFrame addFormCopy = new JFrame("ADD COPY OF BOOK");
+                addFormCopy.setBounds(400, 300, 400, 150);
+                JPanel addPanel = new JPanel();
+                addPanel.setLayout(new BorderLayout());
+                final JTextField inventoryNumberLine = new JTextField(9);
+                inventoryNumberLine.setDocument(new PlainDocument() {
+                    String chars = "0123456789";
+                    @Override
+                    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+                        if (chars.indexOf(str) != -1) {
+                            if (getLength()< 10) {
+                                super.insertString(offs, str, a);
+                            }
+                        }
+                    }
+                });
+                final JTextField bookIdLine = new JTextField(9);
+                bookIdLine.setDocument(new PlainDocument() {
+                    String chars = "0123456789";
+                    @Override
+                    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+                        if (chars.indexOf(str) != -1) {
+                            if (getLength()< 10) {
+                                super.insertString(offs, str, a);
+                            }
+                        }
+                    }
+                });
+                final JTextField issueLine = new JTextField(9);
+                JPanel labelPanel = new JPanel();
+                JPanel textPanel = new JPanel(new FlowLayout());
+                addPanel.add(labelPanel,BorderLayout.CENTER);
+                addPanel.add(textPanel,BorderLayout.NORTH);
+                labelPanel.setLayout(new FlowLayout());
+                labelPanel.add(inventoryNumberLine);
+                labelPanel.add(bookIdLine);
+                labelPanel.add(issueLine);
+                JPanel buttonPanel = new JPanel();
+                JLabel inventoryNumberLabel = new JLabel("Inventory Number");
+                inventoryNumberLabel.setPreferredSize(new Dimension(100,20));
+                inventoryNumberLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel idBookLabel = new JLabel("Book ID");
+                idBookLabel.setPreferredSize(new Dimension(105,20));
+                idBookLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel issueLabel= new JLabel("Issue");
+                issueLabel.setPreferredSize(new Dimension(105,20));
+                issueLabel.setHorizontalAlignment(JLabel.CENTER);
+                textPanel.add(inventoryNumberLabel);
+                textPanel.add(idBookLabel);
+                textPanel.add(issueLabel);
+                JButton ok = new JButton();
+                ok.setText("OK");
+                ok.setSize(10,5);
+                ok.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        controller.operation(4,inventoryNumberLine.getText(),bookIdLine.getText(),issueLine.getText(),"","");
+                        addFormCopy.setVisible(false);
+                    }
+                });
+                buttonPanel.add(ok);
+                addPanel.add(buttonPanel, BorderLayout.SOUTH);
+                addFormCopy.add(addPanel);
+                addFormCopy.setVisible(true);
+            }
+        });
+        changeCopyButton = new JButton("Change");
+        changeCopyButton.setEnabled(true);
+        changeCopyButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                final JFrame addFormCopy = new JFrame("CHANGE COPY OF BOOK");
+                addFormCopy.setBounds(400, 300, 400, 150);
+                JPanel addPanel = new JPanel();
+                addPanel.setLayout(new BorderLayout());
+                final JTextField inventoryNumberLine = new JTextField(9);
+                inventoryNumberLine.setDocument(new PlainDocument() {
+                    String chars = "0123456789";
+                    @Override
+                    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+                        if (chars.indexOf(str) != -1) {
+                            if (getLength()< 10) {
+                                super.insertString(offs, str, a);
+                            }
+                        }
+                    }
+                });
+                final JTextField bookIdLine = new JTextField(9);
+                bookIdLine.setDocument(new PlainDocument() {
+                    String chars = "0123456789";
+                    @Override
+                    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+                        if (chars.indexOf(str) != -1) {
+                            if (getLength()< 10) {
+                                super.insertString(offs, str, a);
+                            }
+                        }
+                    }
+                });
+                final JTextField issueLine = new JTextField(9);
+                issueLine.setText((String) c.getValueAt(copyOfTheBookTable.getSelectedRow(),2));
+                JPanel labelPanel = new JPanel();
+                JPanel textPanel = new JPanel(new FlowLayout());
+                addPanel.add(labelPanel,BorderLayout.CENTER);
+                addPanel.add(textPanel,BorderLayout.NORTH);
+                labelPanel.setLayout(new FlowLayout());
+                labelPanel.add(inventoryNumberLine);
+                labelPanel.add(bookIdLine);
+                labelPanel.add(issueLine);
+                JPanel buttonPanel = new JPanel();
+                final JLabel inventoryNumberLabel = new JLabel("Inventory Number");
+                inventoryNumberLabel.setPreferredSize(new Dimension(100,20));
+                inventoryNumberLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel idBookLabel = new JLabel("Book ID");
+                idBookLabel.setPreferredSize(new Dimension(105,20));
+                idBookLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel issueLabel= new JLabel("Issue");
+                issueLabel.setPreferredSize(new Dimension(105,20));
+                issueLabel.setHorizontalAlignment(JLabel.CENTER);
+                textPanel.add(inventoryNumberLabel);
+                textPanel.add(idBookLabel);
+                textPanel.add(issueLabel);
+                JButton ok = new JButton();
+                ok.setText("OK");
+                ok.setSize(10,5);
+                ok.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        controller.operation(6,inventoryNumberLine.getText(),bookIdLine.getText(),issueLine.getText(),"","");
+                        addFormCopy.setVisible(false);
+                    }
+                });
+                buttonPanel.add(ok);
+                addPanel.add(buttonPanel, BorderLayout.SOUTH);
+                addFormCopy.add(addPanel);
+                addFormCopy.setVisible(true);
+            }
+        });
         copyFunctionButtons.add(addCopyButton);
         copyFunctionButtons.add(changeCopyButton);
+        copyFunctionButtons.add(deleteC);
 
         JPanel saveAndLoadButtons = new JPanel();
         saveAndLoadButtons.setLayout(new FlowLayout());
         JButton saveButton = new JButton("Save");
         JButton loadButton = new JButton("Load");
+        JButton saveAndMergeButton = new JButton("Merge");
         saveAndLoadButtons.add(saveButton);
         saveAndLoadButtons.add(loadButton);
-
+        saveAndLoadButtons.add(saveAndMergeButton);
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 saveToFile();
             }
         });
-
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 loadFromFile();
             }
         });
-
+        saveAndMergeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveAndMergeWithFile();
+            }
+        });
         saveLine = new JTextField();
-
         bookTab.add(bookFunctionButtons, BorderLayout.SOUTH);
         copyTab.add(copyFunctionButtons, BorderLayout.SOUTH);
         saveTab.add(saveAndLoadButtons, BorderLayout.SOUTH);
@@ -168,7 +520,6 @@ public class WindowView extends JFrame implements View {
                 s.addRow(newrow);
             }
         }
-
         add(jtp);
 
         /*  заполним HashMap для проверки */
@@ -220,14 +571,44 @@ public class WindowView extends JFrame implements View {
         newRow.add(Boolean.toString(book.getIssue()));
         c.addRow(newRow);
     }
-    public void saveToFile() {
 
+    public void saveAndMergeWithFile(){
+        Serialization a = new Serialization();
+        Storage tmp = new Storage();
+        HashMap<Long, Book> tmpBook = new HashMap<>();
+        for (int i = 0; i < b.getRowCount(); i++) {
+            Book tmpB = new Book();
+            tmpB.setIdBook(Long.valueOf((String) (b.getValueAt(i, 0))));
+            tmpB.setName((String) b.getValueAt(i, 1));
+            tmpB.setAuthors((String) b.getValueAt(i, 2));
+            tmpB.setYear(Integer.valueOf((String) (b.getValueAt(i, 3))));
+            tmpB.setPages(Integer.valueOf((String) (b.getValueAt(i, 4))));
+            tmpBook.put(tmpB.getIdBook(),tmpB );
+        }
+        tmp.setBookList(tmpBook);
+        HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<>();
+        for (int i = 0; i < c.getRowCount(); i++) {
+            CopyOfTheBook tmpC = new CopyOfTheBook();
+            tmpC.setIdBook(Long.valueOf((String) c.getValueAt(i, 0)));
+            tmpC.setInventoryNumber(Long.valueOf((String) c.getValueAt(i, 1)));
+            tmpC.setIssue(Boolean.valueOf((String) c.getValueAt(i, 2)));
+            tmpCopy.put(tmpC.getIdBook(),tmpC);
+        }
+        tmp.setCopyOfTheBookList(tmpCopy);
+        try {
+            a.saveAndMergeObjectStorage(tmp,(String) s.getValueAt(saveAndLoad.getSelectedRow(), 0));
+        }
+        catch (IOException ex){}
+        catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveToFile() {
         if (getFileName() != "") {
             Serialization a = new Serialization();
-
             Storage tmp = new Storage();
             HashMap<Long, Book> tmpBook = new HashMap<>();
-
             for (int i = 0; i < b.getRowCount(); i++){
                 Book tmpB = new Book();
                 tmpB.setIdBook(Long.valueOf((String) (b.getValueAt(i, 0))));
@@ -237,9 +618,7 @@ public class WindowView extends JFrame implements View {
                 tmpB.setPages(Integer.valueOf((String) (b.getValueAt(i, 4))));
                 tmpBook.put(tmpB.getIdBook(),tmpB );
             }
-
             tmp.setBookList(tmpBook);
-
             HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<>();
             for (int i = 0; i < c.getRowCount(); i++) {
                 CopyOfTheBook tmpC = new CopyOfTheBook();
@@ -248,13 +627,11 @@ public class WindowView extends JFrame implements View {
                 tmpC.setIssue(Boolean.valueOf((String) c.getValueAt(i, 2)));
                 tmpCopy.put(tmpC.getIdBook(),tmpC);
             }
-
             tmp.setCopyOfTheBookList(tmpCopy);
             try {
                 a.saveObjectStorage(tmp,(getFileName()+".ini"));
             }
             catch (IOException ex){}
-
             while(s.getRowCount()>0){
                 s.removeRow(0);
             }
@@ -275,7 +652,6 @@ public class WindowView extends JFrame implements View {
 
     public void loadFromFile() {
         Serialization a = new Serialization();
-
         while(b.getRowCount()>0){
             b.removeRow(0);
         }
@@ -292,12 +668,9 @@ public class WindowView extends JFrame implements View {
         }
         catch (ClassNotFoundException ex){
         }
-
         tmp.hashCode();
-
         tmpBook = tmp.getBookList();
-
-        for ( Book tmpB : tmpBook.values()) {
+        for (Book tmpB : tmpBook.values()) {
             Vector<String> newRow = new Vector<String>();
             newRow.add(Long.toString(tmpB.getIdBook()));
             newRow.add(tmpB.getName());
@@ -306,11 +679,8 @@ public class WindowView extends JFrame implements View {
             newRow.add(Integer.toString(tmpB.getPages()));
             b.addRow(newRow);
         }
-
-
         HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<>();
         tmpCopy = tmp.getCopyOfTheBookList();
-
         for ( CopyOfTheBook tmpC : tmpCopy.values()) {
             Vector<String> newRow = new Vector<String>();
             newRow.add(Long.toString(tmpC.getIdBook()));
@@ -319,7 +689,6 @@ public class WindowView extends JFrame implements View {
             c.addRow(newRow);
         }
     }
-
 
     public void clearTableBook(){ //очистка Book
         if (b.getRowCount() > 0) {
