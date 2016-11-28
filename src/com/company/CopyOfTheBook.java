@@ -1,4 +1,4 @@
-package com.company;
+﻿package com.company;
 
 import java.io.Serializable;
 
@@ -7,13 +7,15 @@ public class CopyOfTheBook implements Serializable{
     private long inventoryNumber;
     private long idBook;
     private boolean issue;
+    private String reader;
 
     public CopyOfTheBook(){}
 
-    public CopyOfTheBook(long inventoryNumber, long idBook, boolean issue){
+    public CopyOfTheBook(long inventoryNumber, long idBook, boolean issue, String reader){
         this.inventoryNumber = inventoryNumber;
         this.idBook = idBook;
         this.issue = issue;
+        this.reader = reader;
     }
 
     public void setInventoryNumber(long inventoryNumber){
@@ -40,12 +42,11 @@ public class CopyOfTheBook implements Serializable{
         return issue;
     }
 
-    public String toString(){
-        if(issue == true){
-            return "Инвентарный номер: " + inventoryNumber + ";   книга: " + idBook + ";   выдана или нет: выдана.";
-        }
-        else{
-            return "Инвентарный номер: " + inventoryNumber + ";   книга: " + idBook + ";   выдана или нет: нет.";
-        }
+    public void setReader(String reader){
+        this.reader = reader;
+    }
+
+    public String getReader(){
+        return reader;
     }
 }

@@ -1,4 +1,4 @@
-package com.company;
+﻿package com.company;
 
 import java.io.Serializable;
 
@@ -60,10 +60,6 @@ public class Book implements Serializable{
 
     public int getPages(){
         return pages;
-    }
-
-    public String toString(){
-        return "id: " + idBook + ";   авторы: " + authors + ";   название: " + name + ";   год издания: " + year + ";   страницы: " + pages + ".";
     }
 }
 

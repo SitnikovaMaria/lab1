@@ -1,7 +1,6 @@
 ﻿package com.company;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.*;
 
 public class Control {
@@ -17,6 +16,96 @@ public class Control {
 
     public boolean getStatus() {
         return quit;
+    }
+
+    private HashMap<Long, Book> sortByName(HashMap<Long, Book> map){ //сортировка по имени
+        List list = new LinkedList(map.entrySet());
+        Collections.sort(list, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return ((Comparable) ((Map.Entry<Long, Book>) (o1)).getValue().getName()).compareTo(((Map.Entry<Long, Book>) (o2)).getValue().getName());
+            }
+        });
+        HashMap sortedHashMap = new LinkedHashMap();
+        for (Iterator it = list.iterator(); it.hasNext();) {
+            Map.Entry entry = (Map.Entry) it.next();
+            sortedHashMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedHashMap;
+    }
+
+    private HashMap<Long, Book> sortByAuthors(HashMap<Long, Book> map) { //сортировка по авторам
+        List list = new LinkedList(map.entrySet());
+        Collections.sort(list, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return ((Comparable) ((Map.Entry<Long, Book>) (o1)).getValue().getAuthors()).compareTo(((Map.Entry<Long, Book>) (o2)).getValue().getAuthors());
+            }
+        });
+        HashMap sortedHashMap = new LinkedHashMap();
+        for (Iterator it = list.iterator(); it.hasNext();) {
+            Map.Entry entry = (Map.Entry) it.next();
+            sortedHashMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedHashMap;
+    }
+
+    private HashMap<Long, Book> sortByYear(HashMap<Long, Book> map) { //сортировка по году
+        List list = new LinkedList(map.entrySet());
+        Collections.sort(list, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return ((Comparable) ((Map.Entry<Long, Book>) (o1)).getValue().getYear()).compareTo(((Map.Entry<Long, Book>) (o2)).getValue().getYear());
+            }
+        });
+        HashMap sortedHashMap = new LinkedHashMap();
+        for (Iterator it = list.iterator(); it.hasNext();) {
+            Map.Entry entry = (Map.Entry) it.next();
+            sortedHashMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedHashMap;
+    }
+
+    private HashMap<Long, Book> sortByPages(HashMap<Long, Book> map) { //сортировка по страницам
+        List list = new LinkedList(map.entrySet());
+        Collections.sort(list, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return ((Comparable) ((Map.Entry<Long, Book>) (o1)).getValue().getPages()).compareTo(((Map.Entry<Long, Book>) (o2)).getValue().getPages());
+            }
+        });
+        HashMap sortedHashMap = new LinkedHashMap();
+        for (Iterator it = list.iterator(); it.hasNext();) {
+            Map.Entry entry = (Map.Entry) it.next();
+            sortedHashMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedHashMap;
+    }
+
+    private HashMap<Long, CopyOfTheBook> sortByIdBook(HashMap<Long, CopyOfTheBook> map) { //сортировка экземпляров книг по книге
+        List list = new LinkedList(map.entrySet());
+        Collections.sort(list, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return ((Comparable) ((Map.Entry<Long, CopyOfTheBook>) (o1)).getValue().getIdBook()).compareTo(((Map.Entry<Long, CopyOfTheBook>) (o2)).getValue().getIdBook());
+            }
+        });
+        HashMap sortedHashMap = new LinkedHashMap();
+        for (Iterator it = list.iterator(); it.hasNext();) {
+            Map.Entry entry = (Map.Entry) it.next();
+            sortedHashMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedHashMap;
+    }
+
+    private HashMap<Long, CopyOfTheBook> sortByIssue(HashMap<Long, CopyOfTheBook> map) { //сортировка по информации о выдаче
+        List list = new LinkedList(map.entrySet());
+        Collections.sort(list, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                return ((Comparable) ((Map.Entry<Long, CopyOfTheBook>) (o1)).getValue().getIssue()).compareTo(((Map.Entry<Long, CopyOfTheBook>) (o2)).getValue().getIssue());
+            }
+        });
+        HashMap sortedHashMap = new LinkedHashMap();
+        for (Iterator it = list.iterator(); it.hasNext();) {
+            Map.Entry entry = (Map.Entry) it.next();
+            sortedHashMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedHashMap;
     }
 
     public void reviewBook() { //просмотр книг
@@ -62,7 +151,8 @@ public class Control {
                 result.put(entry.getKey(), entry.getValue());
             }
         }
-        view1.fillTableBook(result);
+        HashMap<Long, Book> sortedHashMap = sortByName(result);
+        view1.fillTableBook(sortedHashMap);
     }
 
     public void searchByAuthors(String date) { //поиск книг по авторам
@@ -77,7 +167,8 @@ public class Control {
                 result.put(entry.getKey(), entry.getValue());
             }
         }
-        view1.fillTableBook(result);
+        HashMap<Long, Book> sortedHashMap = sortByAuthors(result);
+        view1.fillTableBook(sortedHashMap);
     }
 
     public void searchByYear(String date) { //поиск книг по году
@@ -92,7 +183,8 @@ public class Control {
                 result.put(entry.getKey(), entry.getValue());
             }
         }
-        view1.fillTableBook(result);
+        HashMap<Long, Book> sortedHashMap = sortByYear(result);
+        view1.fillTableBook(sortedHashMap);
     }
 
     public void searchByPages(String date) { //поиск книг по страницам
@@ -107,7 +199,8 @@ public class Control {
                 result.put(entry.getKey(), entry.getValue());
             }
         }
-        view1.fillTableBook(result);
+        HashMap<Long, Book> sortedHashMap = sortByPages(result);
+        view1.fillTableBook(sortedHashMap);
     }
 
     public void searchByInventoryNumber(String date) { //поиск экземпляра книги по инвентарному номеру
@@ -137,7 +230,8 @@ public class Control {
                 result.put(entry.getKey(), entry.getValue());
             }
         }
-        view1.fillTableCopyOfTheBook(result);
+        HashMap<Long, CopyOfTheBook> sortedHashMap = sortByIdBook(result);
+        view1.fillTableCopyOfTheBook(sortedHashMap);
     }
 
     public void searchByIssue(String date) { //поиск экземпляров книг по информации о выдаче
@@ -152,7 +246,8 @@ public class Control {
                 result.put(entry.getKey(), entry.getValue());
             }
         }
-        view1.fillTableCopyOfTheBook(result);
+        HashMap<Long, CopyOfTheBook> sortedHashMap = sortByIssue(result);
+        view1.fillTableCopyOfTheBook(sortedHashMap);
     }
 
     public void addBook(String date1, String date2, String date3, String date4, String date5) { //добавление в Book
@@ -163,7 +258,7 @@ public class Control {
                 int pages = Integer.valueOf(date5);
                 boolean bool = false;
                 for (Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
-                    if (entry.getValue().getAuthors().equals(date2) && entry.getValue().getName().equals(date3) && (entry.getValue().getYear() == year) && (entry.getValue().getPages() == pages)) {
+                    if (entry.getValue().getAuthors().equals(date3) && entry.getValue().getName().equals(date2) && (entry.getValue().getYear() == year) && (entry.getValue().getPages() == pages)) {
                         /* книга стакими данными уже существует */
                         bool = true;
                     }
@@ -209,7 +304,7 @@ public class Control {
                 int pages = Integer.valueOf(date5);
                 boolean bool = false;
                 for (Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
-                    if (entry.getValue().getAuthors().equals(date2) && entry.getValue().getName().equals(date3) && (entry.getValue().getYear() == year) && (entry.getValue().getPages() == pages)) {
+                    if (entry.getValue().getAuthors().equals(date3) && entry.getValue().getName().equals(date2) && (entry.getValue().getYear() == year) && (entry.getValue().getPages() == pages)) {
                         /* книга стакими данными уже существует */
                         bool = true;
                     }
@@ -217,10 +312,10 @@ public class Control {
                 if (!bool) {
                     Book book0 = storage.getBookList().get(idBook);
                     if (!date2.equals("")) {
-                        book0.setAuthors(date1);
+                        book0.setAuthors(date3);
                     }
                     if (!date3.equals("")) {
-                        book0.setName(date3);
+                        book0.setName(date2);
                     }
                     if (!date4.equals("")) {
                         book0.setYear(year);
@@ -264,14 +359,11 @@ public class Control {
     public void removeBook(String date1) { //удаление из Book
         try {
             long index = Long.valueOf(date1);
-            if (storage.getBookList().remove(index) == null) {
-                /* книга с таким идентификатором не существует */
-                view1.fillTableBook(storage.getBookList());
-            }
+            storage.getBookList().remove(index);
             /* книга успешно удалена */
-            view1.fillTableBook(storage.getBookList());
         } catch (NumberFormatException E) {
             /* проверьте правильность введённых Вами данных */
+        } finally{
             view1.fillTableBook(storage.getBookList());
         }
     }
@@ -279,14 +371,11 @@ public class Control {
     public void removeCopyOfTheBook(String date1) { //удаление из CopyOfTheBook
         try {
             long index = Long.valueOf(date1);
-            if (storage.getCopyOfTheBookList().remove(index) == null) {
-                /* книга с таким инвентарным номером не существует */
-                view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
-            }
+            storage.getCopyOfTheBookList().remove(index);
             /* книга успешно удалена */
-            view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
         } catch (NumberFormatException E) {
             /* проверьте правильность введённых Вами данных */
+        } finally {
             view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
         }
     }
