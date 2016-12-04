@@ -20,6 +20,8 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class WindowView extends JFrame implements View, ListSelectionListener {
     private static int serverPort = 6666;
@@ -117,43 +119,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 final JTextField nameLine = new JTextField(9);
                 final JTextField authorLine = new JTextField(9);
                 final JTextField yearLine = new JTextField(9);
-                yearLine.setDocument(new PlainDocument() {
-                    String chars = "0123456789";
-                    @Override
-                    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-                        if (chars.indexOf(str) != -1) {
-                            if (getLength() < 10) {
-                                super.insertString(offs, str, a);
-                            }
-                        }
-                    }
-                });
                 final JTextField pagesLine = new JTextField(9);
-                pagesLine.setDocument(new PlainDocument() {
-                    String chars = "0123456789";
-
-                    @Override
-                    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-                        if (chars.indexOf(str) != -1) {
-                            if (getLength() < 10) {
-                                super.insertString(offs, str, a);
-                            }
-                        }
-                    }
-                });
                 final JTextField bookIdLine = new JTextField(9);
-                bookIdLine.setDocument(new PlainDocument() {
-                    String chars = "0123456789";
-
-                    @Override
-                    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-                        if (chars.indexOf(str) != -1) {
-                            if (getLength() < 10) {
-                                super.insertString(offs, str, a);
-                            }
-                        }
-                    }
-                });
                 JPanel labelPanel = new JPanel();
                 labelPanel.setLayout(new FlowLayout());
                 labelPanel.add(bookIdLine);
@@ -190,8 +157,42 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 ok.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        controller.operation(3, bookIdLine.getText(), authorLine.getText(), nameLine.getText(), yearLine.getText(), pagesLine.getText());
-                        addForm.setVisible(false);
+                        Pattern p = Pattern.compile("^[0-9]{1,15}$");
+                        Matcher bookId = p.matcher(bookIdLine.getText());
+                        Matcher year = p.matcher(yearLine.getText());
+                        Matcher pages = p.matcher(pagesLine.getText());
+                        if (year.matches() && pages.matches() && bookId.matches()) {
+                            controller.operation(3, bookIdLine.getText(), authorLine.getText(), nameLine.getText(), yearLine.getText(), pagesLine.getText());
+                            addForm.setVisible(false);
+                        }
+                        else
+                        {
+                            if (!year.matches())
+                            {
+                                yearLine.setBackground(Color.red);
+                            }
+                            else
+                            {
+                                yearLine.setBackground(Color.white);
+                            }
+                            if (!pages.matches())
+                            {
+                                pagesLine.setBackground(Color.red);
+                            }
+                            else
+                            {
+                                pagesLine.setBackground(Color.white);
+                            }
+                            if (!bookId.matches())
+                            {
+                                bookIdLine.setBackground(Color.red);
+                            }
+                            else
+                            {
+                                bookIdLine.setBackground(Color.white);
+                            }
+                        }
+
                     }
                 });
                 ok.setSize(10, 5);
@@ -216,32 +217,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 authorLine.setText((String) b.getValueAt(bookTable.getSelectedRow(), 2));
                 final JTextField yearLine = new JTextField(9);
                 yearLine.setText((String) b.getValueAt(bookTable.getSelectedRow(), 3));
-                yearLine.setDocument(new PlainDocument() {
-                    String chars = "0123456789";
-
-                    @Override
-                    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-                        if (chars.indexOf(str) != -1) {
-                            if (getLength() < 10) {
-                                super.insertString(offs, str, a);
-                            }
-                        }
-                    }
-                });
-
                 final JTextField pagesLine = new JTextField(9);
-                pagesLine.setDocument(new PlainDocument() {
-                    String chars = "0123456789";
-
-                    @Override
-                    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-                        if (chars.indexOf(str) != -1) {
-                            if (getLength() < 10) {
-                                super.insertString(offs, str, a);
-                            }
-                        }
-                    }
-                });
+                pagesLine.setText((String) b.getValueAt(bookTable.getSelectedRow(), 4));
                 JPanel labelPanel = new JPanel();
                 labelPanel.setLayout(new FlowLayout());
                 labelPanel.add(nameLine);
@@ -274,8 +251,32 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 ok.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        controller.operation(5, (String) b.getValueAt(bookTable.getSelectedRow(), 0), authorLine.getText(), nameLine.getText(), yearLine.getText(), pagesLine.getText());
-                        addForm.setVisible(false);
+                        Pattern p = Pattern.compile("^[0-9]{1,15}$");
+                        Matcher year = p.matcher(yearLine.getText());
+                        Matcher pages = p.matcher(pagesLine.getText());
+                        if (year.matches() && pages.matches()) {
+                            controller.operation(5, (String) b.getValueAt(bookTable.getSelectedRow(), 0), authorLine.getText(), nameLine.getText(), yearLine.getText(), pagesLine.getText());
+                            addForm.setVisible(false);
+                        }
+                        else
+                        {
+                            if (!year.matches())
+                            {
+                                yearLine.setBackground(Color.red);
+                            }
+                            else
+                            {
+                                yearLine.setBackground(Color.white);
+                            }
+                            if (!pages.matches())
+                            {
+                                pagesLine.setBackground(Color.red);
+                            }
+                            else
+                            {
+                                pagesLine.setBackground(Color.white);
+                            }
+                        }
                     }
                 });
                 buttonPanel.add(ok);
@@ -308,33 +309,9 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 addFormCopy.setBounds(400, 300, 400, 150);
                 JPanel addPanel = new JPanel();
                 addPanel.setLayout(new BorderLayout());
-                final JTextField inventoryNumberLine = new JTextField(9);
-                inventoryNumberLine.setDocument(new PlainDocument() {
-                    String chars = "0123456789";
-
-                    @Override
-                    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-                        if (chars.indexOf(str) != -1) {
-                            if (getLength() < 10) {
-                                super.insertString(offs, str, a);
-                            }
-                        }
-                    }
-                });
-                final JTextField bookIdLine = new JTextField(9);
-                bookIdLine.setDocument(new PlainDocument() {
-                    String chars = "0123456789";
-
-                    @Override
-                    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-                        if (chars.indexOf(str) != -1) {
-                            if (getLength() < 10) {
-                                super.insertString(offs, str, a);
-                            }
-                        }
-                    }
-                });
-                final JTextField readerLine = new JTextField(9);
+                final JTextField inventoryNumberLine = new JTextField(7);
+                final JTextField bookIdLine = new JTextField(7);
+                final JTextField readerLine = new JTextField(7);
                 JPanel labelPanel = new JPanel();
                 JPanel textPanel = new JPanel(new FlowLayout());
                 addPanel.add(labelPanel, BorderLayout.CENTER);
@@ -345,17 +322,17 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 labelPanel.add(forIssue);
                 labelPanel.add(readerLine);
                 JPanel buttonPanel = new JPanel();
-                JLabel inventoryNumberLabel = new JLabel("Inventory Number");
-                inventoryNumberLabel.setPreferredSize(new Dimension(100, 20));
+                JLabel inventoryNumberLabel = new JLabel("Inv. Number");
+                inventoryNumberLabel.setPreferredSize(new Dimension(70,10));
                 inventoryNumberLabel.setHorizontalAlignment(JLabel.CENTER);
                 JLabel idBookLabel = new JLabel("Book ID");
-                idBookLabel.setPreferredSize(new Dimension(105, 20));
+                idBookLabel.setPreferredSize(new Dimension(80, 10));
                 idBookLabel.setHorizontalAlignment(JLabel.CENTER);
                 JLabel issueLabel = new JLabel("Issue");
-                issueLabel.setPreferredSize(new Dimension(105, 20));
+                issueLabel.setPreferredSize(new Dimension(55, 10));
                 issueLabel.setHorizontalAlignment(JLabel.CENTER);
                 JLabel readerLabel = new JLabel("Reader");
-                readerLabel.setPreferredSize(new Dimension(105, 20));
+                readerLabel.setPreferredSize(new Dimension(70, 10));
                 readerLabel.setHorizontalAlignment(JLabel.CENTER);
                 textPanel.add(inventoryNumberLabel);
                 textPanel.add(idBookLabel);
@@ -367,16 +344,41 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 ok.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        if (forIssue.getSelectedItem().toString().equals("false")) {
-                            controller.operation(4, inventoryNumberLine.getText(), bookIdLine.getText(), "false", "нет", "");
-                        } else {
-                            if (readerLine.getText().equals("нет")) {
-                                controller.operation(2, "", "", "", "", "");
+                        Pattern p = Pattern.compile("^[0-9]{1,15}$");
+                        Matcher bookId = p.matcher(bookIdLine.getText());
+                        Matcher inventoryNumber = p.matcher(inventoryNumberLine.getText());
+                        if (bookId.matches() && inventoryNumber.matches()) {
+                            if (forIssue.getSelectedItem().toString().equals("false")) {
+                                controller.operation(4, inventoryNumberLine.getText(), bookIdLine.getText(), "false", "нет", "");
                             } else {
-                                controller.operation(4, inventoryNumberLine.getText(), bookIdLine.getText(), "true", readerLine.getText(), "");
+
+                                if (readerLine.getText().equals("нет")) {
+                                    controller.operation(2, "", "", "", "", "");
+                                } else {
+                                    controller.operation(4, inventoryNumberLine.getText(), bookIdLine.getText(), "true", readerLine.getText(), "");
+                                }
+                            }
+                            addFormCopy.setVisible(false);
+                        }
+                        else
+                        {
+                            if (!bookId.matches())
+                            {
+                                bookIdLine.setBackground(Color.red);
+                            }
+                            else
+                            {
+                                bookIdLine.setBackground(Color.white);
+                            }
+                            if (!inventoryNumber.matches())
+                            {
+                                inventoryNumberLine.setBackground(Color.red);
+                            }
+                            else
+                            {
+                                inventoryNumberLine.setBackground(Color.white);
                             }
                         }
-                        addFormCopy.setVisible(false);
                     }
                 });
                 buttonPanel.add(ok);
