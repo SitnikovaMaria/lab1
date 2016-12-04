@@ -1,5 +1,8 @@
 package com;
 
+/**
+ * Created by Никита on 19.11.2016.
+ */
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -14,7 +17,6 @@ public class Server {
 
         try {
             ServerSocket ss = new ServerSocket(port);
-
             String line = null;
             while(true) {
                 Socket socket = ss.accept();
@@ -67,3 +69,4 @@ public class Server {
         catch(Exception x) { x.printStackTrace(); }
     }
 }
+
