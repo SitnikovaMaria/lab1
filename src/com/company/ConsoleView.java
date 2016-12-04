@@ -48,4 +48,3 @@ public class ConsoleView /*implements View*/ {
         }
     }
 }
-

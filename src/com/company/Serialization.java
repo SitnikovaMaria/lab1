@@ -2,9 +2,14 @@ package com.company;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.Vector;
 
 public class Serialization {
-    public static void saveObjectStorage(Storage tmp, String fileName) throws IOException {
+
+
+
+    public static void saveObjectStorage(Storage tmp, String fileName) throws IOException
+    {
         FileOutputStream fos = new FileOutputStream(fileName);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(tmp);
@@ -34,33 +39,32 @@ public class Serialization {
         for ( Book tmpNewB : tmpNewBook.values()) {
             boolean check = true;
             for (Book tmpB : tmpBook.values()) {
-                if (tmpB.getYear() == tmpNewB.getYear()) {
-                    if (tmpB.getPages() == tmpNewB.getPages()) {
-                        if (tmpB.getAuthors().equals(tmpNewB.getAuthors())) {
+                if (tmpB.getYear() == tmpNewB.getYear())
+                    if (tmpB.getPages() == tmpNewB.getPages())
+                        if (tmpB.getAuthors().equals(tmpNewB.getAuthors()))
                             if (tmpB.getName().equals(tmpNewB.getName())) {
                                 check = false;
                             }
-                        }
-                    }
-                }
             }
-            if (check == true){
+            if (check==true){
                 tmpBook.put(tmpNewB.getIdBook(),tmpNewB);
             }
         }
+
 
         HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<>();
         tmpCopy = tmp.getCopyOfTheBookList();
         HashMap<Long, CopyOfTheBook> tmpNewCopy = new HashMap<>();
         tmpNewCopy = tmpNew.getCopyOfTheBookList();
-        for (CopyOfTheBook tmpNewC : tmpNewCopy.values()) {
+        for ( CopyOfTheBook tmpNewC : tmpNewCopy.values()) {
             boolean check = true;
             for (CopyOfTheBook tmpC : tmpCopy.values()) {
-                if (tmpC.getInventoryNumber() == tmpNewC.getInventoryNumber() && tmpC.getIssue() == tmpNewC.getIssue() && tmpC.getReader().equals(tmpNewC.getReader())){
-                    check = false;
+                if (tmpC.getInventoryNumber()==tmpNewC.getInventoryNumber() && tmpC.getIssue()==tmpNewC.getIssue())
+                {
+                    check=false;
                 }
             }
-            if (check == true){
+            if (check==true){
                 tmpCopy.put(tmpNewC.getIdBook(),tmpNewC);
             }
         }
@@ -70,6 +74,9 @@ public class Serialization {
         oos.writeObject(tmp);
         oos.flush();
         oos.close();
+
+
     }
+
 }
 

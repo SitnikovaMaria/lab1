@@ -1,4 +1,4 @@
-﻿package com.company;
+package com.company;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -27,7 +27,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
     private Control controller;
     private Storage storage = Storage.getInstance();
     private DefaultTableModel b = new DefaultTableModel();
-    private DefaultTableModel c = new DefaultTableModel();
+    private DefaultTableModel bookTableModel = new DefaultTableModel();
     private DefaultTableModel s = new DefaultTableModel();
     private JButton addBookButton;
     private JButton addCopyButton;
@@ -43,7 +43,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
     public String getFileName() {
         return (saveLine.getText());
     }
-    
+
     private String[] itemsBook = {
             "ID",
             "Name",
@@ -86,7 +86,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         saveTab.setLayout(new BorderLayout());
 
         bookTable = new JTable(b);
-        copyOfTheBookTable = new JTable(c);
+        copyOfTheBookTable = new JTable(bookTableModel);
         saveAndLoad = new JTable(s);
         bookTable.getSelectionModel().addListSelectionListener(this);
         copyOfTheBookTable.getSelectionModel().addListSelectionListener(this);
@@ -119,7 +119,6 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 final JTextField yearLine = new JTextField(9);
                 yearLine.setDocument(new PlainDocument() {
                     String chars = "0123456789";
-
                     @Override
                     public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
                         if (chars.indexOf(str) != -1) {
@@ -216,6 +215,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 final JTextField authorLine = new JTextField(9);
                 authorLine.setText((String) b.getValueAt(bookTable.getSelectedRow(), 2));
                 final JTextField yearLine = new JTextField(9);
+                yearLine.setText((String) b.getValueAt(bookTable.getSelectedRow(), 3));
                 yearLine.setDocument(new PlainDocument() {
                     String chars = "0123456789";
 
@@ -228,6 +228,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                         }
                     }
                 });
+
                 final JTextField pagesLine = new JTextField(9);
                 pagesLine.setDocument(new PlainDocument() {
                     String chars = "0123456789";
@@ -296,7 +297,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         deleteCopy.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.operation(8, (String) c.getValueAt(copyOfTheBookTable.getSelectedRow(), 0), "", "", "", "");
+                controller.operation(8, (String) bookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 0), "", "", "", "");
             }
         });
 
@@ -417,12 +418,12 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         if (forIssue.getSelectedItem().toString().equals("false")) {
-                            controller.operation(6, (String) c.getValueAt(copyOfTheBookTable.getSelectedRow(), 0), (String) c.getValueAt(copyOfTheBookTable.getSelectedRow(), 1), "false", "нет", "");
+                            controller.operation(6, (String) bookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 0), (String) bookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 1), "false", "нет", "");
                         } else {
                             if (readerLine.getText().equals("нет")) {
                                 controller.operation(2, "", "", "", "", "");
                             } else {
-                                controller.operation(6, (String) c.getValueAt(copyOfTheBookTable.getSelectedRow(), 0), (String) c.getValueAt(copyOfTheBookTable.getSelectedRow(), 1), "true", readerLine.getText(), "");
+                                controller.operation(6, (String) bookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 0), (String) bookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 1), "true", readerLine.getText(), "");
                             }
                         }
                         addFormCopy.setVisible(false);
@@ -479,23 +480,9 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         copyTab.add(copyFunctionButtons, BorderLayout.SOUTH);
         saveTab.add(saveAndLoadButtons, BorderLayout.SOUTH);
 
-        JPanel searchPanelBook = new JPanel();
-        bookTab.add(searchPanelBook, BorderLayout.NORTH);
-        searchPanelBook.setLayout(new FlowLayout());
-        JButton searchBookButton = new JButton("Search");
-        searchPanelBook.add(searchBookButton);
-        searchPanelBook.add(searchBook);
-        searchPanelBook.add(searchParameterBook);
-        searchBookButton.addActionListener(actionListenerBook);
+        addSearchPanelBook(bookTab);
 
-        JPanel searchPanelCopyOfTheBook = new JPanel();
-        copyTab.add(searchPanelCopyOfTheBook, BorderLayout.NORTH);
-        searchPanelCopyOfTheBook.setLayout(new FlowLayout());
-        JButton searchCopyOfTheBookButton = new JButton("Search");
-        searchPanelCopyOfTheBook.add(searchCopyOfTheBookButton);
-        searchPanelCopyOfTheBook.add(searchCopyOfTheBook);
-        searchPanelCopyOfTheBook.add(searchParameterCopyOfTheBook);
-        searchCopyOfTheBookButton.addActionListener(actionListenerCopyOfTheBook);
+        addSearchPanelCopyOfBook(copyTab);
 
         saveTab.add(saveLine, BorderLayout.NORTH);
         JTabbedPane jtp = new JTabbedPane();
@@ -513,9 +500,10 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         b.addColumn("Year");
         b.addColumn("Pages");
 
-        c.addColumn("Inventory Number");
-        c.addColumn("Book ID");
-        c.addColumn("Issue");
+        bookTableModel.addColumn("Inventory Number");
+        bookTableModel.addColumn("Book ID");
+        bookTableModel.addColumn("Issue");
+        bookTableModel.addColumn("Reader");
 
         s.addColumn("File Name");
         s.addColumn("Date change");
@@ -558,6 +546,33 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         fillTableCopyOfTheBook(copyOfTheBookList);
     }
 
+    private void addSearchPanelBook(JPanel bookTab) {
+        JPanel searchPanelBook = new JPanel();
+        bookTab.add(searchPanelBook, BorderLayout.NORTH);
+        searchPanelBook.setLayout(new FlowLayout());
+        JButton searchBookButton = new JButton("Search");
+        searchPanelBook.add(searchBookButton);
+        searchPanelBook.add(searchBook);
+        searchPanelBook.add(searchParameterBook);
+        searchBookButton.addActionListener(actionListenerBook);
+    }
+
+    /**
+     *
+     * @param copyTab - this is table of book copy
+     */
+    private void addSearchPanelCopyOfBook(JPanel copyTab)
+    {
+        JPanel searchPanelCopyOfTheBook = new JPanel();
+        copyTab.add(searchPanelCopyOfTheBook, BorderLayout.NORTH);
+        searchPanelCopyOfTheBook.setLayout(new FlowLayout());
+        JButton searchCopyOfTheBookButton = new JButton("Search");
+        searchPanelCopyOfTheBook.add(searchCopyOfTheBookButton);
+        searchPanelCopyOfTheBook.add(searchCopyOfTheBook);
+        searchPanelCopyOfTheBook.add(searchParameterCopyOfTheBook);
+        searchCopyOfTheBookButton.addActionListener(actionListenerCopyOfTheBook);
+    }
+
     public void viewBook(Book book) {
         Vector<String> newRow = new Vector<String>();
         newRow.add(book.getName());
@@ -573,7 +588,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         newRow.add(Long.toString(book.getInventoryNumber()));
         newRow.add(Long.toString(book.getIdBook()));
         newRow.add(Boolean.toString(book.getIssue()));
-        c.addRow(newRow);
+        bookTableModel.addRow(newRow);
     }
 
     public void saveAndMergeWithFile() {
@@ -610,11 +625,11 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             tmpNew.setBookList(tmpBook);
 
             HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<>();
-            for (int i = 0; i < c.getRowCount(); i++) {
+            for (int i = 0; i < bookTableModel.getRowCount(); i++) {
                 CopyOfTheBook tmpC = new CopyOfTheBook();
-                tmpC.setIdBook(Long.valueOf((String) c.getValueAt(i, 0)));
-                tmpC.setInventoryNumber(Long.valueOf((String) c.getValueAt(i, 1)));
-                tmpC.setIssue(Boolean.valueOf((String) c.getValueAt(i, 2)));
+                tmpC.setIdBook(Long.valueOf((String) bookTableModel.getValueAt(i, 0)));
+                tmpC.setInventoryNumber(Long.valueOf((String) bookTableModel.getValueAt(i, 1)));
+                tmpC.setIssue(Boolean.valueOf((String) bookTableModel.getValueAt(i, 2)));
                 tmpCopy.put(tmpC.getIdBook(), tmpC);
             }
 
@@ -696,11 +711,11 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             tmp.setBookList(tmpBook);
 
             HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<>();
-            for (int i = 0; i < c.getRowCount(); i++) {
+            for (int i = 0; i < bookTableModel.getRowCount(); i++) {
                 CopyOfTheBook tmpC = new CopyOfTheBook();
-                tmpC.setIdBook(Long.valueOf((String) c.getValueAt(i, 0)));
-                tmpC.setInventoryNumber(Long.valueOf((String) c.getValueAt(i, 1)));
-                tmpC.setIssue(Boolean.valueOf((String) c.getValueAt(i, 2)));
+                tmpC.setIdBook(Long.valueOf((String) bookTableModel.getValueAt(i, 0)));
+                tmpC.setInventoryNumber(Long.valueOf((String) bookTableModel.getValueAt(i, 1)));
+                tmpC.setIssue(Boolean.valueOf((String) bookTableModel.getValueAt(i, 2)));
                 tmpCopy.put(tmpC.getIdBook(), tmpC);
             }
 
@@ -738,8 +753,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             while (b.getRowCount() > 0) {
                 b.removeRow(0);
             }
-            while (c.getRowCount() > 0) {
-                c.removeRow(0);
+            while (bookTableModel.getRowCount() > 0) {
+                bookTableModel.removeRow(0);
             }
             Storage tmp = new Storage();
             ObjectOutputStream output;
@@ -779,7 +794,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                     newRow.add(Long.toString(tmpC.getInventoryNumber()));
                     newRow.add(Boolean.toString(tmpC.getIssue()));
                     newRow.add(tmpC.getReader());
-                    c.addRow(newRow);
+                    bookTableModel.addRow(newRow);
                 }
                 output.close();
                 input.close();
@@ -799,9 +814,9 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
     }
 
     public void clearTableCopyOfTheBook() {
-        if (c.getRowCount() > 0) {
-            for (int i = c.getRowCount() - 1; i > -1; i--) {
-                c.removeRow(i);
+        if (bookTableModel.getRowCount() > 0) {
+            for (int i = bookTableModel.getRowCount() - 1; i > -1; i--) {
+                bookTableModel.removeRow(i);
             }
         }
     }
@@ -826,7 +841,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             newRow.add(Long.toString(entry.getKey()));
             newRow.add(Long.toString(entry.getValue().getIdBook()));
             newRow.add(Boolean.toString(entry.getValue().getIssue()));
-            c.addRow(newRow);
+            newRow.add(entry.getValue().getReader());
+            bookTableModel.addRow(newRow);
         }
     }
 

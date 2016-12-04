@@ -1,4 +1,4 @@
-﻿package com.company;
+package com.company;
 
 import java.util.*;
 import java.util.regex.*;
@@ -282,7 +282,7 @@ public class Control {
             if (!storage.getCopyOfTheBookList().containsKey(inventoryNumber)) {
                 long idBook = Long.valueOf(date2);
                 boolean issue = Boolean.valueOf(date3);
-                CopyOfTheBook copyOfTheBook1 = new CopyOfTheBook(inventoryNumber, idBook, issue);
+                CopyOfTheBook copyOfTheBook1 = new CopyOfTheBook(inventoryNumber, idBook, issue,"test");
                 storage.getCopyOfTheBookList().put(inventoryNumber, copyOfTheBook1);
                 /* книга успешно добавлена */
                 view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());

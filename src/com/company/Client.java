@@ -1,4 +1,8 @@
-﻿package com.company;
+package com.company;
+
+/**
+ * Created by Никита on 19.11.2016.
+ */
 
 import java.net.*;
 import java.io.*;
@@ -8,7 +12,7 @@ public class Client {
     private static int serverPort = 6666;
     private static String address = "127.0.0.1";
     public Client(){}
-    public void saveObjectStorage(Storage tmp, String fileName) throws IOException{
+    public void saveObjectStorage(Storage tmp, String fileName) throws IOException {
         InetAddress ipAddress = InetAddress.getByName(address);
         Socket socket = new Socket(ipAddress, serverPort);
         OutputStream fos = socket.getOutputStream();
