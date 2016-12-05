@@ -1,4 +1,4 @@
-package com.company;
+﻿package com.company;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -57,7 +57,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
     private String[] itemsCopyOfTheBook = {
             "Inventory Number",
             "Book ID",
-            "Issue"
+            "Issue",
+            "Reader"
     };
 
     private String[] itemsIssue = {
@@ -917,6 +918,9 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                         break;
                     case "Issue":
                         act = 16;
+                        break;
+                    case "Reader":
+                        act = 17;
                         break;
                 }
             }
