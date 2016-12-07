@@ -9,6 +9,8 @@ public class Storage implements Serializable{
     private static Storage instance;
     private HashMap<Long, Book> bookList = new HashMap<>();
     private HashMap<Long, CopyOfTheBook> copyOfTheBookList = new HashMap<>();
+    private HashMap<Long, Catalog> catalogList = new HashMap<>();
+    private HashMap<Long, Publisher> publisherList = new HashMap<>();
 
     public Storage(){
     }
@@ -34,6 +36,22 @@ public class Storage implements Serializable{
 
     public HashMap<Long, CopyOfTheBook> getCopyOfTheBookList(){
         return copyOfTheBookList;
+    }
+
+    public void setCatalogList(HashMap<Long, Catalog> catalogList){
+        this.catalogList = catalogList;
+    }
+
+    public HashMap<Long, Catalog> getCatalogList(){
+        return catalogList;
+    }
+
+    public void setPublisherList(HashMap<Long, Publisher> publisherList){
+        this.publisherList = publisherList;
+    }
+
+    public HashMap<Long, Publisher> getPublisherList(){
+        return publisherList;
     }
 }
 

@@ -2,24 +2,25 @@ package com.company;
 
 import java.io.Serializable;
 
-/**
- * Created by user on 07.12.2016.
- */
 public class Publisher implements Serializable {
+    private long idPublisher;
     private String name;
     private String registeredAddress;
     private String businessAddress;
 
-    Publisher(){}
-
-    public Publisher(String name, String registeredAddress, String businessAddress){
+    public Publisher(int idPublisher, String name, String registeredAddress, String businessAddress){
+        this.idPublisher = idPublisher;
         this.name = name;
-        this.registeredAddress= registeredAddress;
+        this.registeredAddress = registeredAddress;
         this.businessAddress = businessAddress;
     }
 
-    public String getName(){
-        return name;
+    public void setIdPublisher(long idPublisher){
+        this.idPublisher = idPublisher;
+    }
+
+    public long getIdPublisher(){
+        return idPublisher;
     }
 
     public void setName(String name){
@@ -28,8 +29,8 @@ public class Publisher implements Serializable {
         }
     }
 
-    public String getRegisteredAddress(){
-        return registeredAddress;
+    public String getName(){
+        return name;
     }
 
     public void setRegisteredAddress(String registeredAddress){
@@ -38,8 +39,8 @@ public class Publisher implements Serializable {
         }
     }
 
-    public String getBusinessAddress(){
-        return businessAddress;
+    public String getRegisteredAddress(){
+        return registeredAddress;
     }
 
     public void setBusinessAddress(String businessAddress){
@@ -48,5 +49,7 @@ public class Publisher implements Serializable {
         }
     }
 
-
+    public String getBusinessAddress(){
+        return businessAddress;
+    }
 }

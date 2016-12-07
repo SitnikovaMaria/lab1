@@ -211,4 +211,48 @@ public class Search {
         HashMap<Long, CopyOfTheBook> sortedHashMap = sort.sortByReader(result);
         view.fillTableCopyOfTheBook(sortedHashMap);
     }
+
+    public void searchByCatalog(String date) { //поиск экземпляров книг по читателю
+        HashMap<Long, Book> result = new HashMap<Long, Book>();
+        Pattern p;
+        if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
+            p = Pattern.compile(date.substring(1));
+        }
+        else {
+            p = Pattern.compile(date);
+        }
+        Matcher m;
+        String text;
+        for (Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
+            text = entry.getValue().getCatalog();
+            m = p.matcher(text);
+            if (m.find()) {
+                result.put(entry.getKey(), entry.getValue());
+            }
+        }
+        HashMap<Long, Book> sortedHashMap = sort.sortByCatalog(result);
+        view.fillTableBook(sortedHashMap);
+    }
+
+    public void searchByPublisher(String date) { //поиск экземпляров книг по издательству
+        HashMap<Long, Book> result = new HashMap<Long, Book>();
+        Pattern p;
+        if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
+            p = Pattern.compile(date.substring(1));
+        }
+        else {
+            p = Pattern.compile(date);
+        }
+        Matcher m;
+        String text;
+        for (Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
+            text = entry.getValue().getPublisher();
+            m = p.matcher(text);
+            if (m.find()) {
+                result.put(entry.getKey(), entry.getValue());
+            }
+        }
+        HashMap<Long, Book> sortedHashMap = sort.sortByPublisher(result);
+        view.fillTableBook(sortedHashMap);
+    }
 }

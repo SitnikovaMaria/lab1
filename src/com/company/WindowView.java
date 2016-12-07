@@ -31,6 +31,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
     private DefaultTableModel bookTableModel = new DefaultTableModel();
     private DefaultTableModel copyBookTableModel = new DefaultTableModel();
     private DefaultTableModel saveAndLoadTableModel = new DefaultTableModel();
+    private DefaultTableModel catalogTableModel = new DefaultTableModel();
+    private DefaultTableModel publisherTableModel = new DefaultTableModel();
     private JButton addBookButton;
     private JButton addCopyButton;
     private JButton changeBookButton;
@@ -51,7 +53,9 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             "Name",
             "Authors",
             "Year",
-            "Pages"
+            "Pages",
+            "Catalog",
+            "Publisher"
     };
 
     private String[] itemsCopyOfTheBook = {
@@ -75,6 +79,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
 
     private JTable bookTable;
     private JTable copyOfTheBookTable;
+    private JTable catalogTable;
+    private JTable publisherTable;
 
     public WindowView() {
         setTitle("Library");
@@ -87,16 +93,27 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         copyTab.setLayout(new BorderLayout());
         JPanel saveTab = new JPanel();
         saveTab.setLayout(new BorderLayout());
+        JPanel catalogTab = new JPanel();
+        catalogTab.setLayout(new BorderLayout());
+        JPanel publisherTab = new JPanel();
+        publisherTab.setLayout(new BorderLayout());
 
         bookTable = new JTable(bookTableModel);
         copyOfTheBookTable = new JTable(copyBookTableModel);
         saveAndLoad = new JTable(saveAndLoadTableModel);
+        catalogTable = new JTable(catalogTableModel);
+        publisherTable = new JTable(publisherTableModel);
+
         bookTable.getSelectionModel().addListSelectionListener(this);
         copyOfTheBookTable.getSelectionModel().addListSelectionListener(this);
+        catalogTable.getSelectionModel().addListSelectionListener(this);
+        publisherTable.getSelectionModel().addListSelectionListener(this);
 
-        JScrollPane scrollPaneB = new JScrollPane(bookTable);
-        JScrollPane scrollPaneC = new JScrollPane(copyOfTheBookTable);
-        JScrollPane scrollPaneS = new JScrollPane(saveAndLoad);
+        JScrollPane scrollPaneBook = new JScrollPane(bookTable);
+        JScrollPane scrollPaneCopy = new JScrollPane(copyOfTheBookTable);
+        JScrollPane scrollPaneSaveAndLoad = new JScrollPane(saveAndLoad);
+        JScrollPane scrollPaneCatalog = new JScrollPane(catalogTable);
+        JScrollPane scrollPanePublisher = new JScrollPane(publisherTable);
 
         JPanel bookFunctionButtons = new JPanel();
         bookFunctionButtons.setLayout(new FlowLayout());
@@ -106,7 +123,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         deleteBook.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.operation(7, (String) bookTableModel.getValueAt(bookTable.getSelectedRow(), 0), "", "", "", "");
+                controller.operation(7, (String) bookTableModel.getValueAt(bookTable.getSelectedRow(), 0), "", "", "", "", "", "");
             }
         });
 
@@ -114,7 +131,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         addBookButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 final JFrame addForm = new JFrame("ADD BOOK");
-                addForm.setBounds(400, 300, 600, 150);
+                addForm.setBounds(400, 300, 800, 150);
                 JPanel addPanel = new JPanel();
                 addPanel.setLayout(new BorderLayout());
                 final JTextField nameLine = new JTextField(9);
@@ -122,6 +139,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 final JTextField yearLine = new JTextField(9);
                 final JTextField pagesLine = new JTextField(9);
                 final JTextField bookIdLine = new JTextField(9);
+                final JTextField catalogLine = new JTextField(9);
+                final JTextField publisherLine = new JTextField(9);
                 JPanel labelPanel = new JPanel();
                 labelPanel.setLayout(new FlowLayout());
                 labelPanel.add(bookIdLine);
@@ -129,10 +148,15 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 labelPanel.add(authorLine);
                 labelPanel.add(yearLine);
                 labelPanel.add(pagesLine);
+                labelPanel.add(catalogLine);
+                labelPanel.add(publisherLine);
                 JPanel buttonPanel = new JPanel();
                 JPanel textPanel = new JPanel(new FlowLayout());
                 addPanel.add(labelPanel, BorderLayout.CENTER);
                 addPanel.add(textPanel, BorderLayout.NORTH);
+                JLabel idBookLabel = new JLabel("IdBook");
+                idBookLabel.setPreferredSize(new Dimension(100, 20));
+                idBookLabel.setHorizontalAlignment(JLabel.CENTER);
                 JLabel nameLabel = new JLabel("Name");
                 nameLabel.setPreferredSize(new Dimension(100, 20));
                 nameLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -145,14 +169,19 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 JLabel pagesLabel = new JLabel("Pages");
                 pagesLabel.setPreferredSize(new Dimension(100, 20));
                 pagesLabel.setHorizontalAlignment(JLabel.CENTER);
-                JLabel idBookLabel = new JLabel("IdBook");
-                idBookLabel.setPreferredSize(new Dimension(100, 20));
-                idBookLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel catalogLabel = new JLabel("Catalog");
+                catalogLabel.setPreferredSize(new Dimension(100, 20));
+                catalogLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel publisherLabel = new JLabel("Publisher");
+                publisherLabel.setPreferredSize(new Dimension(100, 20));
+                publisherLabel.setHorizontalAlignment(JLabel.CENTER);
                 textPanel.add(idBookLabel);
                 textPanel.add(nameLabel);
                 textPanel.add(authorLabel);
                 textPanel.add(yearLabel);
                 textPanel.add(pagesLabel);
+                textPanel.add(catalogLabel);
+                textPanel.add(publisherLabel);
                 JButton ok = new JButton();
                 ok.setText("OK");
                 ok.addActionListener(new ActionListener() {
@@ -163,33 +192,26 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                         Matcher year = p.matcher(yearLine.getText());
                         Matcher pages = p.matcher(pagesLine.getText());
                         if (year.matches() && pages.matches() && bookId.matches()) {
-                            controller.operation(3, bookIdLine.getText(), authorLine.getText(), nameLine.getText(), yearLine.getText(), pagesLine.getText());
+                            controller.operation(3, bookIdLine.getText(), authorLine.getText(), nameLine.getText(), yearLine.getText(), pagesLine.getText(), catalogLine.getText(), publisherLine.getText());
                             addForm.setVisible(false);
                         }
-                        else
-                        {
-                            if (!year.matches())
-                            {
+                        else{
+                            if (!year.matches()){
                                 yearLine.setBackground(Color.red);
                             }
-                            else
-                            {
+                            else{
                                 yearLine.setBackground(Color.white);
                             }
-                            if (!pages.matches())
-                            {
+                            if (!pages.matches()){
                                 pagesLine.setBackground(Color.red);
                             }
-                            else
-                            {
+                            else{
                                 pagesLine.setBackground(Color.white);
                             }
-                            if (!bookId.matches())
-                            {
+                            if (!bookId.matches()){
                                 bookIdLine.setBackground(Color.red);
                             }
-                            else
-                            {
+                            else{
                                 bookIdLine.setBackground(Color.white);
                             }
                         }
@@ -209,7 +231,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         changeBookButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 final JFrame addForm = new JFrame("CHANGE BOOK");
-                addForm.setBounds(400, 300, 600, 150);
+                addForm.setBounds(400, 300, 800, 150);
                 JPanel addPanel = new JPanel();
                 addPanel.setLayout(new BorderLayout());
                 final JTextField nameLine = new JTextField(9);
@@ -220,12 +242,18 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 yearLine.setText((String) bookTableModel.getValueAt(bookTable.getSelectedRow(), 3));
                 final JTextField pagesLine = new JTextField(9);
                 pagesLine.setText((String) bookTableModel.getValueAt(bookTable.getSelectedRow(), 4));
+                final JTextField catalogLine = new JTextField(9);
+                catalogLine.setText((String) bookTableModel.getValueAt(bookTable.getSelectedRow(), 5));
+                final JTextField publisherLine = new JTextField(9);
+                publisherLine.setText((String) bookTableModel.getValueAt(bookTable.getSelectedRow(), 6));
                 JPanel labelPanel = new JPanel();
                 labelPanel.setLayout(new FlowLayout());
                 labelPanel.add(nameLine);
                 labelPanel.add(authorLine);
                 labelPanel.add(yearLine);
                 labelPanel.add(pagesLine);
+                labelPanel.add(catalogLine);
+                labelPanel.add(publisherLine);
                 JPanel buttonPanel = new JPanel();
                 JPanel textPanel = new JPanel(new FlowLayout());
                 addPanel.add(labelPanel, BorderLayout.CENTER);
@@ -242,10 +270,18 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 JLabel pagesLabel = new JLabel("Pages");
                 pagesLabel.setPreferredSize(new Dimension(100, 20));
                 pagesLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel catalogLabel = new JLabel("Catalog");
+                catalogLabel.setPreferredSize(new Dimension(100, 20));
+                catalogLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel publisherLabel = new JLabel("Publisher");
+                publisherLabel.setPreferredSize(new Dimension(100, 20));
+                publisherLabel.setHorizontalAlignment(JLabel.CENTER);
                 textPanel.add(nameLabel);
                 textPanel.add(authorLabel);
                 textPanel.add(yearLabel);
                 textPanel.add(pagesLabel);
+                textPanel.add(catalogLabel);
+                textPanel.add(publisherLabel);
                 JButton ok = new JButton();
                 ok.setText("OK");
                 ok.setSize(10, 5);
@@ -256,25 +292,20 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                         Matcher year = p.matcher(yearLine.getText());
                         Matcher pages = p.matcher(pagesLine.getText());
                         if (year.matches() && pages.matches()) {
-                            controller.operation(5, (String) bookTableModel.getValueAt(bookTable.getSelectedRow(), 0), authorLine.getText(), nameLine.getText(), yearLine.getText(), pagesLine.getText());
+                            controller.operation(5, (String) bookTableModel.getValueAt(bookTable.getSelectedRow(), 0), authorLine.getText(), nameLine.getText(), yearLine.getText(), pagesLine.getText(), catalogLine.getText(), publisherLine.getText());
                             addForm.setVisible(false);
                         }
-                        else
-                        {
-                            if (!year.matches())
-                            {
+                        else{
+                            if (!year.matches()){
                                 yearLine.setBackground(Color.red);
                             }
-                            else
-                            {
+                            else{
                                 yearLine.setBackground(Color.white);
                             }
-                            if (!pages.matches())
-                            {
+                            if (!pages.matches()){
                                 pagesLine.setBackground(Color.red);
                             }
-                            else
-                            {
+                            else{
                                 pagesLine.setBackground(Color.white);
                             }
                         }
@@ -299,7 +330,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         deleteCopy.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.operation(8, (String) copyBookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 0), "", "", "", "");
+                controller.operation(8, (String) copyBookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 0), "", "", "", "", "", "");
             }
         });
 
@@ -350,33 +381,27 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                         Matcher inventoryNumber = p.matcher(inventoryNumberLine.getText());
                         if (bookId.matches() && inventoryNumber.matches()) {
                             if (forIssue.getSelectedItem().toString().equals("false")) {
-                                controller.operation(4, inventoryNumberLine.getText(), bookIdLine.getText(), "false", "нет", "");
+                                controller.operation(4, inventoryNumberLine.getText(), bookIdLine.getText(), "false", "нет", "", "", "");
                             } else {
-
                                 if (readerLine.getText().equals("нет")) {
-                                    controller.operation(2, "", "", "", "", "");
+                                    controller.operation(2, "", "", "", "", "", "", "");
                                 } else {
-                                    controller.operation(4, inventoryNumberLine.getText(), bookIdLine.getText(), "true", readerLine.getText(), "");
+                                    controller.operation(4, inventoryNumberLine.getText(), bookIdLine.getText(), "true", readerLine.getText(), "", "", "");
                                 }
                             }
                             addFormCopy.setVisible(false);
                         }
-                        else
-                        {
-                            if (!bookId.matches())
-                            {
+                        else {
+                            if (!bookId.matches()){
                                 bookIdLine.setBackground(Color.red);
                             }
-                            else
-                            {
+                            else{
                                 bookIdLine.setBackground(Color.white);
                             }
-                            if (!inventoryNumber.matches())
-                            {
+                            if (!inventoryNumber.matches()){
                                 inventoryNumberLine.setBackground(Color.red);
                             }
-                            else
-                            {
+                            else{
                                 inventoryNumberLine.setBackground(Color.white);
                             }
                         }
@@ -421,12 +446,12 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         if (forIssue.getSelectedItem().toString().equals("false")) {
-                            controller.operation(6, (String) bookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 0),(String) bookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 1), "false", "нет", "");
+                            controller.operation(6, (String) copyBookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 0), (String) copyBookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 1), "false", "нет", "", "", "");
                         } else {
                             if (readerLine.getText().equals("нет")) {
-                                controller.operation(2, "", "", "", "", "");
+                                controller.operation(2, "", "", "", "", "", "", "");
                             } else {
-                                controller.operation(6, (String) bookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 0), (String) bookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 1), "true", readerLine.getText(), "");
+                                controller.operation(6, (String) copyBookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 0), (String) copyBookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 1), "true", readerLine.getText(), "", "", "");
                             }
                         }
                         addFormCopy.setVisible(false);
@@ -489,19 +514,25 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
 
         saveTab.add(saveLine, BorderLayout.NORTH);
         JTabbedPane jtp = new JTabbedPane();
-        bookTab.add(scrollPaneB, BorderLayout.CENTER);
-        copyTab.add(scrollPaneC, BorderLayout.CENTER);
-        saveTab.add(scrollPaneS, BorderLayout.CENTER);
+        bookTab.add(scrollPaneBook, BorderLayout.CENTER);
+        copyTab.add(scrollPaneCopy, BorderLayout.CENTER);
+        saveTab.add(scrollPaneSaveAndLoad, BorderLayout.CENTER);
+        catalogTab.add(scrollPaneCatalog, BorderLayout.CENTER);
+        publisherTab.add(scrollPanePublisher, BorderLayout.CENTER);
 
         jtp.addTab("Book", bookTab);
         jtp.addTab("CopyOfBook", copyTab);
         jtp.addTab("Save and Load", saveTab);
+        jtp.addTab("Catalog", catalogTab);
+        jtp.addTab("Publisher", publisherTab);
 
         bookTableModel.addColumn("ID");
         bookTableModel.addColumn("Name");
         bookTableModel.addColumn("Authors");
         bookTableModel.addColumn("Year");
         bookTableModel.addColumn("Pages");
+        bookTableModel.addColumn("Catalog Name");
+        bookTableModel.addColumn("Publisher Name");
 
         copyBookTableModel.addColumn("Inventory Number");
         copyBookTableModel.addColumn("Book ID");
@@ -510,6 +541,16 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
 
         saveAndLoadTableModel.addColumn("File Name");
         saveAndLoadTableModel.addColumn("Date change");
+
+        publisherTableModel.addColumn("ID");
+        publisherTableModel.addColumn("Name");
+        publisherTableModel.addColumn("Registered Address");
+        publisherTableModel.addColumn("Business Address");
+
+        catalogTableModel.addColumn("ID");
+        catalogTableModel.addColumn("Name");
+        catalogTableModel.addColumn("Name Of Child");
+        catalogTableModel.addColumn("Count");
 
         File folderLoad = new File("../nc");
         File[] files = folderLoad.listFiles();
@@ -526,8 +567,26 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
 
         add(jtp);
 
-        Book book1 = new Book(1, "И. С. Тургенев", "Отцы и дети", 1971, 188);
-        Book book2 = new Book(2, "Н. В. Гоголь", "Мертвые души", 1972, 416);
+        Catalog catalog1 = new Catalog(1, "Романы", "Общий", 0);
+        Catalog catalog2 = new Catalog(2, "Повести", "Общий", 0);
+        Catalog catalog3 = new Catalog(3, "Рассказы", "Общий", 0);
+        Catalog catalog4 = new Catalog(4, "Поэмы", "Общий", 0);
+        HashMap<Long, Catalog> catalogList = new HashMap<>();
+        catalogList.put(catalog1.getIdCatalog(), catalog1);
+        catalogList.put(catalog2.getIdCatalog(), catalog2);
+        catalogList.put(catalog3.getIdCatalog(), catalog3);
+        catalogList.put(catalog4.getIdCatalog(), catalog4);
+        Publisher publisher1 = new Publisher(1, "Просвещение", "127521, Москва, 3-й проезд Марьиной рощи, 41", "prosv@prosv.ru");
+        Publisher publisher2 = new Publisher(2, "Дрофа", "123308, г. Москва, ул. Зорге, д.1", "info@drofa-ventana.ru");
+        Publisher publisher3 = new Publisher(3, "ЭКСМО", "123308, г. Москва, ул. Зорге, д.1", "info@eksmo.ru");
+        Publisher publisher4 = new Publisher(4, "АСТ", "129085, город  Москва, Звездный бульвар, дом 21, строение 3, комната 5", "hr@ast.ru");
+        HashMap<Long, Publisher> publisherList = new HashMap<>();
+        publisherList.put(publisher1.getIdPublisher(), publisher1);
+        publisherList.put(publisher2.getIdPublisher(), publisher2);
+        publisherList.put(publisher3.getIdPublisher(), publisher3);
+        publisherList.put(publisher4.getIdPublisher(), publisher4);
+        Book book1 = new Book(1, "И. С. Тургенев", "Отцы и дети", 1971, 188, catalog1.getName(), publisher1.getName());
+        Book book2 = new Book(2, "Н. В. Гоголь", "Мертвые души", 1972, 416, catalog4.getName(), publisher2.getName());
         CopyOfTheBook copyOfTheBook1 = new CopyOfTheBook(1, 1, true, "Ю. А. Петрова");
         CopyOfTheBook copyOfTheBook2 = new CopyOfTheBook(2, 1, false, "нет");
         CopyOfTheBook copyOfTheBook3 = new CopyOfTheBook(3, 1, false, "нет");
@@ -545,8 +604,11 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         Storage storage = Storage.getInstance();
         storage.setBookList(bookList);
         storage.setCopyOfTheBookList(copyOfTheBookList);
+        storage.setPublisherList(publisherList);
         fillTableBook(bookList);
         fillTableCopyOfTheBook(copyOfTheBookList);
+        fillTableCatalog(catalogList);
+        fillTablePublisher(publisherList);
     }
 
     private void addSearchPanelBook(JPanel bookTab) {
@@ -608,7 +670,6 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             output.writeObject((String) saveAndLoadTableModel.getValueAt(saveAndLoad.getSelectedRow(), 0));
             output.flush();
 
-
             Storage tmpNew = new Storage();
             HashMap<Long, Book> tmpBook = new HashMap<>();
 
@@ -619,6 +680,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 tmpB.setAuthors((String) bookTableModel.getValueAt(i, 2));
                 tmpB.setYear(Integer.valueOf((String) (bookTableModel.getValueAt(i, 3))));
                 tmpB.setPages(Integer.valueOf((String) (bookTableModel.getValueAt(i, 4))));
+                tmpB.setCatalog((String) (bookTableModel.getValueAt(i, 5)));
+                tmpB.setPublisher((String) (bookTableModel.getValueAt(i, 6)));
                 tmpBook.put(tmpB.getIdBook(), tmpB);
             }
 
@@ -643,12 +706,19 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             for (Book tmpNewB : tmpNewBook.values()) {
                 boolean check = true;
                 for (Book tmpB : tmpBook.values()) {
-                    if (tmpB.getYear() == tmpNewB.getYear())
-                        if (tmpB.getPages() == tmpNewB.getPages())
-                            if (tmpB.getAuthors().equals(tmpNewB.getAuthors()))
-                                if (tmpB.getName().equals(tmpNewB.getName())) {
-                                    check = false;
+                    if (tmpB.getYear() == tmpNewB.getYear()) {
+                        if (tmpB.getPages() == tmpNewB.getPages()) {
+                            if (tmpB.getAuthors().equals(tmpNewB.getAuthors())) {
+                                if (tmpB.getCatalog().equals(tmpNewB.getCatalog())) {
+                                    if (tmpB.getPublisher().equals(tmpNewB.getPublisher())) {
+                                        if (tmpB.getName().equals(tmpNewB.getName())) {
+                                            check = false;
+                                        }
+                                    }
                                 }
+                            }
+                        }
+                    }
                 }
                 if (check == true) {
                     tmpBook.put(tmpNewB.getIdBook(), tmpNewB);
@@ -662,9 +732,10 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             for (CopyOfTheBook tmpNewC : tmpNewCopy.values()) {
                 boolean check = true;
                 for (CopyOfTheBook tmpC : tmpCopy.values()) {
-                    if (tmpC.getReader().equals(tmpNewC.getReader()))
-                    if (tmpC.getInventoryNumber() == tmpNewC.getInventoryNumber() && tmpC.getIssue() == tmpNewC.getIssue()) {
-                        check = false;
+                    if (tmpC.getReader().equals(tmpNewC.getReader())) {
+                        if (tmpC.getInventoryNumber() == tmpNewC.getInventoryNumber() && tmpC.getIssue() == tmpNewC.getIssue()) {
+                            check = false;
+                        }
                     }
                 }
                 if (check == true) {
@@ -707,6 +778,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 tmpB.setAuthors((String) bookTableModel.getValueAt(i, 2));
                 tmpB.setYear(Integer.valueOf((String) (bookTableModel.getValueAt(i, 3))));
                 tmpB.setPages(Integer.valueOf((String) (bookTableModel.getValueAt(i, 4))));
+                tmpB.setCatalog((String) bookTableModel.getValueAt(i, 5));
+                tmpB.setPublisher((String) bookTableModel.getValueAt(i, 6));
                 tmpBook.put(tmpB.getIdBook(), tmpB);
             }
 
@@ -785,6 +858,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                     newRow.add(tmpB.getAuthors());
                     newRow.add(Integer.toString(tmpB.getYear()));
                     newRow.add(Integer.toString(tmpB.getPages()));
+                    newRow.add(tmpB.getCatalog());
+                    newRow.add(tmpB.getPublisher());
                     bookTableModel.addRow(newRow);
                 }
 
@@ -824,6 +899,22 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         }
     }
 
+    public void clearTableCatalog() {
+        if (catalogTableModel.getRowCount() > 0) {
+            for (int i = catalogTableModel.getRowCount() - 1; i > -1; i--) {
+                catalogTableModel.removeRow(i);
+            }
+        }
+    }
+
+    public void clearTablePublisher() {
+        if (publisherTableModel.getRowCount() > 0) {
+            for (int i = publisherTableModel.getRowCount() - 1; i > -1; i--) {
+                publisherTableModel.removeRow(i);
+            }
+        }
+    }
+
     public void fillTableBook(HashMap<Long, Book> result) {
         clearTableBook();
         for (Map.Entry<Long, Book> entry : result.entrySet()) {
@@ -833,6 +924,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             newRow.add(entry.getValue().getAuthors());
             newRow.add(Integer.toString(entry.getValue().getYear()));
             newRow.add(Integer.toString(entry.getValue().getPages()));
+            newRow.add(entry.getValue().getCatalog());
+            newRow.add(entry.getValue().getPublisher());
             bookTableModel.addRow(newRow);
         }
     }
@@ -846,6 +939,30 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             newRow.add(Boolean.toString(entry.getValue().getIssue()));
             newRow.add(entry.getValue().getReader());
             copyBookTableModel.addRow(newRow);
+        }
+    }
+
+    public void fillTableCatalog(HashMap<Long, Catalog> result) {
+        clearTableCatalog();
+        for (Map.Entry<Long, Catalog> entry : result.entrySet()) {
+            Vector<String> newRow = new Vector<String>();
+            newRow.add(Long.toString(entry.getKey()));
+            newRow.add(entry.getValue().getName());
+            newRow.add(entry.getValue().getNameOfChild());
+            newRow.add(Integer.toString(entry.getValue().getCount()));
+            catalogTableModel.addRow(newRow);
+        }
+    }
+
+    public void fillTablePublisher(HashMap<Long, Publisher> result) {
+        clearTablePublisher();
+        for (Map.Entry<Long, Publisher> entry : result.entrySet()) {
+            Vector<String> newRow = new Vector<String>();
+            newRow.add(Long.toString(entry.getKey()));
+            newRow.add(entry.getValue().getName());
+            newRow.add(entry.getValue().getRegisteredAddress());
+            newRow.add(entry.getValue().getBusinessAddress());
+            publisherTableModel.addRow(newRow);
         }
     }
 
@@ -895,9 +1012,15 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                     case "Pages":
                         act = 13;
                         break;
+                    case "Catalog":
+                        act = 18;
+                        break;
+                    case "Publisher":
+                        act = 19;
+                        break;
                 }
             }
-            controller.operation(act, date, "", "", "", "");
+            controller.operation(act, date, "", "", "", "", "", "");
         }
     }
 
@@ -922,10 +1045,9 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                     case "Reader":
                         act = 17;
                         break;
-
                 }
             }
-            controller.operation(act, date, "", "", "", "");
+            controller.operation(act, date, "", "", "", "", "", "");
         }
     }
 

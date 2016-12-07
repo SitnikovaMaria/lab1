@@ -38,7 +38,7 @@ public class Control {
         view1.fillTableCopyOfTheBook(result);
     }
 
-    public void addBook(String dateIdBook, String authors, String name, String dateYear, String datePages) { //добавление в Book
+    public void addBook(String dateIdBook, String authors, String name, String dateYear, String datePages, String catalog, String publisher) { //добавление в Book
         try {
             long idBook = Long.valueOf(dateIdBook);
             if (!storage.getBookList().containsKey(idBook)) {
@@ -46,13 +46,13 @@ public class Control {
                 int pages = Integer.valueOf(datePages);
                 boolean bool = false;
                 for (Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
-                    if (entry.getValue().getAuthors().equals(name) && entry.getValue().getName().equals(authors) && (entry.getValue().getYear() == year) && (entry.getValue().getPages() == pages)) {
+                    if (entry.getValue().getAuthors().equals(name) && entry.getValue().getName().equals(authors) && (entry.getValue().getYear() == year) && (entry.getValue().getPages() == pages) && (entry.getValue().getCatalog() == catalog) && (entry.getValue().getPublisher() == publisher)) {
                         /* книга стакими данными уже существует */
                         bool = true;
                     }
                 }
                 if (!bool) {
-                    Book book1 = new Book(idBook, authors, name, year, pages);
+                    Book book1 = new Book(idBook, authors, name, year, pages, catalog, publisher);
                     storage.getBookList().put(idBook, book1);
                     /* книга успешно добавлена */
                 }
@@ -84,7 +84,7 @@ public class Control {
         }
     }
 
-    public void changeBook(String dateIdBook, String authors, String name, String dateYear, String datePages) { //изменение Book
+    public void changeBook(String dateIdBook, String authors, String name, String dateYear, String datePages, String catalog, String publisher) { //изменение Book
         try {
             long idBook = Long.valueOf(dateIdBook);
             if (storage.getBookList().containsKey(idBook)) {
@@ -92,7 +92,7 @@ public class Control {
                 int pages = Integer.valueOf(datePages);
                 boolean bool = false;
                 for (Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
-                    if (entry.getValue().getAuthors().equals(authors) && entry.getValue().getName().equals(name) && (entry.getValue().getYear() == year) && (entry.getValue().getPages() == pages)) {
+                    if (entry.getValue().getAuthors().equals(authors) && entry.getValue().getName().equals(name) && (entry.getValue().getYear() == year) && (entry.getValue().getPages() == pages) && (entry.getValue().getCatalog() == catalog) && (entry.getValue().getPublisher() == publisher)) {
                         /* книга стакими данными уже существует */
                         bool = true;
                     }
@@ -110,6 +110,12 @@ public class Control {
                     }
                     if (!datePages.equals("")) {
                         book0.setPages(pages);
+                    }
+                    if (!catalog.equals("")) {
+                        book0.setCatalog(catalog);
+                    }
+                    if (!publisher.equals("")) {
+                        book0.setPublisher(publisher);
                     }
                     /* книга успешно изменена */
                 }
@@ -171,7 +177,7 @@ public class Control {
         }
     }
 
-    public void operation(int act, String date1, String date2, String date3, String date4, String date5) {
+    public void operation(int act, String date1, String date2, String date3, String date4, String date5, String date6, String date7) {
         switch (act) {
             case 1: //просмотр книг
                 reviewBook();
@@ -180,13 +186,13 @@ public class Control {
                 reviewCopyOfTheBook();
                 break;
             case 3: //добавление книги
-                addBook(date1, date2, date3, date4, date5);
+                addBook(date1, date2, date3, date4, date5, date6, date7);
                 break;
             case 4: //добавление экземпляра книги
                 addCopyOfTheBook(date1, date2, date3, date4);
                 break;
             case 5: //изменение книги
-                changeBook(date1, date2, date3, date4, date5);
+                changeBook(date1, date2, date3, date4, date5, date6, date7);
                 break;
             case 6: //изменение экземпляра книги
                 changeCopyOfTheBook(date1, date2, date3, date4);
@@ -221,8 +227,14 @@ public class Control {
             case 16: //поиск экземпляров книг по информации о выдаче
                 search.searchByIssue(date1);
                 break;
-            case 17: //поиск экземпляров книг по информации о выдаче
+            case 17: //поиск экземпляров книг по читателю
                 search.searchByReader(date1);
+                break;
+            case 18: //поиск экземпляров книг по каталогу
+                search.searchByCatalog(date1);
+                break;
+            case 19: //поиск экземпляров книг по издательству
+                search.searchByPublisher(date1);
                 break;
             case 0:
                 quit = true;
