@@ -1,4 +1,4 @@
-package com.company;
+﻿package com.company;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,8 +20,7 @@ public class Search {
         HashMap<Long, Book> result = new HashMap<Long, Book>();
         Pattern p;
         if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
-            date.substring(0);
-            p = Pattern.compile(date);
+            p = Pattern.compile(date.substring(1));
         }
         else {
             p = Pattern.compile(date);
@@ -42,8 +41,7 @@ public class Search {
         HashMap<Long, Book> result = new HashMap<Long, Book>();
         Pattern p;
         if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
-            date.substring(0);
-            p = Pattern.compile(date);
+            p = Pattern.compile(date.substring(1));
         }
         else {
             p = Pattern.compile(date);
@@ -65,8 +63,7 @@ public class Search {
         HashMap<Long, Book> result = new HashMap<Long, Book>();
         Pattern p;
         if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
-            date.substring(0);
-            p = Pattern.compile(date);
+            p = Pattern.compile(date.substring(1));
         }
         else {
             p = Pattern.compile(date);
@@ -88,8 +85,7 @@ public class Search {
         HashMap<Long, Book> result = new HashMap<Long, Book>();
         Pattern p;
         if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
-            date.substring(0);
-            p = Pattern.compile(date);
+            p = Pattern.compile(date.substring(1));
         }
         else {
             p = Pattern.compile(date);
@@ -111,8 +107,7 @@ public class Search {
         HashMap<Long, Book> result = new HashMap<Long, Book>();
         Pattern p;
         if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
-            date.substring(0);
-            p = Pattern.compile(date);
+            p = Pattern.compile(date.substring(1));
         }
         else {
             p = Pattern.compile(date);
@@ -134,8 +129,7 @@ public class Search {
         HashMap<Long, CopyOfTheBook> result = new HashMap<Long, CopyOfTheBook>();
         Pattern p;
         if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
-            date.substring(0);
-            p = Pattern.compile(date);
+            p = Pattern.compile(date.substring(1));
         }
         else {
             p = Pattern.compile(date);
@@ -156,8 +150,7 @@ public class Search {
         HashMap<Long, CopyOfTheBook> result = new HashMap<Long, CopyOfTheBook>();
         Pattern p;
         if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
-            date.substring(0);
-            p = Pattern.compile(date);
+            p = Pattern.compile(date.substring(1));
         }
         else {
             p = Pattern.compile(date);
@@ -179,8 +172,7 @@ public class Search {
         HashMap<Long, CopyOfTheBook> result = new HashMap<Long, CopyOfTheBook>();
         Pattern p;
         if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
-            date.substring(0);
-            p = Pattern.compile(date);
+            p = Pattern.compile(date.substring(1));
         }
         else {
             p = Pattern.compile(date);
@@ -202,8 +194,7 @@ public class Search {
         HashMap<Long, CopyOfTheBook> result = new HashMap<Long, CopyOfTheBook>();
         Pattern p;
         if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
-            date.substring(0);
-            p = Pattern.compile(date);
+            p = Pattern.compile(date.substring(1));
         }
         else {
             p = Pattern.compile(date);
