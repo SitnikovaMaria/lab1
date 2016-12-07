@@ -9,15 +9,19 @@ public class Book implements Serializable{
     private String name;
     private int year;
     private int pages;
+    private Catalog catalog;
+    private Publisher publisher;
 
     Book(){}
 
-    public Book(long idBook, String authors, String name, int year, int pages){
+    public Book(long idBook, String authors, String name, int year, int pages/*, Catalog catalog, Publisher publisher*/){
         this.idBook = idBook;
         this.authors = authors;
         this.name = name;
         this.year = year;
         this.pages = pages;
+        /*this.catalog= catalog;
+        this.publisher=publisher;*/
     }
 
     public void setIdBook(long idBook){
@@ -26,6 +30,24 @@ public class Book implements Serializable{
 
     public long getIdBook(){
         return idBook;
+    }
+
+    public void setCatalog(Catalog catalog){
+        if (catalog!=this.catalog) {
+            this.catalog.setCount(this.catalog.getCount() - 1);
+            this.catalog = catalog;
+            catalog.setCount(catalog.getCount() + 1);
+        }
+    }
+
+    public Catalog getCatalog(){return catalog;}
+
+    public void setPublisher(Publisher publisher){
+        this.publisher = publisher;
+    }
+
+    public Publisher getPublisher(){
+        return publisher;
     }
 
     public void setAuthors(String authors){

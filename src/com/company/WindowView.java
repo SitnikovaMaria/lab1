@@ -28,9 +28,9 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
     private static String address = "127.0.0.1";
     private Control controller;
     private Storage storage = Storage.getInstance();
-    private DefaultTableModel b = new DefaultTableModel();
     private DefaultTableModel bookTableModel = new DefaultTableModel();
-    private DefaultTableModel s = new DefaultTableModel();
+    private DefaultTableModel copyBookTableModel = new DefaultTableModel();
+    private DefaultTableModel saveAndLoadTableModel = new DefaultTableModel();
     private JButton addBookButton;
     private JButton addCopyButton;
     private JButton changeBookButton;
@@ -88,9 +88,9 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         JPanel saveTab = new JPanel();
         saveTab.setLayout(new BorderLayout());
 
-        bookTable = new JTable(b);
-        copyOfTheBookTable = new JTable(bookTableModel);
-        saveAndLoad = new JTable(s);
+        bookTable = new JTable(bookTableModel);
+        copyOfTheBookTable = new JTable(copyBookTableModel);
+        saveAndLoad = new JTable(saveAndLoadTableModel);
         bookTable.getSelectionModel().addListSelectionListener(this);
         copyOfTheBookTable.getSelectionModel().addListSelectionListener(this);
 
@@ -106,7 +106,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         deleteBook.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.operation(7, (String) b.getValueAt(bookTable.getSelectedRow(), 0), "", "", "", "");
+                controller.operation(7, (String) bookTableModel.getValueAt(bookTable.getSelectedRow(), 0), "", "", "", "");
             }
         });
 
@@ -213,13 +213,13 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 JPanel addPanel = new JPanel();
                 addPanel.setLayout(new BorderLayout());
                 final JTextField nameLine = new JTextField(9);
-                nameLine.setText((String) b.getValueAt(bookTable.getSelectedRow(), 1));
+                nameLine.setText((String) bookTableModel.getValueAt(bookTable.getSelectedRow(), 1));
                 final JTextField authorLine = new JTextField(9);
-                authorLine.setText((String) b.getValueAt(bookTable.getSelectedRow(), 2));
+                authorLine.setText((String) bookTableModel.getValueAt(bookTable.getSelectedRow(), 2));
                 final JTextField yearLine = new JTextField(9);
-                yearLine.setText((String) b.getValueAt(bookTable.getSelectedRow(), 3));
+                yearLine.setText((String) bookTableModel.getValueAt(bookTable.getSelectedRow(), 3));
                 final JTextField pagesLine = new JTextField(9);
-                pagesLine.setText((String) b.getValueAt(bookTable.getSelectedRow(), 4));
+                pagesLine.setText((String) bookTableModel.getValueAt(bookTable.getSelectedRow(), 4));
                 JPanel labelPanel = new JPanel();
                 labelPanel.setLayout(new FlowLayout());
                 labelPanel.add(nameLine);
@@ -256,7 +256,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                         Matcher year = p.matcher(yearLine.getText());
                         Matcher pages = p.matcher(pagesLine.getText());
                         if (year.matches() && pages.matches()) {
-                            controller.operation(5, (String) b.getValueAt(bookTable.getSelectedRow(), 0), authorLine.getText(), nameLine.getText(), yearLine.getText(), pagesLine.getText());
+                            controller.operation(5, (String) bookTableModel.getValueAt(bookTable.getSelectedRow(), 0), authorLine.getText(), nameLine.getText(), yearLine.getText(), pagesLine.getText());
                             addForm.setVisible(false);
                         }
                         else
@@ -299,7 +299,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         deleteCopy.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.operation(8, (String) bookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 0), "", "", "", "");
+                controller.operation(8, (String) copyBookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 0), "", "", "", "");
             }
         });
 
@@ -421,7 +421,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         if (forIssue.getSelectedItem().toString().equals("false")) {
-                            controller.operation(6, (String) bookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 0), (String) bookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 1), "false", "нет", "");
+                            controller.operation(6, (String) bookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 0),(String) bookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 1), "false", "нет", "");
                         } else {
                             if (readerLine.getText().equals("нет")) {
                                 controller.operation(2, "", "", "", "", "");
@@ -497,19 +497,19 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         jtp.addTab("CopyOfBook", copyTab);
         jtp.addTab("Save and Load", saveTab);
 
-        b.addColumn("ID");
-        b.addColumn("Name");
-        b.addColumn("Authors");
-        b.addColumn("Year");
-        b.addColumn("Pages");
+        bookTableModel.addColumn("ID");
+        bookTableModel.addColumn("Name");
+        bookTableModel.addColumn("Authors");
+        bookTableModel.addColumn("Year");
+        bookTableModel.addColumn("Pages");
 
-        bookTableModel.addColumn("Inventory Number");
-        bookTableModel.addColumn("Book ID");
-        bookTableModel.addColumn("Issue");
-        bookTableModel.addColumn("Reader");
+        copyBookTableModel.addColumn("Inventory Number");
+        copyBookTableModel.addColumn("Book ID");
+        copyBookTableModel.addColumn("Issue");
+        copyBookTableModel.addColumn("Reader");
 
-        s.addColumn("File Name");
-        s.addColumn("Date change");
+        saveAndLoadTableModel.addColumn("File Name");
+        saveAndLoadTableModel.addColumn("Date change");
 
         File folderLoad = new File("../nc");
         File[] files = folderLoad.listFiles();
@@ -520,7 +520,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
                 String reportDate = df.format(f.lastModified());
                 newrow.add(reportDate);
-                s.addRow(newrow);
+                saveAndLoadTableModel.addRow(newrow);
             }
         }
 
@@ -564,8 +564,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
      *
      * @param copyTab - this is table of book copy
      */
-    private void addSearchPanelCopyOfBook(JPanel copyTab)
-    {
+    private void addSearchPanelCopyOfBook(JPanel copyTab){
         JPanel searchPanelCopyOfTheBook = new JPanel();
         copyTab.add(searchPanelCopyOfTheBook, BorderLayout.NORTH);
         searchPanelCopyOfTheBook.setLayout(new FlowLayout());
@@ -582,7 +581,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         newRow.add(book.getAuthors());
         newRow.add(Integer.toString(book.getYear()));
         newRow.add(Integer.toString(book.getPages()));
-        b.addRow(newRow);
+        bookTableModel.addRow(newRow);
     }
 
     public void viewCopyOfTheBook(CopyOfTheBook book) {
@@ -591,11 +590,10 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         newRow.add(Long.toString(book.getInventoryNumber()));
         newRow.add(Long.toString(book.getIdBook()));
         newRow.add(Boolean.toString(book.getIssue()));
-        bookTableModel.addRow(newRow);
+        copyBookTableModel.addRow(newRow);
     }
 
     public void saveAndMergeWithFile() {
-
         Storage tmp = new Storage();
         ObjectOutputStream output;
         ObjectInputStream input;
@@ -607,32 +605,32 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             output.flush();
             output.writeObject("saveandmerge");
             output.flush();
-            output.writeObject((String) s.getValueAt(saveAndLoad.getSelectedRow(), 0));
+            output.writeObject((String) saveAndLoadTableModel.getValueAt(saveAndLoad.getSelectedRow(), 0));
             output.flush();
 
 
             Storage tmpNew = new Storage();
             HashMap<Long, Book> tmpBook = new HashMap<>();
 
-            for (int i = 0; i < b.getRowCount(); i++) {
+            for (int i = 0; i < bookTableModel.getRowCount(); i++) {
                 Book tmpB = new Book();
-                tmpB.setIdBook(Long.valueOf((String) (b.getValueAt(i, 0))));
-                tmpB.setName((String) b.getValueAt(i, 1));
-                tmpB.setAuthors((String) b.getValueAt(i, 2));
-                tmpB.setYear(Integer.valueOf((String) (b.getValueAt(i, 3))));
-                tmpB.setPages(Integer.valueOf((String) (b.getValueAt(i, 4))));
-
+                tmpB.setIdBook(Long.valueOf((String) (bookTableModel.getValueAt(i, 0))));
+                tmpB.setName((String) bookTableModel.getValueAt(i, 1));
+                tmpB.setAuthors((String) bookTableModel.getValueAt(i, 2));
+                tmpB.setYear(Integer.valueOf((String) (bookTableModel.getValueAt(i, 3))));
+                tmpB.setPages(Integer.valueOf((String) (bookTableModel.getValueAt(i, 4))));
                 tmpBook.put(tmpB.getIdBook(), tmpB);
             }
 
             tmpNew.setBookList(tmpBook);
 
             HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<>();
-            for (int i = 0; i < bookTableModel.getRowCount(); i++) {
+            for (int i = 0; i < copyBookTableModel.getRowCount(); i++) {
                 CopyOfTheBook tmpC = new CopyOfTheBook();
-                tmpC.setIdBook(Long.valueOf((String) bookTableModel.getValueAt(i, 0)));
-                tmpC.setInventoryNumber(Long.valueOf((String) bookTableModel.getValueAt(i, 1)));
-                tmpC.setIssue(Boolean.valueOf((String) bookTableModel.getValueAt(i, 2)));
+                tmpC.setIdBook(Long.valueOf((String) copyBookTableModel.getValueAt(i, 0)));
+                tmpC.setInventoryNumber(Long.valueOf((String) copyBookTableModel.getValueAt(i, 1)));
+                tmpC.setIssue(Boolean.valueOf((String) copyBookTableModel.getValueAt(i, 2)));
+                tmpC.setReader((String) copyBookTableModel.getValueAt(i,3));
                 tmpCopy.put(tmpC.getIdBook(), tmpC);
             }
 
@@ -664,6 +662,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             for (CopyOfTheBook tmpNewC : tmpNewCopy.values()) {
                 boolean check = true;
                 for (CopyOfTheBook tmpC : tmpCopy.values()) {
+                    if (tmpC.getReader().equals(tmpNewC.getReader()))
                     if (tmpC.getInventoryNumber() == tmpNewC.getInventoryNumber() && tmpC.getIssue() == tmpNewC.getIssue()) {
                         check = false;
                     }
@@ -701,24 +700,25 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             Storage tmp = new Storage();
             HashMap<Long, Book> tmpBook = new HashMap<>();
 
-            for (int i = 0; i < b.getRowCount(); i++) {
+            for (int i = 0; i < bookTableModel.getRowCount(); i++) {
                 Book tmpB = new Book();
-                tmpB.setIdBook(Long.valueOf((String) (b.getValueAt(i, 0))));
-                tmpB.setName((String) b.getValueAt(i, 1));
-                tmpB.setAuthors((String) b.getValueAt(i, 2));
-                tmpB.setYear(Integer.valueOf((String) (b.getValueAt(i, 3))));
-                tmpB.setPages(Integer.valueOf((String) (b.getValueAt(i, 4))));
+                tmpB.setIdBook(Long.valueOf((String) (bookTableModel.getValueAt(i, 0))));
+                tmpB.setName((String) bookTableModel.getValueAt(i, 1));
+                tmpB.setAuthors((String) bookTableModel.getValueAt(i, 2));
+                tmpB.setYear(Integer.valueOf((String) (bookTableModel.getValueAt(i, 3))));
+                tmpB.setPages(Integer.valueOf((String) (bookTableModel.getValueAt(i, 4))));
                 tmpBook.put(tmpB.getIdBook(), tmpB);
             }
 
             tmp.setBookList(tmpBook);
 
             HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<>();
-            for (int i = 0; i < bookTableModel.getRowCount(); i++) {
+            for (int i = 0; i < copyBookTableModel.getRowCount(); i++) {
                 CopyOfTheBook tmpC = new CopyOfTheBook();
-                tmpC.setIdBook(Long.valueOf((String) bookTableModel.getValueAt(i, 0)));
-                tmpC.setInventoryNumber(Long.valueOf((String) bookTableModel.getValueAt(i, 1)));
-                tmpC.setIssue(Boolean.valueOf((String) bookTableModel.getValueAt(i, 2)));
+                tmpC.setIdBook(Long.valueOf((String) copyBookTableModel.getValueAt(i, 0)));
+                tmpC.setInventoryNumber(Long.valueOf((String) copyBookTableModel.getValueAt(i, 1)));
+                tmpC.setIssue(Boolean.valueOf((String) copyBookTableModel.getValueAt(i, 2)));
+                tmpC.setReader((String) copyBookTableModel.getValueAt(i,3));
                 tmpCopy.put(tmpC.getIdBook(), tmpC);
             }
 
@@ -734,8 +734,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        while (s.getRowCount() > 0) {
-            s.removeRow(0);
+        while (saveAndLoadTableModel.getRowCount() > 0) {
+            saveAndLoadTableModel.removeRow(0);
         }
         File folderLoad = new File("../nc");
         File[] files = folderLoad.listFiles();
@@ -746,18 +746,18 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
                 String reportDate = df.format(f.lastModified());
                 newr.add(reportDate);
-                s.addRow(newr);
+                saveAndLoadTableModel.addRow(newr);
             }
         }
     }
 
     public void loadFromFile() {
         if (saveAndLoad.getSelectedRowCount() != 0) {
-            while (b.getRowCount() > 0) {
-                b.removeRow(0);
-            }
             while (bookTableModel.getRowCount() > 0) {
                 bookTableModel.removeRow(0);
+            }
+            while (copyBookTableModel.getRowCount() > 0) {
+                copyBookTableModel.removeRow(0);
             }
             Storage tmp = new Storage();
             ObjectOutputStream output;
@@ -771,7 +771,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 output.writeObject("load");
                 output.flush();
 
-                output.writeObject((String) s.getValueAt(saveAndLoad.getSelectedRow(), 0));
+                output.writeObject((String) saveAndLoadTableModel.getValueAt(saveAndLoad.getSelectedRow(), 0));
                 output.flush();
 
                 tmp = (Storage) input.readObject();
@@ -785,7 +785,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                     newRow.add(tmpB.getAuthors());
                     newRow.add(Integer.toString(tmpB.getYear()));
                     newRow.add(Integer.toString(tmpB.getPages()));
-                    b.addRow(newRow);
+                    bookTableModel.addRow(newRow);
                 }
 
                 HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<>();
@@ -797,7 +797,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                     newRow.add(Long.toString(tmpC.getInventoryNumber()));
                     newRow.add(Boolean.toString(tmpC.getIssue()));
                     newRow.add(tmpC.getReader());
-                    bookTableModel.addRow(newRow);
+                    copyBookTableModel.addRow(newRow);
                 }
                 output.close();
                 input.close();
@@ -809,17 +809,17 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
     }
 
     public void clearTableBook() {
-        if (b.getRowCount() > 0) {
-            for (int i = b.getRowCount() - 1; i > -1; i--) {
-                b.removeRow(i);
+        if (bookTableModel.getRowCount() > 0) {
+            for (int i = bookTableModel.getRowCount() - 1; i > -1; i--) {
+                bookTableModel.removeRow(i);
             }
         }
     }
 
     public void clearTableCopyOfTheBook() {
-        if (bookTableModel.getRowCount() > 0) {
-            for (int i = bookTableModel.getRowCount() - 1; i > -1; i--) {
-                bookTableModel.removeRow(i);
+        if (copyBookTableModel.getRowCount() > 0) {
+            for (int i = copyBookTableModel.getRowCount() - 1; i > -1; i--) {
+                copyBookTableModel.removeRow(i);
             }
         }
     }
@@ -833,7 +833,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             newRow.add(entry.getValue().getAuthors());
             newRow.add(Integer.toString(entry.getValue().getYear()));
             newRow.add(Integer.toString(entry.getValue().getPages()));
-            b.addRow(newRow);
+            bookTableModel.addRow(newRow);
         }
     }
 
@@ -845,7 +845,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             newRow.add(Long.toString(entry.getValue().getIdBook()));
             newRow.add(Boolean.toString(entry.getValue().getIssue()));
             newRow.add(entry.getValue().getReader());
-            bookTableModel.addRow(newRow);
+            copyBookTableModel.addRow(newRow);
         }
     }
 
@@ -922,6 +922,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                     case "Reader":
                         act = 17;
                         break;
+
                 }
             }
             controller.operation(act, date, "", "", "", "");
