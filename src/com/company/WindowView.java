@@ -20,6 +20,8 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -93,8 +95,6 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         copyTab.setLayout(new BorderLayout());
         JPanel saveTab = new JPanel();
         saveTab.setLayout(new BorderLayout());
-        JPanel catalogTab = new JPanel();
-        catalogTab.setLayout(new BorderLayout());
         JPanel publisherTab = new JPanel();
         publisherTab.setLayout(new BorderLayout());
 
@@ -112,7 +112,6 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         JScrollPane scrollPaneBook = new JScrollPane(bookTable);
         JScrollPane scrollPaneCopy = new JScrollPane(copyOfTheBookTable);
         JScrollPane scrollPaneSaveAndLoad = new JScrollPane(saveAndLoad);
-        JScrollPane scrollPaneCatalog = new JScrollPane(catalogTable);
         JScrollPane scrollPanePublisher = new JScrollPane(publisherTable);
 
         JPanel bookFunctionButtons = new JPanel();
@@ -509,7 +508,6 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         saveTab.add(saveAndLoadButtons, BorderLayout.SOUTH);
 
         addSearchPanelBook(bookTab);
-
         addSearchPanelCopyOfBook(copyTab);
 
         saveTab.add(saveLine, BorderLayout.NORTH);
@@ -517,13 +515,11 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         bookTab.add(scrollPaneBook, BorderLayout.CENTER);
         copyTab.add(scrollPaneCopy, BorderLayout.CENTER);
         saveTab.add(scrollPaneSaveAndLoad, BorderLayout.CENTER);
-        catalogTab.add(scrollPaneCatalog, BorderLayout.CENTER);
         publisherTab.add(scrollPanePublisher, BorderLayout.CENTER);
 
         jtp.addTab("Book", bookTab);
         jtp.addTab("CopyOfBook", copyTab);
         jtp.addTab("Save and Load", saveTab);
-        jtp.addTab("Catalog", catalogTab);
         jtp.addTab("Publisher", publisherTab);
 
         bookTableModel.addColumn("ID");
@@ -531,8 +527,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         bookTableModel.addColumn("Authors");
         bookTableModel.addColumn("Year");
         bookTableModel.addColumn("Pages");
-        bookTableModel.addColumn("Catalog Name");
-        bookTableModel.addColumn("Publisher Name");
+        bookTableModel.addColumn("Catalog");
+        bookTableModel.addColumn("Publisher");
 
         copyBookTableModel.addColumn("Inventory Number");
         copyBookTableModel.addColumn("Book ID");
@@ -547,12 +543,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         publisherTableModel.addColumn("Registered Address");
         publisherTableModel.addColumn("Business Address");
 
-        catalogTableModel.addColumn("ID");
-        catalogTableModel.addColumn("Name");
-        catalogTableModel.addColumn("Name Of Child");
-        catalogTableModel.addColumn("Count");
-
-        File folderLoad = new File("../nc");
+        File folderLoad = new File("D:\\Other\\lab3");
         File[] files = folderLoad.listFiles();
         for (File f : files) {
             if (f.getName().endsWith("ini")) {
@@ -565,28 +556,18 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             }
         }
 
-        add(jtp);
-
         Catalog catalog1 = new Catalog(1, "Романы", "Общий", 0);
-        Catalog catalog2 = new Catalog(2, "Повести", "Общий", 0);
-        Catalog catalog3 = new Catalog(3, "Рассказы", "Общий", 0);
-        Catalog catalog4 = new Catalog(4, "Поэмы", "Общий", 0);
+        Catalog catalog2 = new Catalog(4, "Поэмы", "Общий", 0);
         HashMap<Long, Catalog> catalogList = new HashMap<>();
         catalogList.put(catalog1.getIdCatalog(), catalog1);
         catalogList.put(catalog2.getIdCatalog(), catalog2);
-        catalogList.put(catalog3.getIdCatalog(), catalog3);
-        catalogList.put(catalog4.getIdCatalog(), catalog4);
         Publisher publisher1 = new Publisher(1, "Просвещение", "127521, Москва, 3-й проезд Марьиной рощи, 41", "prosv@prosv.ru");
         Publisher publisher2 = new Publisher(2, "Дрофа", "123308, г. Москва, ул. Зорге, д.1", "info@drofa-ventana.ru");
-        Publisher publisher3 = new Publisher(3, "ЭКСМО", "123308, г. Москва, ул. Зорге, д.1", "info@eksmo.ru");
-        Publisher publisher4 = new Publisher(4, "АСТ", "129085, город  Москва, Звездный бульвар, дом 21, строение 3, комната 5", "hr@ast.ru");
         HashMap<Long, Publisher> publisherList = new HashMap<>();
         publisherList.put(publisher1.getIdPublisher(), publisher1);
         publisherList.put(publisher2.getIdPublisher(), publisher2);
-        publisherList.put(publisher3.getIdPublisher(), publisher3);
-        publisherList.put(publisher4.getIdPublisher(), publisher4);
         Book book1 = new Book(1, "И. С. Тургенев", "Отцы и дети", 1971, 188, catalog1.getName(), publisher1.getName());
-        Book book2 = new Book(2, "Н. В. Гоголь", "Мертвые души", 1972, 416, catalog4.getName(), publisher2.getName());
+        Book book2 = new Book(2, "Н. В. Гоголь", "Мертвые души", 1972, 416, catalog2.getName(), publisher2.getName());
         CopyOfTheBook copyOfTheBook1 = new CopyOfTheBook(1, 1, true, "Ю. А. Петрова");
         CopyOfTheBook copyOfTheBook2 = new CopyOfTheBook(2, 1, false, "нет");
         CopyOfTheBook copyOfTheBook3 = new CopyOfTheBook(3, 1, false, "нет");
@@ -601,13 +582,34 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         copyOfTheBookList.put(copyOfTheBook3.getInventoryNumber(), copyOfTheBook3);
         copyOfTheBookList.put(copyOfTheBook4.getInventoryNumber(), copyOfTheBook4);
         copyOfTheBookList.put(copyOfTheBook5.getInventoryNumber(), copyOfTheBook5);
+
+        String ROOT = "Общий";
+        String[] nodes = new String[]{catalog1.getName(), catalog2.getName()};
+        final   String[][] leafs = new String[][]{{book1.getAuthors()+" '"+book1.getName()+"'"},
+                {book2.getAuthors()+" '"+book2.getName()+"'"}};
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(ROOT);
+        DefaultMutableTreeNode list1 = new DefaultMutableTreeNode(nodes[0]);
+        DefaultMutableTreeNode list2 = new DefaultMutableTreeNode(nodes[1]);
+        root.add(list1);
+        root.add(list2);
+        for ( int i = 0; i < leafs[0].length; i++)
+            list1.add(new DefaultMutableTreeNode(leafs[0][i], false));
+        for ( int i = 0; i < leafs[1].length; i++)
+            list2.add(new DefaultMutableTreeNode(leafs[1][i], false));
+        DefaultTreeModel treeModel1 = new DefaultTreeModel(root, true);
+        JTree tree1 = new JTree(treeModel1);
+        JPanel catalogTab = new JPanel(new GridLayout(1, 2));
+        catalogTab.add(new JScrollPane(tree1), BorderLayout.CENTER);
+        jtp.addTab("Catalog", catalogTab);
+
+        add(jtp);
+
         Storage storage = Storage.getInstance();
         storage.setBookList(bookList);
         storage.setCopyOfTheBookList(copyOfTheBookList);
         storage.setPublisherList(publisherList);
         fillTableBook(bookList);
         fillTableCopyOfTheBook(copyOfTheBookList);
-        fillTableCatalog(catalogList);
         fillTablePublisher(publisherList);
     }
 
@@ -810,7 +812,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         while (saveAndLoadTableModel.getRowCount() > 0) {
             saveAndLoadTableModel.removeRow(0);
         }
-        File folderLoad = new File("../nc");
+        File folderLoad = new File("D:\\Other\\lab3");
         File[] files = folderLoad.listFiles();
         for (File f : files) {
             if (f.getName().endsWith(".ini")) {
@@ -899,14 +901,6 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         }
     }
 
-    public void clearTableCatalog() {
-        if (catalogTableModel.getRowCount() > 0) {
-            for (int i = catalogTableModel.getRowCount() - 1; i > -1; i--) {
-                catalogTableModel.removeRow(i);
-            }
-        }
-    }
-
     public void clearTablePublisher() {
         if (publisherTableModel.getRowCount() > 0) {
             for (int i = publisherTableModel.getRowCount() - 1; i > -1; i--) {
@@ -939,18 +933,6 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             newRow.add(Boolean.toString(entry.getValue().getIssue()));
             newRow.add(entry.getValue().getReader());
             copyBookTableModel.addRow(newRow);
-        }
-    }
-
-    public void fillTableCatalog(HashMap<Long, Catalog> result) {
-        clearTableCatalog();
-        for (Map.Entry<Long, Catalog> entry : result.entrySet()) {
-            Vector<String> newRow = new Vector<String>();
-            newRow.add(Long.toString(entry.getKey()));
-            newRow.add(entry.getValue().getName());
-            newRow.add(entry.getValue().getNameOfChild());
-            newRow.add(Integer.toString(entry.getValue().getCount()));
-            catalogTableModel.addRow(newRow);
         }
     }
 
