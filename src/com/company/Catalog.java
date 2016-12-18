@@ -5,14 +5,15 @@ import java.io.Serializable;
 public class Catalog implements Serializable {
     private long idCatalog;
     private String name;
-    private String nameOfChild;
-    private int count;
+    private String nameOfParent;
 
-    public Catalog(int idCatalog, String name, String nameOfChild, int count){
+    public Catalog(long idCatalog, String name, String nameOfParent){
         this.idCatalog = idCatalog;
         this.name = name;
-        this.nameOfChild = nameOfChild;
-        this.count = count;
+        this.nameOfParent = nameOfParent;
+    }
+
+    public Catalog(){
     }
 
     public void setIdCatalog(long idCatalog){
@@ -33,17 +34,11 @@ public class Catalog implements Serializable {
         return name;
     }
 
-    public void setNameOfChild(String nameOfChild){
-        if (nameOfChild != ""){
-            this.nameOfChild = nameOfChild;
+    public void setNameOfParent(String nameOfParent){
+        if (nameOfParent != ""){
+            this.nameOfParent = nameOfParent;
         }
     }
 
-    public String getNameOfChild(){return nameOfChild;}
-
-    public void setCount(int count){
-        this.count = count;
-    }
-
-    public int getCount(){return count; }
+    public String getNameOfParent(){return nameOfParent;}
 }

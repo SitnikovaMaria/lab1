@@ -33,13 +33,17 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
     private DefaultTableModel catalogTableModel = new DefaultTableModel();
     private DefaultTableModel publisherTableModel = new DefaultTableModel();
     private JButton addBookButton;
-    private JButton addPublisherButton;
+    private JButton addCopyButton;
     private JButton changeBookButton;
     private JButton changeCopyButton;
     private JButton deleteBook;
     private JButton deleteCopy;
+    private JButton addPublisherButton;
     private JButton changePublisherButton;
     private JButton deletePublisher;
+    private JButton addCatalogButton;
+    private JButton changeCatalogButton;
+    private JButton deleteCatalog;
     private JTextField saveLine = new JTextField();
     private JTextField searchBook = new JTextField(40);
     private JTextField searchCopyOfTheBook = new JTextField(40);
@@ -84,9 +88,9 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
     private JTable publisherTable;
 
     public WindowView() {
-        Catalog catalog1 = new Catalog(1, "Романы", "Общий", 0);
-        Catalog catalog2 = new Catalog(2, "Поэмы", "Общий", 0);
-        Catalog catalog3 = new Catalog(3, "Другое", "Общий", 0);
+        Catalog catalog1 = new Catalog(1, "Романы", "Общий");
+        Catalog catalog2 = new Catalog(2, "Поэмы", "Общий");
+        Catalog catalog3 = new Catalog(3, "Другое", "Общий");
         HashMap<Long, Catalog> catalogList = new HashMap<>();
         catalogList.put(catalog1.getIdCatalog(), catalog1);
         catalogList.put(catalog2.getIdCatalog(), catalog2);
@@ -98,19 +102,6 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         publisherList.put(publisher1.getIdPublisher(), publisher1);
         publisherList.put(publisher2.getIdPublisher(), publisher2);
         publisherList.put(publisher3.getIdPublisher(), publisher3);
-
-        String[] itemsCatalog = {
-                catalog1.getName(),
-                catalog2.getName(),
-                catalog3.getName()
-        };
-        String[] itemsPublisher = {
-                publisher1.getName(),
-                publisher2.getName(),
-                publisher3.getName()
-        };
-        JComboBox forCatalog = new JComboBox(itemsCatalog);
-        JComboBox forPublisher = new JComboBox(itemsPublisher);
 
         setTitle("Library");
         controller = new Control(storage, this);
@@ -160,11 +151,13 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 addForm.setBounds(400, 300, 800, 150);
                 JPanel addPanel = new JPanel();
                 addPanel.setLayout(new BorderLayout());
+                final JTextField bookIdLine = new JTextField(9);
                 final JTextField nameLine = new JTextField(9);
                 final JTextField authorLine = new JTextField(9);
                 final JTextField yearLine = new JTextField(9);
                 final JTextField pagesLine = new JTextField(9);
-                final JTextField bookIdLine = new JTextField(9);
+                final JTextField catalogLine = new JTextField(9);
+                final JTextField publisherLine = new JTextField(9);
                 JPanel labelPanel = new JPanel();
                 labelPanel.setLayout(new FlowLayout());
                 labelPanel.add(bookIdLine);
@@ -172,8 +165,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 labelPanel.add(authorLine);
                 labelPanel.add(yearLine);
                 labelPanel.add(pagesLine);
-                labelPanel.add(forCatalog);
-                labelPanel.add(forPublisher);
+                labelPanel.add(catalogLine);
+                labelPanel.add(publisherLine);
                 JPanel buttonPanel = new JPanel();
                 JPanel textPanel = new JPanel(new FlowLayout());
                 addPanel.add(labelPanel, BorderLayout.CENTER);
@@ -216,7 +209,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                         Matcher year = p.matcher(yearLine.getText());
                         Matcher pages = p.matcher(pagesLine.getText());
                         if (year.matches() && pages.matches() && bookId.matches()) {
-                            controller.operation(3, bookIdLine.getText(), authorLine.getText(), nameLine.getText(), yearLine.getText(), pagesLine.getText(), (String) forCatalog.getSelectedItem() , (String) forPublisher.getSelectedItem());
+                            controller.operation(3, bookIdLine.getText(), authorLine.getText(), nameLine.getText(), yearLine.getText(), pagesLine.getText(), catalogLine.getText(), publisherLine.getText());
                             addForm.setVisible(false);
                         }
                         else{
@@ -266,14 +259,18 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 yearLine.setText((String) bookTableModel.getValueAt(bookTable.getSelectedRow(), 3));
                 final JTextField pagesLine = new JTextField(9);
                 pagesLine.setText((String) bookTableModel.getValueAt(bookTable.getSelectedRow(), 4));
+                final JTextField catalogLine = new JTextField(9);
+                catalogLine.setText((String) bookTableModel.getValueAt(bookTable.getSelectedRow(), 5));
+                final JTextField publisherLine = new JTextField(9);
+                publisherLine.setText((String) bookTableModel.getValueAt(bookTable.getSelectedRow(), 6));
                 JPanel labelPanel = new JPanel();
                 labelPanel.setLayout(new FlowLayout());
                 labelPanel.add(nameLine);
                 labelPanel.add(authorLine);
                 labelPanel.add(yearLine);
                 labelPanel.add(pagesLine);
-                labelPanel.add(forCatalog);
-                labelPanel.add(forPublisher);
+                labelPanel.add(catalogLine);
+                labelPanel.add(publisherLine);
                 JPanel buttonPanel = new JPanel();
                 JPanel textPanel = new JPanel(new FlowLayout());
                 addPanel.add(labelPanel, BorderLayout.CENTER);
@@ -312,7 +309,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                         Matcher year = p.matcher(yearLine.getText());
                         Matcher pages = p.matcher(pagesLine.getText());
                         if (year.matches() && pages.matches()) {
-                            controller.operation(5, (String) bookTableModel.getValueAt(bookTable.getSelectedRow(), 0), authorLine.getText(), nameLine.getText(), yearLine.getText(), pagesLine.getText(), (String) forCatalog.getSelectedItem() , (String) forPublisher.getSelectedItem());
+                            controller.operation(5, (String) bookTableModel.getValueAt(bookTable.getSelectedRow(), 0), authorLine.getText(), nameLine.getText(), yearLine.getText(), pagesLine.getText(), catalogLine.getText(), publisherLine.getText());
                             addForm.setVisible(false);
                         }
                         else{
@@ -354,8 +351,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             }
         });
 
-        addPublisherButton = new JButton("Add");
-        addPublisherButton.addActionListener(new ActionListener() {
+        addCopyButton = new JButton("Add");
+        addCopyButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 final JFrame addFormCopy = new JFrame("ADD COPY OF BOOK");
                 addFormCopy.setBounds(400, 300, 400, 150);
@@ -484,7 +481,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             }
         });
 
-        copyFunctionButtons.add(addPublisherButton);
+        copyFunctionButtons.add(addCopyButton);
         copyFunctionButtons.add(changeCopyButton);
         copyFunctionButtons.add(deleteCopy);
 
@@ -522,13 +519,13 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 labelPanel.add(businessAddressLine);
                 JPanel buttonPanel = new JPanel();
                 JLabel idPublisherLabel = new JLabel("Publisher ID");
-                idPublisherLabel.setPreferredSize(new Dimension(70,10));
+                idPublisherLabel.setPreferredSize(new Dimension(60,10));
                 idPublisherLabel.setHorizontalAlignment(JLabel.CENTER);
                 JLabel nameLabel = new JLabel("Name");
                 nameLabel.setPreferredSize(new Dimension(80, 10));
                 nameLabel.setHorizontalAlignment(JLabel.CENTER);
                 JLabel registeredAddressLabel = new JLabel("Registered address");
-                registeredAddressLabel.setPreferredSize(new Dimension(55, 10));
+                registeredAddressLabel.setPreferredSize(new Dimension(70, 10));
                 registeredAddressLabel.setHorizontalAlignment(JLabel.CENTER);
                 JLabel businessAddressLabel = new JLabel("Business address");
                 businessAddressLabel.setPreferredSize(new Dimension(70, 10));
@@ -709,6 +706,20 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             }
         }
 
+        /*JPanel catalogFunctionButtons = new JPanel();
+        catalogFunctionButtons.setLayout(new FlowLayout());
+
+        deleteCatalog = new JButton("Delete");
+        deleteCatalog.setEnabled(false);
+        deleteCatalog.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.operation(25, "", "", "", "", "", "", ""); //TODO второй параметр - id удаляемого каталога
+            }
+        });
+
+        catalogFunctionButtons.add(deleteCatalog);*/
+
         Book book1 = new Book(1, "И. С. Тургенев", "Отцы и дети", 1971, 188, catalog1.getName(), publisher1.getName());
         Book book2 = new Book(2, "Н. В. Гоголь", "Мертвые души", 1972, 416, catalog2.getName(), publisher2.getName());
         CopyOfTheBook copyOfTheBook1 = new CopyOfTheBook(1, 1, true, "Ю. А. Петрова");
@@ -728,7 +739,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
 
         String ROOT = "Общий";
         String[] nodes = new String[]{catalog1.getName(), catalog2.getName()};
-        final   String[][] leafs = new String[][]{{book1.getAuthors()+" '"+book1.getName()+"'"},
+        final   String[][] leafs = new String[][]{{book1.getAuthors() + " '" + book1.getName() + "'"},
                 {book2.getAuthors()+" '"+book2.getName()+"'"}};
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(ROOT);
         DefaultMutableTreeNode list1 = new DefaultMutableTreeNode(nodes[0]);
@@ -743,17 +754,21 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         JTree tree = new JTree(treeModel1);
         JPanel catalogTab = new JPanel(new GridLayout(1, 2));
         catalogTab.add(new JScrollPane(tree), BorderLayout.CENTER);
-        jtp.addTab("Catalog", catalogTab);
 
+        //catalogTab.add(catalogFunctionButtons, BorderLayout.SOUTH);
+
+        jtp.addTab("Catalog", catalogTab);
         add(jtp);
 
         Storage storage = Storage.getInstance();
         storage.setBookList(bookList);
         storage.setCopyOfTheBookList(copyOfTheBookList);
         storage.setPublisherList(publisherList);
+        storage.setCatalogList(catalogList);
         fillTableBook(bookList);
         fillTableCopyOfTheBook(copyOfTheBookList);
         fillTablePublisher(publisherList);
+        /* TODO здесь должен быть метод для вывода каталогов */
     }
 
     private void addSearchPanelBook(JPanel bookTab) {

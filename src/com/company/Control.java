@@ -184,14 +184,14 @@ public class Control {
                 boolean bool = false;
                 for (Map.Entry<Long, Publisher> entry : storage.getPublisherList().entrySet()) {
                     if (entry.getValue().getName().equals(name) && entry.getValue().getRegisteredAddress().equals(registeredAddress) && entry.getValue().getBusinessAddress().equals(businessAddress)) {
-                        /* книга стакими данными уже существует */
+                        /* издательство с такими данными уже существует */
                         bool = true;
                     }
                 }
                 if (!bool) {
                     Publisher publisher1 = new Publisher(idPublisher, name, registeredAddress, businessAddress);
                     storage.getPublisherList().put(idPublisher, publisher1);
-                    /* книга успешно добавлена */
+                    /* издательство успешно добавлено */
                 }
             }
         } catch (NumberFormatException E) {
@@ -208,7 +208,7 @@ public class Control {
                 boolean bool = false;
                 for (Map.Entry<Long, Publisher> entry : storage.getPublisherList().entrySet()) {
                     if (entry.getValue().getName().equals(name) && entry.getValue().getRegisteredAddress().equals(registeredAddress) && entry.getValue().getBusinessAddress().equals(businessAddress)) {
-                        /* книга стакими данными уже существует */
+                        /* издательство с такими данными уже существует */
                         bool = true;
                     }
                 }
@@ -223,7 +223,7 @@ public class Control {
                     if (!businessAddress.equals("")) {
                         publisher0.setBusinessAddress(businessAddress);
                     }
-                    /* книга успешно изменена */
+                    /* издательство успешно изменено */
                 }
             }
         } catch (NumberFormatException E) {
@@ -237,11 +237,76 @@ public class Control {
         try {
             long idPublisher = Long.valueOf(dateIdPublisher);
             storage.getPublisherList().remove(idPublisher);
-            /* книга успешно удалена */
+            /* издательство успешно удалено */
         } catch (NumberFormatException E) {
             /* проверьте правильность введённых Вами данных */
         } finally{
             view1.fillTablePublisher(storage.getPublisherList());
+        }
+    }
+
+    public void addCatalog(String dateIdCatalog, String name, String nameOfParent) { //добавление в Catalog
+        try {
+            long idCatalog = Long.valueOf(dateIdCatalog);
+            if (!storage.getPublisherList().containsKey(idCatalog)) {
+                boolean bool = false;
+                for (Map.Entry<Long, Catalog> entry : storage.getCatalogList().entrySet()) {
+                    if (entry.getValue().getName().equals(name) && entry.getValue().getNameOfParent().equals(nameOfParent)) {
+                        /* каталог с такими данными уже существует */
+                        bool = true;
+                    }
+                }
+                if (!bool) {
+                    Catalog catalog1 = new Catalog(idCatalog, name, nameOfParent);
+                    storage.getCatalogList().put(idCatalog, catalog1);
+                    /* каталог успешно добавлен */
+                }
+            }
+        } catch (NumberFormatException E) {
+            /* проверьте правильность введённых Вами данных */
+        } finally {
+            /* TODO здесь должен быть метод для вывода каталогов */
+        }
+    }
+
+    public void changeCatalog(String dateIdCatalog, String name, String nameOfParent) { //изменение Catalog
+        try {
+            long idCatalog = Long.valueOf(dateIdCatalog);
+            if (storage.getCatalogList().containsKey(idCatalog)) {
+                boolean bool = false;
+                for (Map.Entry<Long, Catalog> entry : storage.getCatalogList().entrySet()) {
+                    if (entry.getValue().getName().equals(name) && entry.getValue().getNameOfParent().equals(nameOfParent)) {
+                        /* каталог с такими данными уже существует */
+                        bool = true;
+                    }
+                }
+                if (!bool) {
+                    Catalog catalog0 = storage.getCatalogList().get(idCatalog);
+                    if (!name.equals("")) {
+                        catalog0.setName(name);
+                    }
+                    if (!nameOfParent.equals("")) {
+                        catalog0.setNameOfParent(nameOfParent);
+                    }
+                    /* каталог успешно изменён */
+                }
+            }
+        } catch (NumberFormatException E) {
+            /* проверьте правильность введённых Вами данных */
+        } finally {
+            /* TODO здесь должен быть метод для вывода каталогов */
+        }
+    }
+
+    public void removeCatalog(String dateIdCatalog) { //удаление из Catalog
+        try {
+            long idCatalog = Long.valueOf(dateIdCatalog);
+            storage.getCatalogList().remove(idCatalog);
+            /* каталог успешно удалён */
+        } catch (NumberFormatException E) {
+            /* проверьте правильность введённых Вами данных */
+        } finally{
+            /* TODO здесь должен быть метод для вывода каталогов */
         }
     }
 
@@ -312,6 +377,15 @@ public class Control {
                 break;
             case 22: //удаление издательства
                 removePublisher(date1);
+                break;
+            case 23: //добавление каталога
+                addCatalog(date1, date2, date3);
+                break;
+            case 24: //изменение каталога
+                changeCatalog(date1, date2, date3);
+                break;
+            case 25: //удаление каталога
+                removeCatalog(date1);
                 break;
             case 0:
                 quit = true;
