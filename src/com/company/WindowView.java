@@ -15,9 +15,6 @@ import java.util.Map;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import javax.swing.text.PlainDocument;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -36,11 +33,13 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
     private DefaultTableModel catalogTableModel = new DefaultTableModel();
     private DefaultTableModel publisherTableModel = new DefaultTableModel();
     private JButton addBookButton;
-    private JButton addCopyButton;
+    private JButton addPublisherButton;
     private JButton changeBookButton;
     private JButton changeCopyButton;
     private JButton deleteBook;
     private JButton deleteCopy;
+    private JButton changePublisherButton;
+    private JButton deletePublisher;
     private JTextField saveLine = new JTextField();
     private JTextField searchBook = new JTextField(40);
     private JTextField searchCopyOfTheBook = new JTextField(40);
@@ -355,8 +354,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             }
         });
 
-        addCopyButton = new JButton("Add");
-        addCopyButton.addActionListener(new ActionListener() {
+        addPublisherButton = new JButton("Add");
+        addPublisherButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 final JFrame addFormCopy = new JFrame("ADD COPY OF BOOK");
                 addFormCopy.setBounds(400, 300, 400, 150);
@@ -485,9 +484,140 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             }
         });
 
-        copyFunctionButtons.add(addCopyButton);
+        copyFunctionButtons.add(addPublisherButton);
         copyFunctionButtons.add(changeCopyButton);
         copyFunctionButtons.add(deleteCopy);
+
+        JPanel publisherFunctionButtons = new JPanel();
+        publisherFunctionButtons.setLayout(new FlowLayout());
+
+        deletePublisher = new JButton("Delete");
+        deletePublisher.setEnabled(false);
+        deletePublisher.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.operation(22, (String) publisherTableModel.getValueAt(publisherTable.getSelectedRow(), 0), "", "", "", "", "", "");
+            }
+        });
+
+        addPublisherButton = new JButton("Add");
+        addPublisherButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                final JFrame addFormPublisher = new JFrame("ADD PUBLISHER");
+                addFormPublisher.setBounds(400, 300, 400, 150);
+                JPanel addPanel = new JPanel();
+                addPanel.setLayout(new BorderLayout());
+                final JTextField idPublisherLine = new JTextField(7);
+                final JTextField nameLine = new JTextField(7);
+                final JTextField registeredAddressLine = new JTextField(7);
+                final JTextField businessAddressLine = new JTextField(7);
+                JPanel labelPanel = new JPanel();
+                JPanel textPanel = new JPanel(new FlowLayout());
+                addPanel.add(labelPanel, BorderLayout.CENTER);
+                addPanel.add(textPanel, BorderLayout.NORTH);
+                labelPanel.setLayout(new FlowLayout());
+                labelPanel.add(idPublisherLine);
+                labelPanel.add(nameLine);
+                labelPanel.add(registeredAddressLine);
+                labelPanel.add(businessAddressLine);
+                JPanel buttonPanel = new JPanel();
+                JLabel idPublisherLabel = new JLabel("Publisher ID");
+                idPublisherLabel.setPreferredSize(new Dimension(70,10));
+                idPublisherLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel nameLabel = new JLabel("Name");
+                nameLabel.setPreferredSize(new Dimension(80, 10));
+                nameLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel registeredAddressLabel = new JLabel("Registered address");
+                registeredAddressLabel.setPreferredSize(new Dimension(55, 10));
+                registeredAddressLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel businessAddressLabel = new JLabel("Business address");
+                businessAddressLabel.setPreferredSize(new Dimension(70, 10));
+                businessAddressLabel.setHorizontalAlignment(JLabel.CENTER);
+                textPanel.add(idPublisherLabel);
+                textPanel.add(nameLabel);
+                textPanel.add(registeredAddressLabel);
+                textPanel.add(businessAddressLabel);
+                JButton ok = new JButton();
+                ok.setText("OK");
+                ok.setSize(10, 5);
+                ok.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        Pattern p = Pattern.compile("^[0-9]{1,15}$");
+                        Matcher idPublisher = p.matcher(idPublisherLine.getText());
+                        if (idPublisher.matches()) {
+                            controller.operation(20, idPublisherLine.getText(), nameLine.getText(), registeredAddressLine.getText(), businessAddressLine.getText(), "", "", "");
+                            addFormPublisher.setVisible(false);
+                        }
+                        else {
+                            if (!idPublisher.matches()){
+                                idPublisherLine.setBackground(Color.red);
+                            }
+                            else{
+                                idPublisherLine.setBackground(Color.white);
+                            }
+                        }
+                    }
+                });
+                buttonPanel.add(ok);
+                addPanel.add(buttonPanel, BorderLayout.SOUTH);
+                addFormPublisher.add(addPanel);
+                addFormPublisher.setVisible(true);
+            }
+        });
+
+        changePublisherButton = new JButton("Change");
+        changePublisherButton.setEnabled(false);
+        changePublisherButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                final JFrame addFormPublisher = new JFrame("CHANGE PUBLISHER");
+                addFormPublisher.setBounds(400, 300, 400, 150);
+                JPanel addPanel = new JPanel();
+                addPanel.setLayout(new BorderLayout());
+                final JTextField nameLine = new JTextField(9);
+                final JTextField registeredAddressLine = new JTextField(9);
+                final JTextField businessAddressLine = new JTextField(9);
+                JPanel labelPanel = new JPanel();
+                JPanel textPanel = new JPanel(new FlowLayout());
+                addPanel.add(labelPanel, BorderLayout.CENTER);
+                addPanel.add(textPanel, BorderLayout.NORTH);
+                labelPanel.setLayout(new FlowLayout());
+                labelPanel.add(nameLine);
+                labelPanel.add(registeredAddressLine);
+                labelPanel.add(businessAddressLine);
+                JPanel buttonPanel = new JPanel();
+                JLabel nameLabel = new JLabel("Name");
+                nameLabel.setPreferredSize(new Dimension(105, 20));
+                nameLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel registeredAddressLabel = new JLabel("Registered address");
+                registeredAddressLabel.setPreferredSize(new Dimension(105, 20));
+                registeredAddressLabel.setHorizontalAlignment(JLabel.CENTER);
+                JLabel businessAddressLabel = new JLabel("Business address");
+                businessAddressLabel.setPreferredSize(new Dimension(105, 20));
+                businessAddressLabel.setHorizontalAlignment(JLabel.CENTER);
+                textPanel.add(nameLabel);
+                textPanel.add(registeredAddressLabel);
+                textPanel.add(businessAddressLabel);
+                JButton ok = new JButton();
+                ok.setText("OK");
+                ok.setSize(10, 5);
+                ok.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        controller.operation(21, (String) publisherTableModel.getValueAt(publisherTable.getSelectedRow(), 0), nameLine.getText(), registeredAddressLine.getText(), businessAddressLine.getText(), "", "", "");
+                        addFormPublisher.setVisible(false);
+                    }
+                });
+                buttonPanel.add(ok);
+                addPanel.add(buttonPanel, BorderLayout.SOUTH);
+                addFormPublisher.add(addPanel);
+                addFormPublisher.setVisible(true);
+            }
+        });
+
+        publisherFunctionButtons.add(addPublisherButton);
+        publisherFunctionButtons.add(changePublisherButton);
+        publisherFunctionButtons.add(deletePublisher);
 
         JPanel saveAndLoadButtons = new JPanel();
         saveAndLoadButtons.setLayout(new FlowLayout());
@@ -528,6 +658,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         bookTab.add(bookFunctionButtons, BorderLayout.SOUTH);
         copyTab.add(copyFunctionButtons, BorderLayout.SOUTH);
         saveTab.add(saveAndLoadButtons, BorderLayout.SOUTH);
+        publisherTab.add(publisherFunctionButtons, BorderLayout.SOUTH);
 
         addSearchPanelBook(bookTab);
         addSearchPanelCopyOfBook(copyTab);
@@ -783,8 +914,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             output.flush();
 
             Storage tmp = new Storage();
-            HashMap<Long, Book> tmpBook = new HashMap<>();
 
+            HashMap<Long, Book> tmpBook = new HashMap<>();
             for (int i = 0; i < bookTableModel.getRowCount(); i++) {
                 Book tmpB = new Book();
                 tmpB.setIdBook(Long.valueOf((String) (bookTableModel.getValueAt(i, 0))));
@@ -796,7 +927,6 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 tmpB.setPublisher((String) bookTableModel.getValueAt(i, 6));
                 tmpBook.put(tmpB.getIdBook(), tmpB);
             }
-
             tmp.setBookList(tmpBook);
 
             HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<>();
@@ -805,11 +935,21 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 tmpC.setIdBook(Long.valueOf((String) copyBookTableModel.getValueAt(i, 0)));
                 tmpC.setInventoryNumber(Long.valueOf((String) copyBookTableModel.getValueAt(i, 1)));
                 tmpC.setIssue(Boolean.valueOf((String) copyBookTableModel.getValueAt(i, 2)));
-                tmpC.setReader((String) copyBookTableModel.getValueAt(i,3));
+                tmpC.setReader((String) copyBookTableModel.getValueAt(i, 3));
                 tmpCopy.put(tmpC.getIdBook(), tmpC);
             }
-
             tmp.setCopyOfTheBookList(tmpCopy);
+
+            HashMap<Long, Publisher> tmpPublisher = new HashMap<>();
+            for (int i = 0; i < publisherTableModel.getRowCount(); i++) {
+                Publisher tmpP = new Publisher();
+                tmpP.setIdPublisher(Long.valueOf((String) publisherTableModel.getValueAt(i, 0)));
+                tmpP.setName((String) publisherTableModel.getValueAt(i, 1));
+                tmpP.setRegisteredAddress((String) publisherTableModel.getValueAt(i, 2));
+                tmpP.setBusinessAddress((String) publisherTableModel.getValueAt(i, 3));
+                tmpPublisher.put(tmpP.getIdPublisher(), tmpP);
+            }
+            tmp.setPublisherList(tmpPublisher);
 
             output.writeObject(tmp);
             output.flush();
@@ -846,6 +986,9 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             while (copyBookTableModel.getRowCount() > 0) {
                 copyBookTableModel.removeRow(0);
             }
+            while (publisherTableModel.getRowCount() > 0) {
+                publisherTableModel.removeRow(0);
+            }
             Storage tmp = new Storage();
             ObjectOutputStream output;
             ObjectInputStream input;
@@ -862,9 +1005,9 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 output.flush();
 
                 tmp = (Storage) input.readObject();
+
                 HashMap<Long, Book> tmpBook = new HashMap<>();
                 tmpBook = tmp.getBookList();
-
                 for (Book tmpB : tmpBook.values()) {
                     Vector<String> newRow = new Vector<String>();
                     newRow.add(Long.toString(tmpB.getIdBook()));
@@ -879,7 +1022,6 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
 
                 HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<>();
                 tmpCopy = tmp.getCopyOfTheBookList();
-
                 for (CopyOfTheBook tmpC : tmpCopy.values()) {
                     Vector<String> newRow = new Vector<String>();
                     newRow.add(Long.toString(tmpC.getIdBook()));
@@ -888,6 +1030,18 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                     newRow.add(tmpC.getReader());
                     copyBookTableModel.addRow(newRow);
                 }
+
+                HashMap<Long, Publisher> tmpPublisher = new HashMap<>();
+                tmpPublisher = tmp.getPublisherList();
+                for (Publisher tmpP : tmpPublisher.values()) {
+                    Vector<String> newRow = new Vector<String>();
+                    newRow.add(Long.toString(tmpP.getIdPublisher()));
+                    newRow.add(tmpP.getName());
+                    newRow.add(tmpP.getRegisteredAddress());
+                    newRow.add(tmpP.getBusinessAddress());
+                    publisherTableModel.addRow(newRow);
+                }
+
                 output.close();
                 input.close();
                 connection.close();
@@ -978,6 +1132,15 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             } else {
                 changeCopyButton.setEnabled(false);
                 deleteCopy.setEnabled(false);
+            }
+        }
+        if (e.getSource() == publisherTable.getSelectionModel() && e.getFirstIndex() >= 0) {
+            if (publisherTable.getSelectedRowCount() != 0) {
+                changePublisherButton.setEnabled(true);
+                deletePublisher.setEnabled(true);
+            } else {
+                changePublisherButton.setEnabled(false);
+                deletePublisher.setEnabled(false);
             }
         }
     }

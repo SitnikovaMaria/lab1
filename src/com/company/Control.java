@@ -46,7 +46,7 @@ public class Control {
                 int pages = Integer.valueOf(datePages);
                 boolean bool = false;
                 for (Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
-                    if (entry.getValue().getAuthors().equals(name) && entry.getValue().getName().equals(authors) && (entry.getValue().getYear() == year) && (entry.getValue().getPages() == pages) && (entry.getValue().getCatalog() == catalog) && (entry.getValue().getPublisher() == publisher)) {
+                    if (entry.getValue().getAuthors().equals(authors) && entry.getValue().getName().equals(name) && (entry.getValue().getYear() == year) && (entry.getValue().getPages() == pages) && (entry.getValue().getCatalog() == catalog) && (entry.getValue().getPublisher() == publisher)) {
                         /* книга стакими данными уже существует */
                         bool = true;
                     }
@@ -177,6 +177,74 @@ public class Control {
         }
     }
 
+    public void addPublisher(String dateIdPublisher, String name, String registeredAddress, String businessAddress) { //добавление в Publisher
+        try {
+            long idPublisher = Long.valueOf(dateIdPublisher);
+            if (!storage.getPublisherList().containsKey(idPublisher)) {
+                boolean bool = false;
+                for (Map.Entry<Long, Publisher> entry : storage.getPublisherList().entrySet()) {
+                    if (entry.getValue().getName().equals(name) && entry.getValue().getRegisteredAddress().equals(registeredAddress) && entry.getValue().getBusinessAddress().equals(businessAddress)) {
+                        /* книга стакими данными уже существует */
+                        bool = true;
+                    }
+                }
+                if (!bool) {
+                    Publisher publisher1 = new Publisher(idPublisher, name, registeredAddress, businessAddress);
+                    storage.getPublisherList().put(idPublisher, publisher1);
+                    /* книга успешно добавлена */
+                }
+            }
+        } catch (NumberFormatException E) {
+            /* проверьте правильность введённых Вами данных */
+        } finally {
+            view1.fillTablePublisher(storage.getPublisherList());
+        }
+    }
+
+    public void changePublisher(String dateIdPublisher, String name, String registeredAddress, String businessAddress) { //изменение Publisher
+        try {
+            long idPublisher = Long.valueOf(dateIdPublisher);
+            if (storage.getPublisherList().containsKey(idPublisher)) {
+                boolean bool = false;
+                for (Map.Entry<Long, Publisher> entry : storage.getPublisherList().entrySet()) {
+                    if (entry.getValue().getName().equals(name) && entry.getValue().getRegisteredAddress().equals(registeredAddress) && entry.getValue().getBusinessAddress().equals(businessAddress)) {
+                        /* книга стакими данными уже существует */
+                        bool = true;
+                    }
+                }
+                if (!bool) {
+                    Publisher publisher0 = storage.getPublisherList().get(idPublisher);
+                    if (!name.equals("")) {
+                        publisher0.setName(name);
+                    }
+                    if (!registeredAddress.equals("")) {
+                        publisher0.setRegisteredAddress(registeredAddress);
+                    }
+                    if (!businessAddress.equals("")) {
+                        publisher0.setBusinessAddress(businessAddress);
+                    }
+                    /* книга успешно изменена */
+                }
+            }
+        } catch (NumberFormatException E) {
+            /* проверьте правильность введённых Вами данных */
+        } finally {
+            view1.fillTablePublisher(storage.getPublisherList());
+        }
+    }
+
+    public void removePublisher(String dateIdPublisher) { //удаление из Publisher
+        try {
+            long idPublisher = Long.valueOf(dateIdPublisher);
+            storage.getPublisherList().remove(idPublisher);
+            /* книга успешно удалена */
+        } catch (NumberFormatException E) {
+            /* проверьте правильность введённых Вами данных */
+        } finally{
+            view1.fillTablePublisher(storage.getPublisherList());
+        }
+    }
+
     public void operation(int act, String date1, String date2, String date3, String date4, String date5, String date6, String date7) {
         switch (act) {
             case 1: //просмотр книг
@@ -235,6 +303,15 @@ public class Control {
                 break;
             case 19: //поиск экземпляров книг по издательству
                 search.searchByPublisher(date1);
+                break;
+            case 20: //добавление издательства
+                addPublisher(date1, date2, date3, date4);
+                break;
+            case 21: //изменение издательства
+                changePublisher(date1, date2, date3, date4);
+                break;
+            case 22: //удаление издательства
+                removePublisher(date1);
                 break;
             case 0:
                 quit = true;

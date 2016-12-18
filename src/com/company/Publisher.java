@@ -8,11 +8,14 @@ public class Publisher implements Serializable {
     private String registeredAddress;
     private String businessAddress;
 
-    public Publisher(int idPublisher, String name, String registeredAddress, String businessAddress){
+    public Publisher(long idPublisher, String name, String registeredAddress, String businessAddress){
         this.idPublisher = idPublisher;
         this.name = name;
         this.registeredAddress = registeredAddress;
         this.businessAddress = businessAddress;
+    }
+
+    public Publisher(){
     }
 
     public void setIdPublisher(long idPublisher){
