@@ -1,8 +1,12 @@
 package com.company;
 
+import com.model.Book;
+import com.model.Catalog;
+import com.model.CopyOfTheBook;
+import com.model.Publisher;
+
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Comparator;
 
 public class Storage implements Serializable{
 

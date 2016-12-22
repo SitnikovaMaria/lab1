@@ -1,4 +1,4 @@
-package com.company;
+package com.model;
 
 import java.io.Serializable;
 
@@ -12,7 +12,7 @@ public class Book implements Serializable{
     private String catalog;
     private String publisher;
 
-    Book(){}
+    public Book(){}
 
     public Book(long idBook, String authors, String name, int year, int pages, String catalog, String publisher){
         this.idBook = idBook;

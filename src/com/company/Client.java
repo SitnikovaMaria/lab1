@@ -1,12 +1,9 @@
 package com.company;
 
-/**
- * Created by Никита on 19.11.2016.
- */
+import com.company.Storage;
 
 import java.net.*;
 import java.io.*;
-
 
 public class Client {
     private static int serverPort = 6666;

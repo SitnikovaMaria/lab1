@@ -1,7 +1,11 @@
-п»їpackage com.company;
+package com.controller;
+
+import com.company.Storage;
+import com.model.*;
+import com.model.Publisher;
+import com.view.WindowView;
 
 import java.util.*;
-import java.util.regex.*;
 
 public class Control {
 
@@ -22,7 +26,7 @@ public class Control {
         return quit;
     }
 
-    public void reviewBook() { //РїСЂРѕСЃРјРѕС‚СЂ РєРЅРёРі
+    public void reviewBook() { //просмотр книг
         HashMap<Long, Book> result = new HashMap<Long, Book>();
         for (Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
             result.put(entry.getKey(), entry.getValue());
@@ -30,7 +34,7 @@ public class Control {
         view1.fillTableBook(result);
     }
 
-    public void reviewCopyOfTheBook() { //РїСЂРѕСЃРјРѕС‚СЂ СЌРєР·РµРјРїР»СЏСЂРѕРІ РєРЅРёРі
+    public void reviewCopyOfTheBook() { //просмотр экземпляров книг
         HashMap<Long, CopyOfTheBook> result = new HashMap<Long, CopyOfTheBook>();
         for (Map.Entry<Long, CopyOfTheBook> entry : storage.getCopyOfTheBookList().entrySet()) {
             result.put(entry.getKey(), entry.getValue());
@@ -38,7 +42,7 @@ public class Control {
         view1.fillTableCopyOfTheBook(result);
     }
 
-    public void addBook(String dateIdBook, String authors, String name, String dateYear, String datePages, String catalog, String publisher) { //РґРѕР±Р°РІР»РµРЅРёРµ РІ Book
+    public void addBook(String dateIdBook, String authors, String name, String dateYear, String datePages, String catalog, String publisher) { //добавление в Book
         try {
             long idBook = Long.valueOf(dateIdBook);
             if (!storage.getBookList().containsKey(idBook)) {
@@ -47,24 +51,24 @@ public class Control {
                 boolean bool = false;
                 for (Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
                     if (entry.getValue().getAuthors().equals(authors) && entry.getValue().getName().equals(name) && (entry.getValue().getYear() == year) && (entry.getValue().getPages() == pages) && (entry.getValue().getCatalog() == catalog) && (entry.getValue().getPublisher() == publisher)) {
-                        /* РєРЅРёРіР° СЃС‚Р°РєРёРјРё РґР°РЅРЅС‹РјРё СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚ */
+                        /* книга стакими данными уже существует */
                         bool = true;
                     }
                 }
                 if (!bool) {
                     Book book1 = new Book(idBook, authors, name, year, pages, catalog, publisher);
                     storage.getBookList().put(idBook, book1);
-                    /* РєРЅРёРіР° СѓСЃРїРµС€РЅРѕ РґРѕР±Р°РІР»РµРЅР° */
+                    /* книга успешно добавлена */
                 }
             }
         } catch (NumberFormatException E) {
-            /* РїСЂРѕРІРµСЂСЊС‚Рµ РїСЂР°РІРёР»СЊРЅРѕСЃС‚СЊ РІРІРµРґС‘РЅРЅС‹С… Р’Р°РјРё РґР°РЅРЅС‹С… */
+            /* проверьте правильность введённых Вами данных */
         } finally {
             view1.fillTableBook(storage.getBookList());
         }
     }
 
-    public void addCopyOfTheBook(String dateInventoryNumber, String dateIdBook, String dateIssue, String reader) { //РґРѕР±Р°РІР»РµРЅРёРµ РІ CopyOfTheBook
+    public void addCopyOfTheBook(String dateInventoryNumber, String dateIdBook, String dateIssue, String reader) { //добавление в CopyOfTheBook
         try {
             long inventoryNumber = Long.valueOf(dateInventoryNumber);
             if (!storage.getCopyOfTheBookList().containsKey(inventoryNumber)) {
@@ -72,19 +76,19 @@ public class Control {
                 boolean issue = Boolean.valueOf(dateIssue);
                 CopyOfTheBook copyOfTheBook1 = new CopyOfTheBook(inventoryNumber, idBook, issue, reader);
                 storage.getCopyOfTheBookList().put(inventoryNumber, copyOfTheBook1);
-                /* РєРЅРёРіР° СѓСЃРїРµС€РЅРѕ РґРѕР±Р°РІР»РµРЅР° */
+                /* книга успешно добавлена */
                 view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
             } else {
-                /* РєРЅРёРіР° СЃ С‚Р°РєРёРј РёРЅРІРµРЅС‚Р°СЂРЅС‹Рј РЅРѕРјРµСЂРѕРј СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚ */
+                /* книга с таким инвентарным номером уже существует */
                 view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
             }
         } catch (NumberFormatException E) {
-            /* РїСЂРѕРІРµСЂСЊС‚Рµ РїСЂР°РІРёР»СЊРЅРѕСЃС‚СЊ РІРІРµРґС‘РЅРЅС‹С… Р’Р°РјРё РґР°РЅРЅС‹С… */
+            /* проверьте правильность введённых Вами данных */
             view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
         }
     }
 
-    public void changeBook(String dateIdBook, String authors, String name, String dateYear, String datePages, String catalog, String publisher) { //РёР·РјРµРЅРµРЅРёРµ Book
+    public void changeBook(String dateIdBook, String authors, String name, String dateYear, String datePages, String catalog, String publisher) { //изменение Book
         try {
             long idBook = Long.valueOf(dateIdBook);
             if (storage.getBookList().containsKey(idBook)) {
@@ -92,8 +96,8 @@ public class Control {
                 int pages = Integer.valueOf(datePages);
                 boolean bool = false;
                 for (Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
-                    if (entry.getValue().getAuthors().equals(authors) && entry.getValue().getName().equals(name) && (entry.getValue().getYear() == year) && (entry.getValue().getPages() == pages) && (entry.getValue().getCatalog() == catalog) && (entry.getValue().getPublisher() == publisher)) {
-                        /* РєРЅРёРіР° СЃС‚Р°РєРёРјРё РґР°РЅРЅС‹РјРё СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚ */
+                    if (entry.getValue().getAuthors().equals(authors) && entry.getValue().getName().equals(name) && (entry.getValue().getYear() == year) && (entry.getValue().getPages() == pages) && entry.getValue().getCatalog().equals(catalog) && entry.getValue().getPublisher().equals(publisher)) {
+                        /* книга стакими данными уже существует */
                         bool = true;
                     }
                 }
@@ -117,17 +121,17 @@ public class Control {
                     if (!publisher.equals("")) {
                         book0.setPublisher(publisher);
                     }
-                    /* РєРЅРёРіР° СѓСЃРїРµС€РЅРѕ РёР·РјРµРЅРµРЅР° */
+                    /* книга успешно изменена */
                 }
             }
         } catch (NumberFormatException E) {
-            /* РїСЂРѕРІРµСЂСЊС‚Рµ РїСЂР°РІРёР»СЊРЅРѕСЃС‚СЊ РІРІРµРґС‘РЅРЅС‹С… Р’Р°РјРё РґР°РЅРЅС‹С… */
+            /* проверьте правильность введённых Вами данных */
         } finally {
             view1.fillTableBook(storage.getBookList());
         }
     }
 
-    public void changeCopyOfTheBook(String dateInventoryNumber, String dateIdBook, String dateIssue, String reader) { //РёР·РјРµРЅРµРЅРёРµ CopyOfTheBook
+    public void changeCopyOfTheBook(String dateInventoryNumber, String dateIdBook, String dateIssue, String reader) { //изменение CopyOfTheBook
         try {
             long inventoryNumber = Long.valueOf(dateInventoryNumber);
             if (storage.getCopyOfTheBookList().containsKey(inventoryNumber)) {
@@ -141,74 +145,74 @@ public class Control {
                 if (!reader.equals("")) {
                     copyOfTheBook0.setReader(reader);
                 }
-                /* РєРЅРёРіР° СѓСЃРїРµС€РЅРѕ РёР·РјРµРЅРµРЅР° */
+                /* книга успешно изменена */
                 view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
             } else {
-                /* РєРЅРёРіР° СЃ С‚Р°РєРёРј РёРЅРІРµРЅС‚Р°СЂРЅС‹Рј РЅРѕРјРµСЂРѕРј СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚ */
+                /* книга с таким инвентарным номером уже существует */
                 view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
             }
         } catch (NumberFormatException E) {
-            /* РїСЂРѕРІРµСЂСЊС‚Рµ РїСЂР°РІРёР»СЊРЅРѕСЃС‚СЊ РІРІРµРґС‘РЅРЅС‹С… Р’Р°РјРё РґР°РЅРЅС‹С… */
+            /* проверьте правильность введённых Вами данных */
             view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
         }
     }
 
-    public void removeBook(String dateIdBook) { //СѓРґР°Р»РµРЅРёРµ РёР· Book
+    public void removeBook(String dateIdBook) { //удаление из Book
         try {
             long idBook = Long.valueOf(dateIdBook);
             storage.getBookList().remove(idBook);
-            /* РєРЅРёРіР° СѓСЃРїРµС€РЅРѕ СѓРґР°Р»РµРЅР° */
+            /* книга успешно удалена */
         } catch (NumberFormatException E) {
-            /* РїСЂРѕРІРµСЂСЊС‚Рµ РїСЂР°РІРёР»СЊРЅРѕСЃС‚СЊ РІРІРµРґС‘РЅРЅС‹С… Р’Р°РјРё РґР°РЅРЅС‹С… */
+            /* проверьте правильность введённых Вами данных */
         } finally{
             view1.fillTableBook(storage.getBookList());
         }
     }
 
-    public void removeCopyOfTheBook(String dateInventoryNumber) { //СѓРґР°Р»РµРЅРёРµ РёР· CopyOfTheBook
+    public void removeCopyOfTheBook(String dateInventoryNumber) { //удаление из CopyOfTheBook
         try {
             long inventoryNumber = Long.valueOf(dateInventoryNumber);
             storage.getCopyOfTheBookList().remove(inventoryNumber);
-            /* РєРЅРёРіР° СѓСЃРїРµС€РЅРѕ СѓРґР°Р»РµРЅР° */
+            /* книга успешно удалена */
         } catch (NumberFormatException E) {
-            /* РїСЂРѕРІРµСЂСЊС‚Рµ РїСЂР°РІРёР»СЊРЅРѕСЃС‚СЊ РІРІРµРґС‘РЅРЅС‹С… Р’Р°РјРё РґР°РЅРЅС‹С… */
+            /* проверьте правильность введённых Вами данных */
         } finally {
             view1.fillTableCopyOfTheBook(storage.getCopyOfTheBookList());
         }
     }
 
-    public void addPublisher(String dateIdPublisher, String name, String registeredAddress, String businessAddress) { //РґРѕР±Р°РІР»РµРЅРёРµ РІ Publisher
+    public void addPublisher(String dateIdPublisher, String name, String registeredAddress, String businessAddress) { //добавление в Publisher
         try {
             long idPublisher = Long.valueOf(dateIdPublisher);
             if (!storage.getPublisherList().containsKey(idPublisher)) {
                 boolean bool = false;
                 for (Map.Entry<Long, Publisher> entry : storage.getPublisherList().entrySet()) {
                     if (entry.getValue().getName().equals(name) && entry.getValue().getRegisteredAddress().equals(registeredAddress) && entry.getValue().getBusinessAddress().equals(businessAddress)) {
-                        /* РёР·РґР°С‚РµР»СЊСЃС‚РІРѕ СЃ С‚Р°РєРёРјРё РґР°РЅРЅС‹РјРё СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚ */
+                        /* издательство с такими данными уже существует */
                         bool = true;
                     }
                 }
                 if (!bool) {
                     Publisher publisher1 = new Publisher(idPublisher, name, registeredAddress, businessAddress);
                     storage.getPublisherList().put(idPublisher, publisher1);
-                    /* РёР·РґР°С‚РµР»СЊСЃС‚РІРѕ СѓСЃРїРµС€РЅРѕ РґРѕР±Р°РІР»РµРЅРѕ */
+                    /* издательство успешно добавлено */
                 }
             }
         } catch (NumberFormatException E) {
-            /* РїСЂРѕРІРµСЂСЊС‚Рµ РїСЂР°РІРёР»СЊРЅРѕСЃС‚СЊ РІРІРµРґС‘РЅРЅС‹С… Р’Р°РјРё РґР°РЅРЅС‹С… */
+            /* проверьте правильность введённых Вами данных */
         } finally {
             view1.fillTablePublisher(storage.getPublisherList());
         }
     }
 
-    public void changePublisher(String dateIdPublisher, String name, String registeredAddress, String businessAddress) { //РёР·РјРµРЅРµРЅРёРµ Publisher
+    public void changePublisher(String dateIdPublisher, String name, String registeredAddress, String businessAddress) { //изменение Publisher
         try {
             long idPublisher = Long.valueOf(dateIdPublisher);
             if (storage.getPublisherList().containsKey(idPublisher)) {
                 boolean bool = false;
                 for (Map.Entry<Long, Publisher> entry : storage.getPublisherList().entrySet()) {
                     if (entry.getValue().getName().equals(name) && entry.getValue().getRegisteredAddress().equals(registeredAddress) && entry.getValue().getBusinessAddress().equals(businessAddress)) {
-                        /* РёР·РґР°С‚РµР»СЊСЃС‚РІРѕ СЃ С‚Р°РєРёРјРё РґР°РЅРЅС‹РјРё СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚ */
+                        /* издательство с такими данными уже существует */
                         bool = true;
                     }
                 }
@@ -223,60 +227,60 @@ public class Control {
                     if (!businessAddress.equals("")) {
                         publisher0.setBusinessAddress(businessAddress);
                     }
-                    /* РёР·РґР°С‚РµР»СЊСЃС‚РІРѕ СѓСЃРїРµС€РЅРѕ РёР·РјРµРЅРµРЅРѕ */
+                    /* издательство успешно изменено */
                 }
             }
         } catch (NumberFormatException E) {
-            /* РїСЂРѕРІРµСЂСЊС‚Рµ РїСЂР°РІРёР»СЊРЅРѕСЃС‚СЊ РІРІРµРґС‘РЅРЅС‹С… Р’Р°РјРё РґР°РЅРЅС‹С… */
+            /* проверьте правильность введённых Вами данных */
         } finally {
             view1.fillTablePublisher(storage.getPublisherList());
         }
     }
 
-    public void removePublisher(String dateIdPublisher) { //СѓРґР°Р»РµРЅРёРµ РёР· Publisher
+    public void removePublisher(String dateIdPublisher) { //удаление из Publisher
         try {
             long idPublisher = Long.valueOf(dateIdPublisher);
             storage.getPublisherList().remove(idPublisher);
-            /* РёР·РґР°С‚РµР»СЊСЃС‚РІРѕ СѓСЃРїРµС€РЅРѕ СѓРґР°Р»РµРЅРѕ */
+            /* издательство успешно удалено */
         } catch (NumberFormatException E) {
-            /* РїСЂРѕРІРµСЂСЊС‚Рµ РїСЂР°РІРёР»СЊРЅРѕСЃС‚СЊ РІРІРµРґС‘РЅРЅС‹С… Р’Р°РјРё РґР°РЅРЅС‹С… */
+            /* проверьте правильность введённых Вами данных */
         } finally{
             view1.fillTablePublisher(storage.getPublisherList());
         }
     }
 
-    public void addCatalog(String dateIdCatalog, String name, String nameOfParent) { //РґРѕР±Р°РІР»РµРЅРёРµ РІ Catalog
+    public void addCatalog(String dateIdCatalog, String name, String nameOfParent) { //добавление в Catalog
         try {
             long idCatalog = Long.valueOf(dateIdCatalog);
             if (!storage.getPublisherList().containsKey(idCatalog)) {
                 boolean bool = false;
                 for (Map.Entry<Long, Catalog> entry : storage.getCatalogList().entrySet()) {
                     if (entry.getValue().getName().equals(name) && entry.getValue().getNameOfParent().equals(nameOfParent)) {
-                        /* РєР°С‚Р°Р»РѕРі СЃ С‚Р°РєРёРјРё РґР°РЅРЅС‹РјРё СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚ */
+                        /* каталог с такими данными уже существует */
                         bool = true;
                     }
                 }
                 if (!bool) {
                     Catalog catalog1 = new Catalog(idCatalog, name, nameOfParent);
                     storage.getCatalogList().put(idCatalog, catalog1);
-                    /* РєР°С‚Р°Р»РѕРі СѓСЃРїРµС€РЅРѕ РґРѕР±Р°РІР»РµРЅ */
+                    /* каталог успешно добавлен */
                 }
             }
         } catch (NumberFormatException E) {
-            /* РїСЂРѕРІРµСЂСЊС‚Рµ РїСЂР°РІРёР»СЊРЅРѕСЃС‚СЊ РІРІРµРґС‘РЅРЅС‹С… Р’Р°РјРё РґР°РЅРЅС‹С… */
+            /* проверьте правильность введённых Вами данных */
         } finally {
-            /* TODO Р·РґРµСЃСЊ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РјРµС‚РѕРґ РґР»СЏ РІС‹РІРѕРґР° РєР°С‚Р°Р»РѕРіРѕРІ */
+            /* TODO здесь должен быть метод для вывода каталогов */
         }
     }
 
-    public void changeCatalog(String dateIdCatalog, String name, String nameOfParent) { //РёР·РјРµРЅРµРЅРёРµ Catalog
+    public void changeCatalog(String dateIdCatalog, String name, String nameOfParent) { //изменение Catalog
         try {
             long idCatalog = Long.valueOf(dateIdCatalog);
             if (storage.getCatalogList().containsKey(idCatalog)) {
                 boolean bool = false;
                 for (Map.Entry<Long, Catalog> entry : storage.getCatalogList().entrySet()) {
                     if (entry.getValue().getName().equals(name) && entry.getValue().getNameOfParent().equals(nameOfParent)) {
-                        /* РєР°С‚Р°Р»РѕРі СЃ С‚Р°РєРёРјРё РґР°РЅРЅС‹РјРё СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚ */
+                        /* каталог с такими данными уже существует */
                         bool = true;
                     }
                 }
@@ -288,104 +292,116 @@ public class Control {
                     if (!nameOfParent.equals("")) {
                         catalog0.setNameOfParent(nameOfParent);
                     }
-                    /* РєР°С‚Р°Р»РѕРі СѓСЃРїРµС€РЅРѕ РёР·РјРµРЅС‘РЅ */
+                    /* каталог успешно изменён */
                 }
             }
         } catch (NumberFormatException E) {
-            /* РїСЂРѕРІРµСЂСЊС‚Рµ РїСЂР°РІРёР»СЊРЅРѕСЃС‚СЊ РІРІРµРґС‘РЅРЅС‹С… Р’Р°РјРё РґР°РЅРЅС‹С… */
+            /* проверьте правильность введённых Вами данных */
         } finally {
-            /* TODO Р·РґРµСЃСЊ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РјРµС‚РѕРґ РґР»СЏ РІС‹РІРѕРґР° РєР°С‚Р°Р»РѕРіРѕРІ */
+            /* TODO здесь должен быть метод для вывода каталогов */
         }
     }
 
-    public void removeCatalog(String dateIdCatalog) { //СѓРґР°Р»РµРЅРёРµ РёР· Catalog
+    public void removeCatalog(String dateIdCatalog) { //удаление из Catalog
         try {
             long idCatalog = Long.valueOf(dateIdCatalog);
             storage.getCatalogList().remove(idCatalog);
-            /* РєР°С‚Р°Р»РѕРі СѓСЃРїРµС€РЅРѕ СѓРґР°Р»С‘РЅ */
+            /* каталог успешно удалён */
         } catch (NumberFormatException E) {
-            /* РїСЂРѕРІРµСЂСЊС‚Рµ РїСЂР°РІРёР»СЊРЅРѕСЃС‚СЊ РІРІРµРґС‘РЅРЅС‹С… Р’Р°РјРё РґР°РЅРЅС‹С… */
+            /* проверьте правильность введённых Вами данных */
         } finally{
-            /* TODO Р·РґРµСЃСЊ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РјРµС‚РѕРґ РґР»СЏ РІС‹РІРѕРґР° РєР°С‚Р°Р»РѕРіРѕРІ */
+            /* TODO здесь должен быть метод для вывода каталогов */
         }
     }
 
     public void operation(int act, String date1, String date2, String date3, String date4, String date5, String date6, String date7) {
         switch (act) {
-            case 1: //РїСЂРѕСЃРјРѕС‚СЂ РєРЅРёРі
+            case 1: //просмотр книг
                 reviewBook();
                 break;
-            case 2: //РїСЂРѕСЃРјРѕС‚СЂ СЌРєР·РµРјРїР»СЏСЂРѕРІ РєРЅРёРі
+            case 2: //просмотр экземпляров книг
                 reviewCopyOfTheBook();
                 break;
-            case 3: //РґРѕР±Р°РІР»РµРЅРёРµ РєРЅРёРіРё
+            case 3: //добавление книги
                 addBook(date1, date2, date3, date4, date5, date6, date7);
                 break;
-            case 4: //РґРѕР±Р°РІР»РµРЅРёРµ СЌРєР·РµРјРїР»СЏСЂР° РєРЅРёРіРё
+            case 4: //добавление экземпляра книги
                 addCopyOfTheBook(date1, date2, date3, date4);
                 break;
-            case 5: //РёР·РјРµРЅРµРЅРёРµ РєРЅРёРіРё
+            case 5: //изменение книги
                 changeBook(date1, date2, date3, date4, date5, date6, date7);
                 break;
-            case 6: //РёР·РјРµРЅРµРЅРёРµ СЌРєР·РµРјРїР»СЏСЂР° РєРЅРёРіРё
+            case 6: //изменение экземпляра книги
                 changeCopyOfTheBook(date1, date2, date3, date4);
                 break;
-            case 7: //СѓРґР°Р»РµРЅРёРµ РєРЅРёРіРё
+            case 7: //удаление книги
                 removeBook(date1);
                 break;
-            case 8: //СѓРґР°Р»РµРЅРёРµ СЌРєР·РµРјРїР»СЏСЂР° РєРЅРёРіРё
+            case 8: //удаление экземпляра книги
                 removeCopyOfTheBook(date1);
                 break;
-            case 9: //РїРѕРёСЃРє РєРЅРёРіРё РїРѕ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂСѓ
+            case 9: //поиск книги по идентификатору
                 search.searchByIdBook(date1);
                 break;
-            case 10: //РїРѕРёСЃРє РєРЅРёРі РїРѕ РЅР°Р·РІР°РЅРёСЋ
+            case 10: //поиск книг по названию
                 search.searchByName(date1);
                 break;
-            case 11: //РїРѕРёСЃРє РєРЅРёРі РїРѕ Р°РІС‚РѕСЂР°Рј
+            case 11: //поиск книг по авторам
                 search.searchByAuthors(date1);
                 break;
-            case 12: //РїРѕРёСЃРє РєРЅРёРі РїРѕ РіРѕРґСѓ
+            case 12: //поиск книг по году
                 search.searchByYear(date1);
                 break;
-            case 13: //РїРѕРёСЃРє РєРЅРёРі РїРѕ РєРѕР»РёС‡РµСЃС‚РІСѓ СЃС‚СЂР°РЅРёС†
+            case 13: //поиск книг по количеству страниц
                 search.searchByPages(date1);
                 break;
-            case 14: //РїРѕРёСЃРє СЌРєР·РµРјРїР»СЏСЂРѕРІ РєРЅРёРі РїРѕ РёРЅРІРµРЅС‚Р°СЂРЅРѕРјСѓ РЅРѕРјРµСЂСѓ
+            case 14: //поиск экземпляров книг по инвентарному номеру
                 search.searchByInventoryNumber(date1);
                 break;
-            case 15: //РїРѕРёСЃРє СЌРєР·РµРјРїР»СЏСЂРѕРІ РєРЅРёРі РїРѕ РєРЅРёРіРµ
+            case 15: //поиск экземпляров книг по книге
                 search.searchByBook(date1);
                 break;
-            case 16: //РїРѕРёСЃРє СЌРєР·РµРјРїР»СЏСЂРѕРІ РєРЅРёРі РїРѕ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РІС‹РґР°С‡Рµ
+            case 16: //поиск экземпляров книг по информации о выдаче
                 search.searchByIssue(date1);
                 break;
-            case 17: //РїРѕРёСЃРє СЌРєР·РµРјРїР»СЏСЂРѕРІ РєРЅРёРі РїРѕ С‡РёС‚Р°С‚РµР»СЋ
+            case 17: //поиск экземпляров книг по читателю
                 search.searchByReader(date1);
                 break;
-            case 18: //РїРѕРёСЃРє СЌРєР·РµРјРїР»СЏСЂРѕРІ РєРЅРёРі РїРѕ РєР°С‚Р°Р»РѕРіСѓ
+            case 18: //поиск экземпляров книг по каталогу
                 search.searchByCatalog(date1);
                 break;
-            case 19: //РїРѕРёСЃРє СЌРєР·РµРјРїР»СЏСЂРѕРІ РєРЅРёРі РїРѕ РёР·РґР°С‚РµР»СЊСЃС‚РІСѓ
+            case 19: //поиск экземпляров книг по издательству
                 search.searchByPublisher(date1);
                 break;
-            case 20: //РґРѕР±Р°РІР»РµРЅРёРµ РёР·РґР°С‚РµР»СЊСЃС‚РІР°
+            case 20: //добавление издательства
                 addPublisher(date1, date2, date3, date4);
                 break;
-            case 21: //РёР·РјРµРЅРµРЅРёРµ РёР·РґР°С‚РµР»СЊСЃС‚РІР°
+            case 21: //изменение издательства
                 changePublisher(date1, date2, date3, date4);
                 break;
-            case 22: //СѓРґР°Р»РµРЅРёРµ РёР·РґР°С‚РµР»СЊСЃС‚РІР°
+            case 22: //удаление издательства
                 removePublisher(date1);
                 break;
-            case 23: //РґРѕР±Р°РІР»РµРЅРёРµ РєР°С‚Р°Р»РѕРіР°
+            case 23: //добавление каталога
                 addCatalog(date1, date2, date3);
                 break;
-            case 24: //РёР·РјРµРЅРµРЅРёРµ РєР°С‚Р°Р»РѕРіР°
+            case 24: //изменение каталога
                 changeCatalog(date1, date2, date3);
                 break;
-            case 25: //СѓРґР°Р»РµРЅРёРµ РєР°С‚Р°Р»РѕРіР°
+            case 25: //удаление каталога
                 removeCatalog(date1);
+                break;
+            case 26: //поиск издательства по ID
+                search.searchPublisherById(date1);
+                break;
+            case 27: //поиск издательства по Name
+                search.searchPublisherByName(date1);
+                break;
+            case 28: //поиск издательства по Registered address
+                search.searchByRegisteredAddress(date1);
+                break;
+            case 29: //поиск издательства по Business address
+                search.searchByBusinessAddress(date1);
                 break;
             case 0:
                 quit = true;

@@ -1,4 +1,8 @@
-п»їpackage com.company;
+package com.view;
+
+import com.company.Storage;
+import com.controller.Control;
+import com.model.*;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -47,6 +51,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
     private JTextField saveLine = new JTextField();
     private JTextField searchBook = new JTextField(40);
     private JTextField searchCopyOfTheBook = new JTextField(40);
+    private JTextField searchPublisher = new JTextField(40);
     private JTable saveAndLoad;
 
     public String getFileName() {
@@ -70,17 +75,26 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             "Reader"
     };
 
+    private String[] itemsPublisher = {
+            "ID",
+            "Name",
+            "Registered address",
+            "Business address"
+    };
+
     private String[] itemsIssue = {
             "true",
-            "false",
+            "false"
     };
 
     private JComboBox searchParameterBook = new JComboBox(itemsBook);
     private JComboBox searchParameterCopyOfTheBook = new JComboBox(itemsCopyOfTheBook);
+    private JComboBox searchParameterPublisher = new JComboBox(itemsPublisher);
     private JComboBox forIssue = new JComboBox(itemsIssue);
 
     private ActionListener actionListenerBook = new TestActionListenerBook();
     private ActionListener actionListenerCopyOfTheBook = new TestActionListenerCopyOfTheBook();
+    private ActionListener actionListenerPublisher = new TestActionListenerPublisher();
 
     private JTable bookTable;
     private JTable copyOfTheBookTable;
@@ -88,16 +102,16 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
     private JTable publisherTable;
 
     public WindowView() {
-        Catalog catalog1 = new Catalog(1, "Р РѕРјР°РЅС‹", "РћР±С‰РёР№");
-        Catalog catalog2 = new Catalog(2, "РџРѕСЌРјС‹", "РћР±С‰РёР№");
-        Catalog catalog3 = new Catalog(3, "Р”СЂСѓРіРѕРµ", "РћР±С‰РёР№");
+        Catalog catalog1 = new Catalog(1, "Романы", "Общий");
+        Catalog catalog2 = new Catalog(2, "Поэмы", "Общий");
+        Catalog catalog3 = new Catalog(3, "Другое", "Общий");
         HashMap<Long, Catalog> catalogList = new HashMap<>();
         catalogList.put(catalog1.getIdCatalog(), catalog1);
         catalogList.put(catalog2.getIdCatalog(), catalog2);
         catalogList.put(catalog3.getIdCatalog(), catalog3);
-        Publisher publisher1 = new Publisher(1, "РџСЂРѕСЃРІРµС‰РµРЅРёРµ", "127521, РњРѕСЃРєРІР°, 3-Р№ РїСЂРѕРµР·Рґ РњР°СЂСЊРёРЅРѕР№ СЂРѕС‰Рё, 41", "prosv@prosv.ru");
-        Publisher publisher2 = new Publisher(2, "Р”СЂРѕС„Р°", "123308, Рі. РњРѕСЃРєРІР°, СѓР». Р—РѕСЂРіРµ, Рґ.1", "info@drofa-ventana.ru");
-        Publisher publisher3 = new Publisher(3, "Р”СЂСѓРіРѕРµ", "РќРµРёР·РІРµСЃС‚РЅС‹Р№ Р°РґСЂРµСЃ", "РќРµРёР·РІРµСЃС‚РЅС‹Р№ Р°РґСЂРµСЃ");
+        Publisher publisher1 = new Publisher(1, "Просвещение", "127521, Москва, 3-й проезд Марьиной рощи, 41", "prosv@prosv.ru");
+        Publisher publisher2 = new Publisher(2, "Дрофа", "123308, г. Москва, ул. Зорге, д.1", "info@drofa-ventana.ru");
+        Publisher publisher3 = new Publisher(3, "Другое", "Неизвестный адрес", "Неизвестный адрес");
         HashMap<Long, Publisher> publisherList = new HashMap<>();
         publisherList.put(publisher1.getIdPublisher(), publisher1);
         publisherList.put(publisher2.getIdPublisher(), publisher2);
@@ -398,9 +412,9 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                         Matcher inventoryNumber = p.matcher(inventoryNumberLine.getText());
                         if (bookId.matches() && inventoryNumber.matches()) {
                             if (forIssue.getSelectedItem().toString().equals("false")) {
-                                controller.operation(4, inventoryNumberLine.getText(), bookIdLine.getText(), "false", "РЅРµС‚", "", "", "");
+                                controller.operation(4, inventoryNumberLine.getText(), bookIdLine.getText(), "false", "нет", "", "", "");
                             } else {
-                                if (readerLine.getText().equals("РЅРµС‚")) {
+                                if (readerLine.getText().equals("нет")) {
                                     controller.operation(2, "", "", "", "", "", "", "");
                                 } else {
                                     controller.operation(4, inventoryNumberLine.getText(), bookIdLine.getText(), "true", readerLine.getText(), "", "", "");
@@ -463,9 +477,9 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         if (forIssue.getSelectedItem().toString().equals("false")) {
-                            controller.operation(6, (String) copyBookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 0), (String) copyBookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 1), "false", "РЅРµС‚", "", "", "");
+                            controller.operation(6, (String) copyBookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 0), (String) copyBookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 1), "false", "нет", "", "", "");
                         } else {
-                            if (readerLine.getText().equals("РЅРµС‚")) {
+                            if (readerLine.getText().equals("нет")) {
                                 controller.operation(2, "", "", "", "", "", "", "");
                             } else {
                                 controller.operation(6, (String) copyBookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 0), (String) copyBookTableModel.getValueAt(copyOfTheBookTable.getSelectedRow(), 1), "true", readerLine.getText(), "", "", "");
@@ -659,6 +673,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
 
         addSearchPanelBook(bookTab);
         addSearchPanelCopyOfBook(copyTab);
+        addSearchPanelPublisher(publisherTab);
 
         saveTab.add(saveLine, BorderLayout.NORTH);
         JTabbedPane jtp = new JTabbedPane();
@@ -714,19 +729,19 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         deleteCatalog.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.operation(25, "", "", "", "", "", "", ""); //TODO РІС‚РѕСЂРѕР№ РїР°СЂР°РјРµС‚СЂ - id СѓРґР°Р»СЏРµРјРѕРіРѕ РєР°С‚Р°Р»РѕРіР°
+                controller.operation(25, "", "", "", "", "", "", ""); //TODO второй параметр - id удаляемого каталога
             }
         });
 
         catalogFunctionButtons.add(deleteCatalog);*/
 
-        Book book1 = new Book(1, "Р. РЎ. РўСѓСЂРіРµРЅРµРІ", "РћС‚С†С‹ Рё РґРµС‚Рё", 1971, 188, catalog1.getName(), publisher1.getName());
-        Book book2 = new Book(2, "Рќ. Р’. Р“РѕРіРѕР»СЊ", "РњРµСЂС‚РІС‹Рµ РґСѓС€Рё", 1972, 416, catalog2.getName(), publisher2.getName());
-        CopyOfTheBook copyOfTheBook1 = new CopyOfTheBook(1, 1, true, "Р®. Рђ. РџРµС‚СЂРѕРІР°");
-        CopyOfTheBook copyOfTheBook2 = new CopyOfTheBook(2, 1, false, "РЅРµС‚");
-        CopyOfTheBook copyOfTheBook3 = new CopyOfTheBook(3, 1, false, "РЅРµС‚");
-        CopyOfTheBook copyOfTheBook4 = new CopyOfTheBook(4, 2, true, "Рќ. Р. Р’Р°СЃРёРЅР°");
-        CopyOfTheBook copyOfTheBook5 = new CopyOfTheBook(5, 2, false, "РЅРµС‚");
+        Book book1 = new Book(1, "И. С. Тургенев", "Отцы и дети", 1971, 188, catalog1.getName(), publisher1.getName());
+        Book book2 = new Book(2, "Н. В. Гоголь", "Мертвые души", 1972, 416, catalog2.getName(), publisher2.getName());
+        CopyOfTheBook copyOfTheBook1 = new CopyOfTheBook(1, 1, true, "Ю. А. Петрова");
+        CopyOfTheBook copyOfTheBook2 = new CopyOfTheBook(2, 1, false, "нет");
+        CopyOfTheBook copyOfTheBook3 = new CopyOfTheBook(3, 1, false, "нет");
+        CopyOfTheBook copyOfTheBook4 = new CopyOfTheBook(4, 2, true, "Н. И. Васина");
+        CopyOfTheBook copyOfTheBook5 = new CopyOfTheBook(5, 2, false, "нет");
         HashMap<Long, Book> bookList = new HashMap<>();
         bookList.put(book1.getIdBook(), book1);
         bookList.put(book2.getIdBook(), book2);
@@ -737,7 +752,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         copyOfTheBookList.put(copyOfTheBook4.getInventoryNumber(), copyOfTheBook4);
         copyOfTheBookList.put(copyOfTheBook5.getInventoryNumber(), copyOfTheBook5);
 
-        String ROOT = "РћР±С‰РёР№";
+        String ROOT = "Общий";
         String[] nodes = new String[]{catalog1.getName(), catalog2.getName()};
         final   String[][] leafs = new String[][]{{book1.getAuthors() + " '" + book1.getName() + "'"},
                 {book2.getAuthors()+" '"+book2.getName()+"'"}};
@@ -768,7 +783,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         fillTableBook(bookList);
         fillTableCopyOfTheBook(copyOfTheBookList);
         fillTablePublisher(publisherList);
-        /* TODO Р·РґРµСЃСЊ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РјРµС‚РѕРґ РґР»СЏ РІС‹РІРѕРґР° РєР°С‚Р°Р»РѕРіРѕРІ */
+        /* TODO здесь должен быть метод для вывода каталогов */
     }
 
     private void addSearchPanelBook(JPanel bookTab) {
@@ -795,6 +810,17 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         searchPanelCopyOfTheBook.add(searchCopyOfTheBook);
         searchPanelCopyOfTheBook.add(searchParameterCopyOfTheBook);
         searchCopyOfTheBookButton.addActionListener(actionListenerCopyOfTheBook);
+    }
+
+    private void addSearchPanelPublisher(JPanel publisherTab){
+        JPanel searchPanelPublisher = new JPanel();
+        publisherTab.add(searchPanelPublisher, BorderLayout.NORTH);
+        searchPanelPublisher.setLayout(new FlowLayout());
+        JButton searchPublisherButton = new JButton("Search");
+        searchPanelPublisher.add(searchPublisherButton);
+        searchPanelPublisher.add(searchPublisher);
+        searchPanelPublisher.add(searchParameterPublisher);
+        searchPublisherButton.addActionListener(actionListenerPublisher);
     }
 
     public void viewBook(Book book) {
@@ -1216,6 +1242,33 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                         break;
                     case "Reader":
                         act = 17;
+                        break;
+                }
+            }
+            controller.operation(act, date, "", "", "", "", "", "");
+        }
+    }
+
+    public class TestActionListenerPublisher implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            String date = searchPublisher.getText();
+            int act = 0;
+            String action = searchParameterPublisher.getSelectedItem().toString();
+            if (date.equals("")) {
+                act = 2;
+            } else {
+                switch (action) {
+                    case "ID":
+                        act = 26;
+                        break;
+                    case "Name":
+                        act = 27;
+                        break;
+                    case "Registered address":
+                        act = 28;
+                        break;
+                    case "Business address":
+                        act = 29;
                         break;
                 }
             }

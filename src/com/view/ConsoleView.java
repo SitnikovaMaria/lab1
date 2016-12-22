@@ -1,4 +1,7 @@
-package com.company;
+package com.view;
+
+import com.model.Book;
+import com.model.CopyOfTheBook;
 
 import java.util.ArrayList;
 
@@ -15,7 +18,7 @@ public class ConsoleView /*implements View*/ {
         System.out.println();
     }
 
-    public void viewCopyOfTheBook(com.company.CopyOfTheBook book){
+    public void viewCopyOfTheBook(com.model.CopyOfTheBook book){
         System.out.print(book.getInventoryNumber()/*inventoryNumber*/);
         System.out.print(" ");
         System.out.print(book.getIdBook()/*idBook*/);

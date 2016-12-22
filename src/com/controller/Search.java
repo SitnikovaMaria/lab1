@@ -1,4 +1,8 @@
-п»їpackage com.company;
+package com.controller;
+
+import com.company.Storage;
+import com.model.*;
+import com.view.WindowView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +20,7 @@ public class Search {
         this.sort = sort;
     }
 
-    public void searchByIdBook(String date) { //РїРѕРёСЃРє РєРЅРёРіРё РїРѕ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂСѓ
+    public void searchByIdBook(String date) { //поиск книги по идентификатору
         HashMap<Long, Book> result = new HashMap<Long, Book>();
         Pattern p;
         if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
@@ -37,7 +41,7 @@ public class Search {
         view.fillTableBook(result);
     }
 
-    public void searchByName(String date) { //РїРѕРёСЃРє РєРЅРёРі РїРѕ РЅР°Р·РІР°РЅРёСЋ
+    public void searchByName(String date) { //поиск книг по названию
         HashMap<Long, Book> result = new HashMap<Long, Book>();
         Pattern p;
         if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
@@ -59,7 +63,7 @@ public class Search {
         view.fillTableBook(sortedHashMap);
     }
 
-    public void searchByAuthors(String date) { //РїРѕРёСЃРє РєРЅРёРі РїРѕ Р°РІС‚РѕСЂР°Рј
+    public void searchByAuthors(String date) { //поиск книг по авторам
         HashMap<Long, Book> result = new HashMap<Long, Book>();
         Pattern p;
         if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
@@ -81,7 +85,7 @@ public class Search {
         view.fillTableBook(sortedHashMap);
     }
 
-    public void searchByYear(String date) { //РїРѕРёСЃРє РєРЅРёРі РїРѕ РіРѕРґСѓ
+    public void searchByYear(String date) { //поиск книг по году
         HashMap<Long, Book> result = new HashMap<Long, Book>();
         Pattern p;
         if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
@@ -103,7 +107,7 @@ public class Search {
         view.fillTableBook(sortedHashMap);
     }
 
-    public void searchByPages(String date) { //РїРѕРёСЃРє РєРЅРёРі РїРѕ СЃС‚СЂР°РЅРёС†Р°Рј
+    public void searchByPages(String date) { //поиск книг по страницам
         HashMap<Long, Book> result = new HashMap<Long, Book>();
         Pattern p;
         if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
@@ -125,7 +129,7 @@ public class Search {
         view.fillTableBook(sortedHashMap);
     }
 
-    public void searchByInventoryNumber(String date) { //РїРѕРёСЃРє СЌРєР·РµРјРїР»СЏСЂР° РєРЅРёРіРё РїРѕ РёРЅРІРµРЅС‚Р°СЂРЅРѕРјСѓ РЅРѕРјРµСЂСѓ
+    public void searchByInventoryNumber(String date) { //поиск экземпляра книги по инвентарному номеру
         HashMap<Long, CopyOfTheBook> result = new HashMap<Long, CopyOfTheBook>();
         Pattern p;
         if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
@@ -146,7 +150,7 @@ public class Search {
         view.fillTableCopyOfTheBook(result);
     }
 
-    public void searchByBook(String date) { //РїРѕРёСЃРє СЌРєР·РµРјРїР»СЏСЂРѕРІ РєРЅРёРіРё РїРѕ РєРЅРёРіРµ
+    public void searchByBook(String date) { //поиск экземпляров книги по книге
         HashMap<Long, CopyOfTheBook> result = new HashMap<Long, CopyOfTheBook>();
         Pattern p;
         if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
@@ -168,7 +172,7 @@ public class Search {
         view.fillTableCopyOfTheBook(sortedHashMap);
     }
 
-    public void searchByIssue(String date) { //РїРѕРёСЃРє СЌРєР·РµРјРїР»СЏСЂРѕРІ РєРЅРёРі РїРѕ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РІС‹РґР°С‡Рµ
+    public void searchByIssue(String date) { //поиск экземпляров книг по информации о выдаче
         HashMap<Long, CopyOfTheBook> result = new HashMap<Long, CopyOfTheBook>();
         Pattern p;
         if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
@@ -190,7 +194,7 @@ public class Search {
         view.fillTableCopyOfTheBook(sortedHashMap);
     }
 
-    public void searchByReader(String date) { //РїРѕРёСЃРє СЌРєР·РµРјРїР»СЏСЂРѕРІ РєРЅРёРі РїРѕ С‡РёС‚Р°С‚РµР»СЋ
+    public void searchByReader(String date) { //поиск экземпляров книг по читателю
         HashMap<Long, CopyOfTheBook> result = new HashMap<Long, CopyOfTheBook>();
         Pattern p;
         if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
@@ -212,7 +216,7 @@ public class Search {
         view.fillTableCopyOfTheBook(sortedHashMap);
     }
 
-    public void searchByCatalog(String date) { //РїРѕРёСЃРє СЌРєР·РµРјРїР»СЏСЂРѕРІ РєРЅРёРі РїРѕ С‡РёС‚Р°С‚РµР»СЋ
+    public void searchByCatalog(String date) { //поиск экземпляров книг по читателю
         HashMap<Long, Book> result = new HashMap<Long, Book>();
         Pattern p;
         if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
@@ -234,7 +238,7 @@ public class Search {
         view.fillTableBook(sortedHashMap);
     }
 
-    public void searchByPublisher(String date) { //РїРѕРёСЃРє СЌРєР·РµРјРїР»СЏСЂРѕРІ РєРЅРёРі РїРѕ РёР·РґР°С‚РµР»СЊСЃС‚РІСѓ
+    public void searchByPublisher(String date) { //поиск экземпляров книг по издательству
         HashMap<Long, Book> result = new HashMap<Long, Book>();
         Pattern p;
         if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
@@ -254,5 +258,92 @@ public class Search {
         }
         HashMap<Long, Book> sortedHashMap = sort.sortByPublisher(result);
         view.fillTableBook(sortedHashMap);
+    }
+
+    public void searchPublisherById(String date){ //поиск издательства по ID
+        HashMap<Long, Publisher> result = new HashMap<Long, Publisher>();
+        Pattern p;
+        if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
+            p = Pattern.compile(date.substring(1));
+        }
+        else {
+            p = Pattern.compile(date);
+        }
+        Matcher m;
+        String text;
+        for (Map.Entry<Long, Publisher> entry : storage.getPublisherList().entrySet()) {
+            text = String.valueOf(entry.getValue().getIdPublisher());
+            m = p.matcher(text);
+            if (m.find()) {
+                result.put(entry.getKey(), entry.getValue());
+            }
+        }
+        view.fillTablePublisher(result);
+    }
+
+    public void searchPublisherByName(String date){ //поиск издательства по Name
+        HashMap<Long, Publisher> result = new HashMap<Long, Publisher>();
+        Pattern p;
+        if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
+            p = Pattern.compile(date.substring(1));
+        }
+        else {
+            p = Pattern.compile(date);
+        }
+        Matcher m;
+        String text;
+        for (Map.Entry<Long, Publisher> entry : storage.getPublisherList().entrySet()) {
+            text = entry.getValue().getName();
+            m = p.matcher(text);
+            if (m.find()) {
+                result.put(entry.getKey(), entry.getValue());
+            }
+        }
+        HashMap<Long, Publisher> sortedHashMap = sort.sortPublisherByName(result);
+        view.fillTablePublisher(sortedHashMap);
+    }
+
+    public void searchByRegisteredAddress(String date){ //поиск издательства по Registered address
+        HashMap<Long, Publisher> result = new HashMap<Long, Publisher>();
+        Pattern p;
+        if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
+            p = Pattern.compile(date.substring(1));
+        }
+        else {
+            p = Pattern.compile(date);
+        }
+        Matcher m;
+        String text;
+        for (Map.Entry<Long, Publisher> entry : storage.getPublisherList().entrySet()) {
+            text = entry.getValue().getRegisteredAddress();
+            m = p.matcher(text);
+            if (m.find()) {
+                result.put(entry.getKey(), entry.getValue());
+            }
+        }
+        HashMap<Long, Publisher> sortedHashMap = sort.sortByRegisteredAddress(result);
+        view.fillTablePublisher(sortedHashMap);
+    }
+
+    public void searchByBusinessAddress(String date){ //поиск издательства по Business address
+        HashMap<Long, Publisher> result = new HashMap<Long, Publisher>();
+        Pattern p;
+        if ((date.charAt(0) == '*') || (date.charAt(0) == '?')){
+            p = Pattern.compile(date.substring(1));
+        }
+        else {
+            p = Pattern.compile(date);
+        }
+        Matcher m;
+        String text;
+        for (Map.Entry<Long, Publisher> entry : storage.getPublisherList().entrySet()) {
+            text = entry.getValue().getBusinessAddress();
+            m = p.matcher(text);
+            if (m.find()) {
+                result.put(entry.getKey(), entry.getValue());
+            }
+        }
+        HashMap<Long, Publisher> sortedHashMap = sort.sortByBusinessAddress(result);
+        view.fillTablePublisher(sortedHashMap);
     }
 }

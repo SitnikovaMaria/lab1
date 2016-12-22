@@ -1,9 +1,7 @@
-package com.company;
+package com.model;
 
 import java.io.Serializable;
-/**
- * Created by user on 07.12.2016.
- */
+
 public class User implements Serializable{
     private String name;
     private String middleName;
@@ -47,5 +45,5 @@ public class User implements Serializable{
     public String getMiddleName(){
         return middleName;
     }
-    
+
 }

@@ -1,8 +1,10 @@
 package com.company;
 
+import com.model.Book;
+import com.model.CopyOfTheBook;
+
 import java.io.*;
 import java.util.HashMap;
-import java.util.Vector;
 
 public class Serialization {
     public static void saveObjectStorage(Storage tmp, String fileName) throws IOException{
@@ -49,7 +51,7 @@ public class Serialization {
                     }
                 }
             }
-            if (check==true){
+            if (check == true){
                 tmpBook.put(tmpNewB.getIdBook(),tmpNewB);
             }
         }
@@ -64,7 +66,7 @@ public class Serialization {
                     check=false;
                 }
             }
-            if (check==true){
+            if (check == true){
                 tmpCopy.put(tmpNewC.getIdBook(),tmpNewC);
             }
         }
