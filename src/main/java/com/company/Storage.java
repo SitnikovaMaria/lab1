@@ -11,10 +11,10 @@ import java.util.HashMap;
 public class Storage implements Serializable{
 
     private static Storage instance;
-    private HashMap<Long, Book> bookList = new HashMap<>();
-    private HashMap<Long, CopyOfTheBook> copyOfTheBookList = new HashMap<>();
-    private HashMap<Long, Catalog> catalogList = new HashMap<>();
-    private HashMap<Long, Publisher> publisherList = new HashMap<>();
+    private HashMap<Long, Book> bookList = new HashMap<Long, Book>();
+    private HashMap<Long, CopyOfTheBook> copyOfTheBookList = new HashMap<Long, CopyOfTheBook>();
+    private HashMap<Long, Catalog> catalogList = new HashMap<Long, Catalog>();
+    private HashMap<Long, Publisher> publisherList = new HashMap<Long, Publisher>();
 
     public Storage(){
     }

@@ -1,20 +1,15 @@
 package com;
 
-/**
- * Created by Никита on 19.11.2016.
- */
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import java.net.*;
 import java.io.*;
 
 public class Server {
     private static int port = 6666;
     public static void main(String[] ar)    {
-
         try {
             ServerSocket ss = new ServerSocket(port);
             String line = null;
@@ -26,11 +21,10 @@ public class Server {
                 ObjectOutputStream out = new ObjectOutputStream(sout);
                 out.flush();
                 if ((line = (String) in.readObject())!=null) {
-
                     switch (line) {
                         case "save":
                             String filename = (String) in.readObject();
-                            System.out.print("save "+filename);
+                            System.out.print("save "+filename+"\n");
                             FileOutputStream fos = new FileOutputStream(filename);
                             ObjectOutputStream oos = new ObjectOutputStream(fos);
                             oos.writeObject(in.readObject());
@@ -39,7 +33,7 @@ public class Server {
                             break;
                         case "load":
                             filename = (String) in.readObject();
-                            System.out.print("load "+filename);
+                            System.out.print("load "+filename+"\n");
                             FileInputStream fis = new FileInputStream(filename);
                             ObjectInputStream oin = new ObjectInputStream(fis);
                             out.writeObject(oin.readObject());
@@ -49,7 +43,7 @@ public class Server {
                             break;
                         case "saveandmerge":
                             filename = (String) in.readObject();
-                            System.out.print("saveandmerge "+filename);
+                            System.out.print("saveandmerge "+filename+"\n");
                             fis = new FileInputStream(filename);
                             oin = new ObjectInputStream(fis);
                             out.writeObject(oin.readObject());

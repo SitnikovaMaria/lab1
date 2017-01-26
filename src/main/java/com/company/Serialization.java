@@ -30,9 +30,9 @@ public class Serialization {
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         Storage tmp = (Storage) oin.readObject();
         oin.close();
-        HashMap<Long, Book> tmpBook = new HashMap<>();
+        HashMap<Long, Book> tmpBook = new HashMap<Long, Book>();
         tmpBook = tmp.getBookList();
-        HashMap<Long, Book> tmpNewBook = new HashMap<>();
+        HashMap<Long, Book> tmpNewBook = new HashMap<Long, Book>();
         tmpNewBook = tmpNew.getBookList();
         for ( Book tmpNewB : tmpNewBook.values()) {
             boolean check = true;
@@ -55,9 +55,9 @@ public class Serialization {
                 tmpBook.put(tmpNewB.getIdBook(),tmpNewB);
             }
         }
-        HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<>();
+        HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<Long, CopyOfTheBook>();
         tmpCopy = tmp.getCopyOfTheBookList();
-        HashMap<Long, CopyOfTheBook> tmpNewCopy = new HashMap<>();
+        HashMap<Long, CopyOfTheBook> tmpNewCopy = new HashMap<Long, CopyOfTheBook>();
         tmpNewCopy = tmpNew.getCopyOfTheBookList();
         for ( CopyOfTheBook tmpNewC : tmpNewCopy.values()) {
             boolean check = true;

@@ -105,14 +105,14 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         Catalog catalog1 = new Catalog(1, "Романы", "Общий");
         Catalog catalog2 = new Catalog(2, "Поэмы", "Общий");
         Catalog catalog3 = new Catalog(3, "Другое", "Общий");
-        HashMap<Long, Catalog> catalogList = new HashMap<>();
+        HashMap<Long, Catalog> catalogList = new HashMap<Long, Catalog>();
         catalogList.put(catalog1.getIdCatalog(), catalog1);
         catalogList.put(catalog2.getIdCatalog(), catalog2);
         catalogList.put(catalog3.getIdCatalog(), catalog3);
         Publisher publisher1 = new Publisher(1, "Просвещение", "127521, Москва, 3-й проезд Марьиной рощи, 41", "prosv@prosv.ru");
         Publisher publisher2 = new Publisher(2, "Дрофа", "123308, г. Москва, ул. Зорге, д.1", "info@drofa-ventana.ru");
         Publisher publisher3 = new Publisher(3, "Другое", "Неизвестный адрес", "Неизвестный адрес");
-        HashMap<Long, Publisher> publisherList = new HashMap<>();
+        HashMap<Long, Publisher> publisherList = new HashMap<Long, Publisher>();
         publisherList.put(publisher1.getIdPublisher(), publisher1);
         publisherList.put(publisher2.getIdPublisher(), publisher2);
         publisherList.put(publisher3.getIdPublisher(), publisher3);
@@ -712,7 +712,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         File[] files = folderLoad.listFiles();
         for (File f : files) {
             if (f.getName().endsWith("ini")) {
-                Vector<String> newrow = new Vector<>();
+                Vector<String> newrow = new Vector<String>();
                 newrow.add(f.getName());
                 DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
                 String reportDate = df.format(f.lastModified());
@@ -742,10 +742,10 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         CopyOfTheBook copyOfTheBook3 = new CopyOfTheBook(3, 1, false, "нет");
         CopyOfTheBook copyOfTheBook4 = new CopyOfTheBook(4, 2, true, "Н. И. Васина");
         CopyOfTheBook copyOfTheBook5 = new CopyOfTheBook(5, 2, false, "нет");
-        HashMap<Long, Book> bookList = new HashMap<>();
+        HashMap<Long, Book> bookList = new HashMap<Long, Book>();
         bookList.put(book1.getIdBook(), book1);
         bookList.put(book2.getIdBook(), book2);
-        HashMap<Long, CopyOfTheBook> copyOfTheBookList = new HashMap<>();
+        HashMap<Long, CopyOfTheBook> copyOfTheBookList = new HashMap<Long, CopyOfTheBook>();
         copyOfTheBookList.put(copyOfTheBook1.getInventoryNumber(), copyOfTheBook1);
         copyOfTheBookList.put(copyOfTheBook2.getInventoryNumber(), copyOfTheBook2);
         copyOfTheBookList.put(copyOfTheBook3.getInventoryNumber(), copyOfTheBook3);
@@ -857,7 +857,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             output.flush();
 
             Storage tmpNew = new Storage();
-            HashMap<Long, Book> tmpBook = new HashMap<>();
+            HashMap<Long, Book> tmpBook = new HashMap<Long, Book>();
 
             for (int i = 0; i < bookTableModel.getRowCount(); i++) {
                 Book tmpB = new Book();
@@ -873,7 +873,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
 
             tmpNew.setBookList(tmpBook);
 
-            HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<>();
+            HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<Long, CopyOfTheBook>();
             for (int i = 0; i < copyBookTableModel.getRowCount(); i++) {
                 CopyOfTheBook tmpC = new CopyOfTheBook();
                 tmpC.setIdBook(Long.valueOf((String) copyBookTableModel.getValueAt(i, 0)));
@@ -885,9 +885,9 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
 
             tmpNew.setCopyOfTheBookList(tmpCopy);
             tmp = (Storage) input.readObject();
-            tmpBook = new HashMap<>();
+            tmpBook = new HashMap<Long, Book>();
             tmpBook = tmp.getBookList();
-            HashMap<Long, Book> tmpNewBook = new HashMap<>();
+            HashMap<Long, Book> tmpNewBook = new HashMap<Long, Book>();
             tmpNewBook = tmpNew.getBookList();
             for (Book tmpNewB : tmpNewBook.values()) {
                 boolean check = true;
@@ -911,9 +911,9 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 }
             }
 
-            tmpCopy = new HashMap<>();
+            tmpCopy = new HashMap<Long, CopyOfTheBook>();
             tmpCopy = tmp.getCopyOfTheBookList();
-            HashMap<Long, CopyOfTheBook> tmpNewCopy = new HashMap<>();
+            HashMap<Long, CopyOfTheBook> tmpNewCopy = new HashMap<Long, CopyOfTheBook>();
             tmpNewCopy = tmpNew.getCopyOfTheBookList();
             for (CopyOfTheBook tmpNewC : tmpNewCopy.values()) {
                 boolean check = true;
@@ -956,7 +956,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
 
             Storage tmp = new Storage();
 
-            HashMap<Long, Book> tmpBook = new HashMap<>();
+            HashMap<Long, Book> tmpBook = new HashMap<Long, Book>();
             for (int i = 0; i < bookTableModel.getRowCount(); i++) {
                 Book tmpB = new Book();
                 tmpB.setIdBook(Long.valueOf((String) (bookTableModel.getValueAt(i, 0))));
@@ -970,7 +970,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             }
             tmp.setBookList(tmpBook);
 
-            HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<>();
+            HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<Long, CopyOfTheBook>();
             for (int i = 0; i < copyBookTableModel.getRowCount(); i++) {
                 CopyOfTheBook tmpC = new CopyOfTheBook();
                 tmpC.setIdBook(Long.valueOf((String) copyBookTableModel.getValueAt(i, 0)));
@@ -981,7 +981,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             }
             tmp.setCopyOfTheBookList(tmpCopy);
 
-            HashMap<Long, Publisher> tmpPublisher = new HashMap<>();
+            HashMap<Long, Publisher> tmpPublisher = new HashMap<Long, Publisher>();
             for (int i = 0; i < publisherTableModel.getRowCount(); i++) {
                 Publisher tmpP = new Publisher();
                 tmpP.setIdPublisher(Long.valueOf((String) publisherTableModel.getValueAt(i, 0)));
@@ -1047,7 +1047,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
 
                 tmp = (Storage) input.readObject();
 
-                HashMap<Long, Book> tmpBook = new HashMap<>();
+                HashMap<Long, Book> tmpBook = new HashMap<Long, Book>();
                 tmpBook = tmp.getBookList();
                 for (Book tmpB : tmpBook.values()) {
                     Vector<String> newRow = new Vector<String>();
@@ -1061,7 +1061,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                     bookTableModel.addRow(newRow);
                 }
 
-                HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<>();
+                HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<Long, CopyOfTheBook>();
                 tmpCopy = tmp.getCopyOfTheBookList();
                 for (CopyOfTheBook tmpC : tmpCopy.values()) {
                     Vector<String> newRow = new Vector<String>();
@@ -1072,7 +1072,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                     copyBookTableModel.addRow(newRow);
                 }
 
-                HashMap<Long, Publisher> tmpPublisher = new HashMap<>();
+                HashMap<Long, Publisher> tmpPublisher = new HashMap<Long, Publisher>();
                 tmpPublisher = tmp.getPublisherList();
                 for (Publisher tmpP : tmpPublisher.values()) {
                     Vector<String> newRow = new Vector<String>();
@@ -1193,30 +1193,26 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             String action = searchParameterBook.getSelectedItem().toString();
             if (date.equals("")) {
                 act = 1;
-            } else {
-                switch (action) {
-                    case "ID":
-                        act = 9;
-                        break;
-                    case "Name":
-                        act = 10;
-                        break;
-                    case "Authors":
-                        act = 11;
-                        break;
-                    case "Year":
-                        act = 12;
-                        break;
-                    case "Pages":
-                        act = 13;
-                        break;
-                    case "Catalog":
-                        act = 18;
-                        break;
-                    case "Publisher":
-                        act = 19;
-                        break;
-                }
+            }
+            switch (action) {
+                case "Name":
+                    act = 10;
+                    break;
+                case "Authors":
+                    act = 11;
+                    break;
+                case "Year":
+                    act = 12;
+                    break;
+                case "Pages":
+                    act = 13;
+                    break;
+                case "Catalog":
+                    act = 18;
+                    break;
+                case "Publisher":
+                    act = 19;
+                    break;
             }
             controller.operation(act, date, "", "", "", "", "", "");
         }
