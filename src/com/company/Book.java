@@ -1,29 +1,38 @@
 package com.company;
 
 import java.io.Serializable;
+import javax.xml.bind.annotation.*;
+import javax.xml.ws.Service;
 
-public class Book implements Serializable{
+@XmlRootElement(name = "Book")
+@XmlType(propOrder = {"authors","name","year", "pages", "catalog", "publisher"})
+public class Book implements Model{
 
     private long idBook;
     private String authors;
     private String name;
     private int year;
     private int pages;
+    private String catalog;
+    private String publisher;
 
     Book(){}
 
-    public Book(long idBook, String authors, String name, int year, int pages){
+    public Book(long idBook, String authors, String name, int year, int pages, String catalog, String publisher){
         this.idBook = idBook;
         this.authors = authors;
         this.name = name;
         this.year = year;
         this.pages = pages;
+        this.catalog = catalog;
+        this.publisher = publisher;
     }
 
     public void setIdBook(long idBook){
         this.idBook = idBook;
     }
 
+    @XmlAttribute
     public long getIdBook(){
         return idBook;
     }
@@ -62,8 +71,18 @@ public class Book implements Serializable{
         return pages;
     }
 
-    public String toString(){
-        return "id: " + idBook + ";   авторы: " + authors + ";   название: " + name + ";   год издания: " + year + ";   страницы: " + pages + ".";
+    public void setCatalog(String catalog){
+        this.catalog = catalog;
+    }
+
+    public String getCatalog(){return catalog;}
+
+    public void setPublisher(String publisher){
+        this.publisher = publisher;
+    }
+
+    public String getPublisher(){
+        return publisher;
     }
 }
 
