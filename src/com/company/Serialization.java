@@ -5,11 +5,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 public class Serialization {
-
-
-
-    public void saveObjectStorage(Storage tmp, String fileName) throws IOException
-    {
+    public static void saveObjectStorage(Storage tmp, String fileName) throws IOException{
         FileOutputStream fos = new FileOutputStream(fileName);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(tmp);
@@ -17,7 +13,7 @@ public class Serialization {
         oos.close();
     }
 
-    public Storage loadObjectBook(String filename) throws IOException, ClassNotFoundException {
+    public static Storage loadObjectBook(String filename) throws IOException, ClassNotFoundException {
         FileInputStream fis = new FileInputStream(filename);
         ObjectInputStream oin = new ObjectInputStream(fis);
         Storage tmp = (Storage) oin.readObject();
@@ -25,7 +21,7 @@ public class Serialization {
         return(tmp);
     }
 
-    public void saveAndMergeObjectStorage(Storage tmpNew, String fileName) throws IOException, ClassNotFoundException{
+    public static void saveAndMergeObjectStorage(Storage tmpNew, String fileName) throws IOException, ClassNotFoundException{
         FileInputStream fis = new FileInputStream(fileName);
         ObjectInputStream oin = new ObjectInputStream(fis);
         FileOutputStream fos = new FileOutputStream(fileName,true);
@@ -39,19 +35,24 @@ public class Serialization {
         for ( Book tmpNewB : tmpNewBook.values()) {
             boolean check = true;
             for (Book tmpB : tmpBook.values()) {
-                if (tmpB.getYear() == tmpNewB.getYear())
-                    if (tmpB.getPages() == tmpNewB.getPages())
-                        if (tmpB.getAuthors().equals(tmpNewB.getAuthors()))
-                            if (tmpB.getName().equals(tmpNewB.getName())) {
-                                check = false;
-                            }
+                if (tmpB.getYear() == tmpNewB.getYear()) {
+                    if (tmpB.getPages() == tmpNewB.getPages()) {
+                        if (tmpB.getAuthors().equals(tmpNewB.getAuthors())) {
+			    if (tmpB.getCatalog().equals(tmpNewB.getCatalog())) {
+				if (tmpB.getPublisher().equals(tmpNewB.getPublisher())) {
+                            	    if (tmpB.getName().equals(tmpNewB.getName())) {
+                                        check = false;
+                            	    }
+				}
+			    }
+                        }
+                    }
+                }
             }
             if (check==true){
                 tmpBook.put(tmpNewB.getIdBook(),tmpNewB);
             }
         }
-
-
         HashMap<Long, CopyOfTheBook> tmpCopy = new HashMap<>();
         tmpCopy = tmp.getCopyOfTheBookList();
         HashMap<Long, CopyOfTheBook> tmpNewCopy = new HashMap<>();
@@ -59,8 +60,7 @@ public class Serialization {
         for ( CopyOfTheBook tmpNewC : tmpNewCopy.values()) {
             boolean check = true;
             for (CopyOfTheBook tmpC : tmpCopy.values()) {
-                if (tmpC.getInventoryNumber()==tmpNewC.getInventoryNumber() && tmpC.getIssue()==tmpNewC.getIssue())
-                {
+                if (tmpC.getInventoryNumber()==tmpNewC.getInventoryNumber() && tmpC.getIssue()==tmpNewC.getIssue()){
                     check=false;
                 }
             }
@@ -68,15 +68,11 @@ public class Serialization {
                 tmpCopy.put(tmpNewC.getIdBook(),tmpNewC);
             }
         }
-
         tmp.setBookList(tmpBook);
         tmp.setCopyOfTheBookList(tmpCopy);
         oos.writeObject(tmp);
         oos.flush();
         oos.close();
-
-
     }
-
 }
 

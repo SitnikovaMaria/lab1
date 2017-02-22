@@ -15,7 +15,7 @@ public class ConsoleView /*implements View*/ {
         System.out.println();
     }
 
-    public void viewCopyOfTheBook(CopyOfTheBook book){
+    public void viewCopyOfTheBook(com.company.CopyOfTheBook book){
         System.out.print(book.getInventoryNumber()/*inventoryNumber*/);
         System.out.print(" ");
         System.out.print(book.getIdBook()/*idBook*/);
@@ -48,4 +48,3 @@ public class ConsoleView /*implements View*/ {
         }
     }
 }
-

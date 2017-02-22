@@ -1,25 +1,31 @@
 package com.company;
 
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 
-public class CopyOfTheBook implements Serializable{
+@XmlRootElement(name = "CopyOfBook")
+@XmlType(propOrder = {"idBook","issue","reader"})
+public class CopyOfTheBook implements Model{
 
     private long inventoryNumber;
     private long idBook;
     private boolean issue;
+    private String reader;
 
     public CopyOfTheBook(){}
 
-    public CopyOfTheBook(long inventoryNumber, long idBook, boolean issue){
+    public CopyOfTheBook(long inventoryNumber, long idBook, boolean issue, String reader){
         this.inventoryNumber = inventoryNumber;
         this.idBook = idBook;
         this.issue = issue;
+        this.reader = reader;
     }
 
     public void setInventoryNumber(long inventoryNumber){
         this.inventoryNumber = inventoryNumber;
     }
 
+    @XmlAttribute
     public long getInventoryNumber(){
         return inventoryNumber;
     }
@@ -40,12 +46,11 @@ public class CopyOfTheBook implements Serializable{
         return issue;
     }
 
-    public String toString(){
-        if(issue == true){
-            return "Инвентарный номер: " + inventoryNumber + ";   книга: " + idBook + ";   выдана или нет: выдана.";
-        }
-        else{
-            return "Инвентарный номер: " + inventoryNumber + ";   книга: " + idBook + ";   выдана или нет: нет.";
-        }
+    public void setReader(String reader){
+        this.reader = reader;
+    }
+
+    public String getReader(){
+        return reader;
     }
 }

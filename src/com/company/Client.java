@@ -3,6 +3,7 @@ package com.company;
 /**
  * Created by Никита on 19.11.2016.
  */
+
 import java.net.*;
 import java.io.*;
 
@@ -11,8 +12,7 @@ public class Client {
     private static int serverPort = 6666;
     private static String address = "127.0.0.1";
     public Client(){}
-    public void saveObjectStorage(Storage tmp, String fileName) throws IOException
-    {
+    public void saveObjectStorage(Storage tmp, String fileName) throws IOException {
         InetAddress ipAddress = InetAddress.getByName(address);
         Socket socket = new Socket(ipAddress, serverPort);
         OutputStream fos = socket.getOutputStream();
@@ -24,8 +24,7 @@ public class Client {
         oos.close();
     }
 
-    public Storage loadObjectBook(String filename) throws IOException, ClassNotFoundException
-    {
+    public Storage loadObjectBook(String filename) throws IOException, ClassNotFoundException{
         InetAddress ipAddress = InetAddress.getByName(address);
         Socket socket = new Socket(ipAddress, serverPort);
         InputStream fis = socket.getInputStream();
@@ -38,14 +37,4 @@ public class Client {
         oin.close();
         return(tmp);
     }
-
-
-    public static void main(String[] ar) {
-        WindowView w = new WindowView();
-        w.setBounds(400, 250, 700, 300);
-        w.setVisible(true);
-
-
-    }
 }
-
