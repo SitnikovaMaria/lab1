@@ -1,24 +1,33 @@
-package client.model;
+package com.model;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Book implements Serializable{
 
     private long idBook;
     private String authors;
     private String name;
-    private int year;
+    private Date year;
     private int pages;
     private String catalog;
     private String publisher;
 
     public Book(){}
 
-    public Book(long idBook, String authors, String name, int year, int pages, String catalog, String publisher){
+    public Book(long idBook, String authors, String name, String year, int pages, String catalog, String publisher){
         this.idBook = idBook;
         this.authors = authors;
         this.name = name;
-        this.year = year;
+        try{
+            SimpleDateFormat format = new SimpleDateFormat("yyyy");
+            Date yearD = format.parse(year);
+            this.year = yearD;
+        }catch (ParseException e){
+            /* проверьте правильность введённых Вами данных */
+        }
         this.pages = pages;
         this.catalog = catalog;
         this.publisher = publisher;
@@ -50,11 +59,17 @@ public class Book implements Serializable{
         return name;
     }
 
-    public void setYear(int year){
-        this.year = year;
+    public void setYear(String year){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy");
+        try{
+            Date yearD = format.parse(year);
+            this.year = yearD;
+        } catch (ParseException e){
+            /* проверьте правильность введённых Вами данных */
+        }
     }
 
-    public int getYear(){
+    public Date getYear(){
         return year;
     }
 
@@ -80,6 +95,3 @@ public class Book implements Serializable{
         return publisher;
     }
 }
-
-
-

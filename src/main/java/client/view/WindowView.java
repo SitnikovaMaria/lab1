@@ -1,8 +1,8 @@
-package client.view;
+package com.view;
 
-import client.Storage;
-import client.controller.Control;
-import client.model.*;
+import com.company.Storage;
+import com.controller.Control;
+import com.model.*;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -45,9 +45,9 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
     private JButton addPublisherButton;
     private JButton changePublisherButton;
     private JButton deletePublisher;
-    //private JButton addCatalogButton;
-    //private JButton changeCatalogButton;
-    //private JButton deleteCatalog;
+    private JButton addCatalogButton;
+    private JButton changeCatalogButton;
+    private JButton deleteCatalog;
     private JTextField saveLine = new JTextField();
     private JTextField searchBook = new JTextField(40);
     private JTextField searchCopyOfTheBook = new JTextField(40);
@@ -735,8 +735,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
 
         catalogFunctionButtons.add(deleteCatalog);*/
 
-        Book book1 = new Book(1, "И. С. Тургенев", "Отцы и дети", 1971, 188, catalog1.getName(), publisher1.getName());
-        Book book2 = new Book(2, "Н. В. Гоголь", "Мертвые души", 1972, 416, catalog2.getName(), publisher2.getName());
+        Book book1 = new Book(1, "И. С. Тургенев", "Отцы и дети", "1971", 188, catalog1.getName(), publisher1.getName());
+        Book book2 = new Book(2, "Н. В. Гоголь", "Мертвые души", "1972", 416, catalog2.getName(), publisher2.getName());
         CopyOfTheBook copyOfTheBook1 = new CopyOfTheBook(1, 1, true, "Ю. А. Петрова");
         CopyOfTheBook copyOfTheBook2 = new CopyOfTheBook(2, 1, false, "нет");
         CopyOfTheBook copyOfTheBook3 = new CopyOfTheBook(3, 1, false, "нет");
@@ -827,7 +827,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         Vector<String> newRow = new Vector<String>();
         newRow.add(book.getName());
         newRow.add(book.getAuthors());
-        newRow.add(Integer.toString(book.getYear()));
+        SimpleDateFormat format = new SimpleDateFormat("yyyy");
+        newRow.add(format.format(book.getYear()));
         newRow.add(Integer.toString(book.getPages()));
         bookTableModel.addRow(newRow);
     }
@@ -864,7 +865,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 tmpB.setIdBook(Long.valueOf((String) (bookTableModel.getValueAt(i, 0))));
                 tmpB.setName((String) bookTableModel.getValueAt(i, 1));
                 tmpB.setAuthors((String) bookTableModel.getValueAt(i, 2));
-                tmpB.setYear(Integer.valueOf((String) (bookTableModel.getValueAt(i, 3))));
+                tmpB.setYear((String) (bookTableModel.getValueAt(i, 3)));
                 tmpB.setPages(Integer.valueOf((String) (bookTableModel.getValueAt(i, 4))));
                 tmpB.setCatalog((String) (bookTableModel.getValueAt(i, 5)));
                 tmpB.setPublisher((String) (bookTableModel.getValueAt(i, 6)));
@@ -962,7 +963,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                 tmpB.setIdBook(Long.valueOf((String) (bookTableModel.getValueAt(i, 0))));
                 tmpB.setName((String) bookTableModel.getValueAt(i, 1));
                 tmpB.setAuthors((String) bookTableModel.getValueAt(i, 2));
-                tmpB.setYear(Integer.valueOf((String) (bookTableModel.getValueAt(i, 3))));
+                SimpleDateFormat format = new SimpleDateFormat("yyyy");
+                tmpB.setYear((String) bookTableModel.getValueAt(i, 3));
                 tmpB.setPages(Integer.valueOf((String) (bookTableModel.getValueAt(i, 4))));
                 tmpB.setCatalog((String) bookTableModel.getValueAt(i, 5));
                 tmpB.setPublisher((String) bookTableModel.getValueAt(i, 6));
@@ -1054,7 +1056,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                     newRow.add(Long.toString(tmpB.getIdBook()));
                     newRow.add(tmpB.getName());
                     newRow.add(tmpB.getAuthors());
-                    newRow.add(Integer.toString(tmpB.getYear()));
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy");
+                    newRow.add(format.format(tmpB.getYear()));
                     newRow.add(Integer.toString(tmpB.getPages()));
                     newRow.add(tmpB.getCatalog());
                     newRow.add(tmpB.getPublisher());
@@ -1082,7 +1085,6 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
                     newRow.add(tmpP.getBusinessAddress());
                     publisherTableModel.addRow(newRow);
                 }
-
                 output.close();
                 input.close();
                 connection.close();
@@ -1116,6 +1118,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         }
     }
 
+    //заполнение таблицы книг
     public void fillTableBook(HashMap<Long, Book> result) {
         clearTableBook();
         for (Map.Entry<Long, Book> entry : result.entrySet()) {
@@ -1123,7 +1126,8 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
             newRow.add(Long.toString(entry.getKey()));
             newRow.add(entry.getValue().getName());
             newRow.add(entry.getValue().getAuthors());
-            newRow.add(Integer.toString(entry.getValue().getYear()));
+            SimpleDateFormat format = new SimpleDateFormat("yyyy");
+            newRow.add(format.format(entry.getValue().getYear()));
             newRow.add(Integer.toString(entry.getValue().getPages()));
             newRow.add(entry.getValue().getCatalog());
             newRow.add(entry.getValue().getPublisher());
@@ -1131,6 +1135,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         }
     }
 
+    //заполнение таблицы экземпляров книг
     public void fillTableCopyOfTheBook(HashMap<Long, CopyOfTheBook> result) {
         clearTableCopyOfTheBook();
         for (Map.Entry<Long, CopyOfTheBook> entry : result.entrySet()) {
@@ -1143,6 +1148,7 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         }
     }
 
+    // заполнение таблицы издательств
     public void fillTablePublisher(HashMap<Long, Publisher> result) {
         clearTablePublisher();
         for (Map.Entry<Long, Publisher> entry : result.entrySet()) {
@@ -1278,6 +1284,3 @@ public class WindowView extends JFrame implements View, ListSelectionListener {
         w.setVisible(true);
     }
 }
-
-
-

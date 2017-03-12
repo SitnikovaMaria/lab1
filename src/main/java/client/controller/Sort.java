@@ -1,8 +1,8 @@
-package client.controller;
+package com.controller;
 
-import client.model.Book;
-import client.model.CopyOfTheBook;
-import client.model.Publisher;
+import com.model.Book;
+import com.model.CopyOfTheBook;
+import com.model.Publisher;
 
 import java.util.*;
 
@@ -10,7 +10,8 @@ public class Sort {
 
     public Sort(){}
 
-    public HashMap<Long, Book> sortByName(HashMap<Long, Book> map){ //сортировка по имени
+    //сортировка книг по имени
+    public HashMap<Long, Book> sortByName(HashMap<Long, Book> map){
         List list = new LinkedList(map.entrySet());
         Collections.sort(list, new Comparator() {
             public int compare(Object o1, Object o2) {
@@ -25,7 +26,8 @@ public class Sort {
         return sortedHashMap;
     }
 
-    public HashMap<Long, Book> sortByAuthors(HashMap<Long, Book> map) { //сортировка по авторам
+    //сортировка книг по авторам
+    public HashMap<Long, Book> sortByAuthors(HashMap<Long, Book> map) {
         List list = new LinkedList(map.entrySet());
         Collections.sort(list, new Comparator() {
             public int compare(Object o1, Object o2) {
@@ -40,7 +42,8 @@ public class Sort {
         return sortedHashMap;
     }
 
-    public HashMap<Long, Book> sortByYear(HashMap<Long, Book> map) { //сортировка по году
+    //сортировка книг по году
+    public HashMap<Long, Book> sortByYear(HashMap<Long, Book> map) {
         List list = new LinkedList(map.entrySet());
         Collections.sort(list, new Comparator() {
             public int compare(Object o1, Object o2) {
@@ -55,7 +58,8 @@ public class Sort {
         return sortedHashMap;
     }
 
-    public HashMap<Long, Book> sortByPages(HashMap<Long, Book> map) { //сортировка по страницам
+    //сортировка книг по страницам
+    public HashMap<Long, Book> sortByPages(HashMap<Long, Book> map) {
         List list = new LinkedList(map.entrySet());
         Collections.sort(list, new Comparator() {
             public int compare(Object o1, Object o2) {
@@ -70,7 +74,8 @@ public class Sort {
         return sortedHashMap;
     }
 
-    public HashMap<Long, CopyOfTheBook> sortByIdBook(HashMap<Long, CopyOfTheBook> map) { //сортировка экземпляров книг по книге
+    //сортировка экземпляров книг по книге
+    public HashMap<Long, CopyOfTheBook> sortByIdBook(HashMap<Long, CopyOfTheBook> map) {
         List list = new LinkedList(map.entrySet());
         Collections.sort(list, new Comparator() {
             public int compare(Object o1, Object o2) {
@@ -85,7 +90,8 @@ public class Sort {
         return sortedHashMap;
     }
 
-    public HashMap<Long, CopyOfTheBook> sortByIssue(HashMap<Long, CopyOfTheBook> map) { //сортировка по информации о выдаче
+    //сортировка экзмепляров книг по информации о выдаче
+    public HashMap<Long, CopyOfTheBook> sortByIssue(HashMap<Long, CopyOfTheBook> map) {
         List list = new LinkedList(map.entrySet());
         Collections.sort(list, new Comparator() {
             public int compare(Object o1, Object o2) {
@@ -100,7 +106,8 @@ public class Sort {
         return sortedHashMap;
     }
 
-    public HashMap<Long, CopyOfTheBook> sortByReader(HashMap<Long, CopyOfTheBook> map) { //сортировка по читателю
+    //сортировка экземпляров книг по читателю
+    public HashMap<Long, CopyOfTheBook> sortByReader(HashMap<Long, CopyOfTheBook> map) {
         List list = new LinkedList(map.entrySet());
         Collections.sort(list, new Comparator() {
             public int compare(Object o1, Object o2) {
@@ -115,7 +122,8 @@ public class Sort {
         return sortedHashMap;
     }
 
-    public HashMap<Long, Book> sortByCatalog(HashMap<Long, Book> map) { //сортировка по каталогу
+    //сортировка книг по каталогу
+    public HashMap<Long, Book> sortByCatalog(HashMap<Long, Book> map) {
         List list = new LinkedList(map.entrySet());
         Collections.sort(list, new Comparator() {
             public int compare(Object o1, Object o2) {
@@ -130,7 +138,8 @@ public class Sort {
         return sortedHashMap;
     }
 
-    public HashMap<Long, Book> sortByPublisher(HashMap<Long, Book> map) { //сортировка по издательству
+    //сортировка книг по издательству
+    public HashMap<Long, Book> sortByPublisher(HashMap<Long, Book> map) {
         List list = new LinkedList(map.entrySet());
         Collections.sort(list, new Comparator() {
             public int compare(Object o1, Object o2) {
@@ -145,7 +154,8 @@ public class Sort {
         return sortedHashMap;
     }
 
-    public HashMap<Long, Publisher> sortPublisherByName(HashMap<Long, Publisher> map) { //сортировка издательств по Name
+    //сортировка издательств по Name
+    public HashMap<Long, Publisher> sortPublisherByName(HashMap<Long, Publisher> map) {
         List list = new LinkedList(map.entrySet());
         Collections.sort(list, new Comparator() {
             public int compare(Object o1, Object o2) {
@@ -160,7 +170,8 @@ public class Sort {
         return sortedHashMap;
     }
 
-    public HashMap<Long, Publisher> sortByRegisteredAddress(HashMap<Long, Publisher> map) { //сортировка издательств Registered address
+    //сортировка издательств по Registered address
+    public HashMap<Long, Publisher> sortByRegisteredAddress(HashMap<Long, Publisher> map) {
         List list = new LinkedList(map.entrySet());
         Collections.sort(list, new Comparator() {
             public int compare(Object o1, Object o2) {
@@ -175,7 +186,8 @@ public class Sort {
         return sortedHashMap;
     }
 
-    public HashMap<Long, Publisher> sortByBusinessAddress(HashMap<Long, Publisher> map) { //сортировка издательств Business address
+    //сортировка издательств по Business address
+    public HashMap<Long, Publisher> sortByBusinessAddress(HashMap<Long, Publisher> map) {
         List list = new LinkedList(map.entrySet());
         Collections.sort(list, new Comparator() {
             public int compare(Object o1, Object o2) {

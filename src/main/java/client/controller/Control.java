@@ -1,10 +1,11 @@
-package client.controller;
+package com.controller;
 
-import client.Storage;
-import client.model.*;
-import client.model.Publisher;
-import client.view.WindowView;
-
+import com.company.Storage;
+import com.model.*;
+import com.model.Publisher;
+import com.view.WindowView;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Control {
@@ -26,7 +27,8 @@ public class Control {
         return quit;
     }
 
-    public void reviewBook() { //просмотр книг
+    //просмотр книг
+    public void reviewBook() {
         HashMap<Long, Book> result = new HashMap<Long, Book>();
         for (Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
             result.put(entry.getKey(), entry.getValue());
@@ -34,7 +36,8 @@ public class Control {
         view1.fillTableBook(result);
     }
 
-    public void reviewCopyOfTheBook() { //просмотр экземпл€ров книг
+    //просмотр экземпл€ров книг
+    public void reviewCopyOfTheBook() {
         HashMap<Long, CopyOfTheBook> result = new HashMap<Long, CopyOfTheBook>();
         for (Map.Entry<Long, CopyOfTheBook> entry : storage.getCopyOfTheBookList().entrySet()) {
             result.put(entry.getKey(), entry.getValue());
@@ -42,11 +45,13 @@ public class Control {
         view1.fillTableCopyOfTheBook(result);
     }
 
-    public void addBook(String dateIdBook, String authors, String name, String dateYear, String datePages, String catalog, String publisher) { //добавление в Book
+    //добавление в Book
+    public void addBook(String dateIdBook, String authors, String name, String dateYear, String datePages, String catalog, String publisher) {
         try {
             long idBook = Long.valueOf(dateIdBook);
             if (!storage.getBookList().containsKey(idBook)) {
-                int year = Integer.valueOf(dateYear);
+                SimpleDateFormat format = new SimpleDateFormat("yyyy");
+                Date year = format.parse(dateYear);
                 int pages = Integer.valueOf(datePages);
                 boolean bool = false;
                 for (Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
@@ -56,19 +61,22 @@ public class Control {
                     }
                 }
                 if (!bool) {
-                    Book book1 = new Book(idBook, authors, name, year, pages, catalog, publisher);
+                    Book book1 = new Book(idBook, authors, name, dateYear, pages, catalog, publisher);
                     storage.getBookList().put(idBook, book1);
                     /* книга успешно добавлена */
                 }
             }
         } catch (NumberFormatException E) {
             /* проверьте правильность введЄнных ¬ами данных */
+        } catch (ParseException e) {
+            /* проверьте правильность введЄнных ¬ами данных */
         } finally {
             view1.fillTableBook(storage.getBookList());
         }
     }
 
-    public void addCopyOfTheBook(String dateInventoryNumber, String dateIdBook, String dateIssue, String reader) { //добавление в CopyOfTheBook
+    //добавление в CopyOfTheBook
+    public void addCopyOfTheBook(String dateInventoryNumber, String dateIdBook, String dateIssue, String reader) {
         try {
             long inventoryNumber = Long.valueOf(dateInventoryNumber);
             if (!storage.getCopyOfTheBookList().containsKey(inventoryNumber)) {
@@ -88,11 +96,13 @@ public class Control {
         }
     }
 
-    public void changeBook(String dateIdBook, String authors, String name, String dateYear, String datePages, String catalog, String publisher) { //изменение Book
+    //изменение Book
+    public void changeBook(String dateIdBook, String authors, String name, String dateYear, String datePages, String catalog, String publisher) {
         try {
             long idBook = Long.valueOf(dateIdBook);
             if (storage.getBookList().containsKey(idBook)) {
-                int year = Integer.valueOf(dateYear);
+                SimpleDateFormat format = new SimpleDateFormat("yyyy");
+                Date year = format.parse(dateYear);
                 int pages = Integer.valueOf(datePages);
                 boolean bool = false;
                 for (Map.Entry<Long, Book> entry : storage.getBookList().entrySet()) {
@@ -110,7 +120,7 @@ public class Control {
                         book0.setName(name);
                     }
                     if (!dateYear.equals("")) {
-                        book0.setYear(year);
+                        book0.setYear(dateYear);
                     }
                     if (!datePages.equals("")) {
                         book0.setPages(pages);
@@ -126,12 +136,15 @@ public class Control {
             }
         } catch (NumberFormatException E) {
             /* проверьте правильность введЄнных ¬ами данных */
+        } catch (ParseException e) {
+            /* проверьте правильность введЄнных ¬ами данных */
         } finally {
             view1.fillTableBook(storage.getBookList());
         }
     }
 
-    public void changeCopyOfTheBook(String dateInventoryNumber, String dateIdBook, String dateIssue, String reader) { //изменение CopyOfTheBook
+    //изменение CopyOfTheBook
+    public void changeCopyOfTheBook(String dateInventoryNumber, String dateIdBook, String dateIssue, String reader) {
         try {
             long inventoryNumber = Long.valueOf(dateInventoryNumber);
             if (storage.getCopyOfTheBookList().containsKey(inventoryNumber)) {
@@ -157,7 +170,8 @@ public class Control {
         }
     }
 
-    public void removeBook(String dateIdBook) { //удаление из Book
+    //удаление из Book
+    public void removeBook(String dateIdBook) {
         try {
             long idBook = Long.valueOf(dateIdBook);
             storage.getBookList().remove(idBook);
@@ -169,7 +183,8 @@ public class Control {
         }
     }
 
-    public void removeCopyOfTheBook(String dateInventoryNumber) { //удаление из CopyOfTheBook
+    //удаление из CopyOfTheBook
+    public void removeCopyOfTheBook(String dateInventoryNumber) {
         try {
             long inventoryNumber = Long.valueOf(dateInventoryNumber);
             storage.getCopyOfTheBookList().remove(inventoryNumber);
@@ -181,7 +196,8 @@ public class Control {
         }
     }
 
-    public void addPublisher(String dateIdPublisher, String name, String registeredAddress, String businessAddress) { //добавление в Publisher
+    //добавление в Publisher
+    public void addPublisher(String dateIdPublisher, String name, String registeredAddress, String businessAddress) {
         try {
             long idPublisher = Long.valueOf(dateIdPublisher);
             if (!storage.getPublisherList().containsKey(idPublisher)) {
@@ -205,7 +221,8 @@ public class Control {
         }
     }
 
-    public void changePublisher(String dateIdPublisher, String name, String registeredAddress, String businessAddress) { //изменение Publisher
+    //изменение Publisher
+    public void changePublisher(String dateIdPublisher, String name, String registeredAddress, String businessAddress) {
         try {
             long idPublisher = Long.valueOf(dateIdPublisher);
             if (storage.getPublisherList().containsKey(idPublisher)) {
@@ -237,7 +254,8 @@ public class Control {
         }
     }
 
-    public void removePublisher(String dateIdPublisher) { //удаление из Publisher
+    //удаление из Publisher
+    public void removePublisher(String dateIdPublisher) {
         try {
             long idPublisher = Long.valueOf(dateIdPublisher);
             storage.getPublisherList().remove(idPublisher);
@@ -249,7 +267,8 @@ public class Control {
         }
     }
 
-    public void addCatalog(String dateIdCatalog, String name, String nameOfParent) { //добавление в Catalog
+    //добавление в Catalog
+    public void addCatalog(String dateIdCatalog, String name, String nameOfParent) {
         try {
             long idCatalog = Long.valueOf(dateIdCatalog);
             if (!storage.getPublisherList().containsKey(idCatalog)) {
@@ -273,7 +292,8 @@ public class Control {
         }
     }
 
-    public void changeCatalog(String dateIdCatalog, String name, String nameOfParent) { //изменение Catalog
+    //изменение Catalog
+    public void changeCatalog(String dateIdCatalog, String name, String nameOfParent) {
         try {
             long idCatalog = Long.valueOf(dateIdCatalog);
             if (storage.getCatalogList().containsKey(idCatalog)) {
@@ -302,7 +322,8 @@ public class Control {
         }
     }
 
-    public void removeCatalog(String dateIdCatalog) { //удаление из Catalog
+    //удаление из Catalog
+    public void removeCatalog(String dateIdCatalog) {
         try {
             long idCatalog = Long.valueOf(dateIdCatalog);
             storage.getCatalogList().remove(idCatalog);
