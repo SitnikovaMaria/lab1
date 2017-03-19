@@ -4,7 +4,8 @@
 
 <head>
 	<link rel="stylesheet" href="start.css">
-	<title>Библиотека</title>
+	<link rel="stylesheet" href="style-modal.css">
+	<title>Каталоги библиотеки</title>
 
 </head>
 <style>
@@ -64,7 +65,7 @@
 		overflow: hidden;
 	}
 	#multi-derevo {
-		width: 220px; /* блок под дерево */
+		width: 500px; /* блок под дерево */
 		border-color: silver gray gray silver;
 		border-width: 2px;
 		padding: 0 0 1em 0; /* нижний отступ */
@@ -77,9 +78,8 @@
 		background-color: transparent; 
 		border-width: 0 0 1px 1px; /* границы: низ и лево */
 	}
-	span a {/* тест элемента дерева */
+	span a {/* текст элемента дерева */
 		color: #000000;
-		display: block; 
 		position: relative;
 		top: .95em; /* смещаем узел на середину линии */
 		background-color: #ADD8E6; /* закраска в цвет фона обязательна иначе будет видно линию */
@@ -88,11 +88,11 @@
 	}
 	ul, li {
 		border-style: none;
-		list-style-image:none;
-		list-style-position:outside;
-		list-style-type:none;
-		margin:0;
-		padding:0;
+		list-style-image: none;
+		list-style-position: outside;
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
 	}
 	ul li {
 		line-height: 1.2em;
@@ -100,6 +100,9 @@
         .content ul li ul li {
 		margin: 0 0 0 1.2em;
 		border-style: none;
+        }
+        .content {
+		padding: 1%;
         }
 </style>
 <body>
@@ -129,6 +132,9 @@
 	<div id='content' class="content">
 		<div id="name">
 			<h2>Каталоги</h2>
+		</div>
+		<div id="add">
+			<a href="#win1"><button><img src="add.png" height="15">Добавить</button></a>
 		</div>		
 		<div id="multi-derevo">
 			<ul>
@@ -136,30 +142,85 @@
 				Общий</a></span>
 					<ul>
 						<li><span><a href="#01">
-						Зарубежное</a></span>
+						Зарубежное</a>
+						<a href="#win1">
+    						<button><img src="change.png" height="10"></button>
+						</a>
+						<a href="catalogsA.html">
+						<button><img src="delete.png" height="10"/></button>
+						</a>
+						</span>
     							<ul>
      								<li><span>
 								<a href="#011">Романы</a>
+								<a href="#win1">
+    								<button><img src="change.png" height="10"></button>
+								</a>
+								<a href="catalogsA.html">
+								<button><img src="delete.png" height="10"/></button>
+								</a>
 								</span></li>
+
 								<li><span>
 								<a href="#012">Поэзия</a>
+								<a href="#win1">
+    								<button><img src="change.png" height="10"></button>
+								</a>
+								<a href="catalogsA.html">
+								<button><img src="delete.png" height="10"/></button>
+								</a>
 								</span></li>
+
 								<li><span>
 								<a href="#013">Поэмы</a>
+								<a href="#win1">
+    								<button><img src="change.png" height="10"></button>
+								</a>
+								<a href="catalogsA.html">
+								<button><img src="delete.png" height="10"/></button>
+								</a>
 								</span></li>
 							</ul>
    						</li>
 						<li><span><a href="#02">
-						Отечественное</a></span>
+						Отечественное</a>
+						<a href="#win1">
+    						<button><img src="change.png" height="10"></button>
+						</a>
+						<a href="catalogsA.html">
+						<button><img src="delete.png" height="10"/></button>
+						</a>
+						</span>
     							<ul>
      								<li><span>
 								<a href="#021">Романы</a>
+								<a href="#win1">
+    								<button><img src="change.png" height="10"></button>
+								</a>
+								<a href="catalogsA.html">
+								<button><img src="delete.png" height="10"/></button>
+								</a>
 								</span></li>
+
+
 								<li><span>
 								<a href="#022">Поэзия</a>
+								<a href="#win1">
+    								<button><img src="change.png" height="10"></button>
+								</a>
+								<a href="catalogsA.html">
+								<button><img src="delete.png" height="10"/></button>
+								</a>
 								</span></li>
+
 								<li><span>
 								<a href="#023">Поэмы</a>
+								<a href="#win1">
+    								<button><img src="change.png" height="10"></button>
+								</a>
+								<a href="catalogsA.html">
+								<button><img src="delete.png" height="10"/></button>
+								</a>
 								</span></li>
 							</ul>
    						</li>
@@ -167,6 +228,28 @@
   				</li>
  			</ul>
 		</div>
+		<a href="#x" class="overlay1" id="win1"></a>
+   		<div class="popup">
+			<div id="act">
+				<p1>Название</p1><input></input>
+			</div></br>
+			<div id="act">
+				<p1>Родительский каталог</p1>
+				<select style="width:165px;" tabindex="1">
+					<option disabled>Выберите каталог</option>
+            				<option value="type1">Общий</option>
+            				<option value="type2">Поэзия (Зарубежное)</option>
+            				<option value="type3">Поэмы (Зарубежное)</option>
+            				<option value="type4">Романы (Зарубежное)</option>
+            				<option value="type5">Поэзия (Отечественное)</option>
+            				<option value="type6">Поэмы (Отечественное)</option>
+            				<option value="type7">Романы (Отечественное)</option>
+				</select>
+			</div>
+			</br>
+			<a href="admin.html"><button>Принять</button></a> 
+    			<a class="close" title="Закрыть" href="#close"></a>
+    		</div>
 	</div>
 
 
