@@ -44,6 +44,8 @@ CREATE TABLE `User` (
 	`middleName` VARCHAR(200) NOT NULL ,
 	`lastName` VARCHAR(200) NOT NULL,
 	`type` VARCHAR(200) NOT NULL,
+    login VARCHAR(80) NOT NULL,
+    pass VARCHAR (80) NOT NULL,
 	PRIMARY KEY (`idUser`)
 )default charset = utf8 collate = utf8_general_ci;
 
