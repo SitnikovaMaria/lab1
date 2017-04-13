@@ -121,7 +121,7 @@ public class AddBook extends HttpServlet {
        
         
        RequestDispatcher view = request.getRequestDispatcher("admin.jsp");
-       view.forward(request,response);   
+       response.sendRedirect("admin.jsp"); 
     }
 
     /**

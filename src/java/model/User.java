@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 
 public class User implements Serializable, Model{
+    private long idUser;
     private String name;
     private String middleName;
     private String lastName;
@@ -11,13 +12,15 @@ public class User implements Serializable, Model{
     private String pass;
 
     User(){}
-    
-    public User(String name, String middleName, String lastName,String type){
+
+    public User(long idUser, String name, String middleName, String lastName,String type, String login, String pass){
+        this.idUser = idUser;
         this.name = name;
         this.middleName = middleName;
         this.lastName = lastName;
         this.type = type;
-        
+        this.login = login;
+        this.pass = pass;
     }
 
     public User(String name, String middleName, String lastName,String type, String login, String pass){
@@ -25,10 +28,18 @@ public class User implements Serializable, Model{
         this.middleName = middleName;
         this.lastName = lastName;
         this.type = type;
-        this.login=login;
-        this.pass=pass;
-        
+        this.login = login;
+        this.pass = pass;
     }
+
+    public void setIdUser(long idUser){
+        this.idUser = idUser;
+    }
+
+    public long getIdUser(){
+        return idUser;
+    }
+
     public void setName(String name){
         if (name != "") {
             this.name = name;

@@ -1,101 +1,192 @@
 <!DOCTYPE html>
 
 <html>
-
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="action.css">
-        <link rel="stylesheet" href="style-modal.css">
+    <link rel="stylesheet" href="start.css">
+    <link rel="stylesheet" href="action.css">
+    <link rel="stylesheet" href="style-modal.css" rel="stylesheet">
         <title>Библиотека</title>
-
-        <style>
-            p1 {
-                font: bold 110% serif;
-            }
-            a { 
-                text-decoration: none;
-            }
-            .footer a{
-                color: #ADD8E6;
-            }
-            .footer a:visited {
-                color: #ADD8E6;
-            }
-            .footer a:link {
-                color: #ADD8E6;
-                padding: 2px;
-            }
-            .footer a:hover {
-                background: #786b59;  
-                color: #ffe;  
-            }
-            .headerLeft a {
-                color: #ADD8E6; 
-            }
-            .headerLeft ul {
-                list-style: none;
-                margin: 0; 
-                padding: 0; 
-                font-family: Arial, sans-serif; 
-                font-size: 12pt; 
-            }
-            .headerLeft li ul {
-                position: absolute; 
-                display: none;
-            }
-            .headerLeft li a {
-                display: block;
-                padding: 5px; 
-                text-decoration: none; 
-                border: 1px solid #ccc;
-                background-color: #000000; 
-            }
-            .headerLeft li a:hover {
-                outline: none;
-                color: #FFFFFF;
-            }
-            .headerLeft li:hover ul { 
-                border-color: black;
-                display: block;
-            }
-            .center { 
-                height: 512px;
-                margin: auto; 
-            }
-			.backg{		
+	</head>
+<style>
+	p1 {
+		font: bold 110% serif; 
+	}
+	p2 {
+		font-style: italic; 
+	}
+	a { 
+		text-decoration: none;
+	}
+	table {
+		border: 1px solid #786b59;
+		border-collapse: collapse;
+	}
+	td {
+		border: 1px solid #786b59;
+	}
+	.footer a{
+		color: #ADD8E6;
+		
+		transition: all 1s;	
+	}
+	.footer a:visited {
+		color: #ADD8E6;
+	}
+	.footer a:link {
+		color: #ADD8E6;
+		padding: 2px;
+	}
+	.footer a:hover {
+		color: #FFFFFF;
+		font-size: 16pt;
+		transition: all 1s;	 
+	}
+	.headerLeft a {
+		color: #ADD8E6; /* Цвет текста */
+	}
+	.headerLeft ul {
+    		list-style: none; /* Для списка убираем маркеры */
+    		margin: 0; /* Нет отступов вокруг */
+    		padding: 0; /* Убираем поля вокруг текста */
+    		font-family: Arial, sans-serif; /* Рубленый шрифт для текста меню */
+    		font-size: 12pt; /* Размер названий в пункте меню */
+			
+		transition: all 1s;	
+   	}
+   	.headerLeft li ul {
+    		position: absolute; /* Подменю позиционируются абсолютно */
+    		display: none; /* Скрываем подменю */
+	}
+	.headerLeft li a {
+    		display: block; /* Ссылка как блочный элемент */
+    		padding: 5px; /* Поля вокруг надписи */
+    		text-decoration: none; /* Подчеркивание у ссылок убираем */
+    		border: 1px solid #ccc; /* Рамка вокруг пунктов меню */
+    		background-color: #000000; /* Цвет фона */
+			
+		transition: all 1s;	
+   	}
+   	.headerLeft li a:hover {
+		
+		outline: none;
+    	color: #FFFFFF; /* Цвет текста активного пункта */ 
+			
+    	}
+   	.headerLeft li:hover ul { 
+	position: fixed; 
+		z-index: 10000;
+		border-color: black;
+    		display: block; /* При выделении пункта курсором мыши отображается подменю */
+			
+		transition: all 1s;	
+   	}
+	ul.pixel-content {
+		
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		height: 100%;
+		width: 100%;
+		overflow: hidden;
+	}
+	ul.pixel-content li {
+		
+		display: inline-block;
+		line-height: 30px;
+		border: 1px solid #786b59;
+		border-bottom: 0 none;
+	}
+	ul.pixel-content li a.tab {
+		border-bottom: 1px solid #786b59;
+		height: 29px;
+		transition: all 1s;	 
+	}
+	ul.pixel-content li a {
+		color: #666;
+		text-decoration: none;
+		display: inline-block;
+		padding: 0px 12px;
+		white-space: nowrap;
+	}
+	ul.pixel-content li a:hover {
+		background-color: #fff;
+		font-size: 12pt;
+		transition: all 1s;	 
+		border-bottom: none;
+	}
+	ul.pixel-content li a.active-tab {
+		background: #fff;
+		border-bottom: 0 none;
+	}
+	.content-tab {	
+		overflow: hidden;
+		width: 96%;
+		height: 80%; 	
+		border: 1px solid #786b59;
+		margin: -1px 20px 20px 20px;
+		padding: 20px;
+		border-bottom-style: none;
+	}
+	div.content {
+		position: absolute;
+		height: 80%; 
+		width: 98%;
+		overflow: hidden;
+	}
+	::-webkit-scrollbar {
+		width: 12px;
+	}
+ 
+	::-webkit-scrollbar-track {
+		-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+		border-radius: 10px;
+	}
+ 
+	::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		background-color: rgba(0, 0, 0, 0.4);
+		-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,1); 		
+	}
+	::-webkit-scrollbar-thumb:hover {
+		background-color: rgba(0 ,0, 0, 0.2);
+	}
+	.backg{
+		overflow: hidden;		
 		font-family: Helvetica, Sans-serif;	
-		background-color: rgba(255, 255, 255, 0.4);
 		background-image: url("back.jpg");
 		background-position: center; 
 		background-size: 250% 300%;
-			}
-        </style>
+		position:absolute;
+		height: 100%;
+		width: 100%;
+	}
+	.forminoneline {
+    display: inline-block;
+	}
+</style>
 
-    </head>
-
-    <body>
-	<div class="backg">
+<body>
+<div class="backg">
         <div id='header'>
-
             <div id='headerLeft' class="headerLeft">
                 <ul>
                     <li>
-                        <img src="menu.png" height="50">	
+                        <img src="menu.png" height="50">
                         <ul>
                             <li><a href="start.jsp">Назад</a></li>
                             <li><a href="index.jsp">Вход</a></li>
                         </ul>
                     </li>
-                </ul>			
+                </ul>
             </div>
             <div id='headerCenter'>
                 <img src="books.png" height="50">
             </div>
-            <div id='headerRight'>  
+            <div id='headerRight'>
                 <h>Книжка - лучший товарищ</h>
             </div>
         </div>
-
 
         <div id='content' class="content">
             <div id='name' class='center'>
@@ -109,7 +200,13 @@
                     </div>
                     <div id="act">
                         <p1>Введите ваше отчество</p1><input type="text" name="middlename">
-                    </div>	
+                    </div>
+                    <div id="act">
+                        <p1>Тип</p1>
+                        <select style="width:165px;" tabindex="1" name="type">
+                            <option value="user">Читатель</option>
+                        </select>
+                    </div>
                     <div id="act">
                         <p1>Введите логин</p1><input type="text" name="login">
                     </div>
@@ -120,28 +217,22 @@
                         <p1>Введите пароль повторно</p1><input type="password" name="pass2">
                     </div>
                     <div id="act">
-                        <img src="login.png" height="15"> <input type="submit" value="Зарегистрироваться">
+                        <img src="login.png" height="15">
+                        <input type="submit" value="Зарегистрироваться">
                     </div>
                 </form>
-                <a href="#x" class="overlay1" id="win1"></a>
-                <div class="popup">
-                    Вам присвоен ID</br></br>
-                    <a href="user.jsp"><button>Принять</button></a> 
-                    <a class="close" title="Закрыть" href="#close"></a>
-                </div>
             </div>
         </div>
 
-
         <div id='footer' class="footer">
-
             </br>
             <a href="google.com"><b>Сайт разработчиков</b></a><b> - </b>
             <a href="google.com"><b>Вопросы и предложения</b></a><b> - </b>
             <a href="google.com"><b>Партнёры</b></a></li><b> - </b>
-            <a href="google.com"><b>Справка</b></a></li><b> - </b> 
-</div>
-</div>
+            <a href="google.com"><b>Справка</b></a></li><b> - </b>
+        </div>
+		</div>
+    </body>
 </html>
 
 

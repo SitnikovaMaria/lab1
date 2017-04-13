@@ -19,6 +19,13 @@ public class CopyOfTheBook implements Serializable, Model{
         this.reader = reader;
     }
 
+    public CopyOfTheBook(long inventoryNumber, long idBook, boolean issue, long idUser){
+        this.inventoryNumber = inventoryNumber;
+        this.idBook = idBook;
+        this.issue = issue;
+        this.idUser = idUser;
+    }
+
     public void setInventoryNumber(long inventoryNumber){
         this.inventoryNumber = inventoryNumber;
     }
@@ -34,7 +41,7 @@ public class CopyOfTheBook implements Serializable, Model{
     public long getIdBook(){
         return idBook;
     }
-    
+
     public void setIdUser(long idBook){
         this.idUser = idUser;
     }

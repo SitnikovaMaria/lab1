@@ -36,7 +36,7 @@ public class jdbcBookCatalog {
             int idCatalog = rs.getInt("idCatalog");
             tmp.put(idBook,idCatalog);
         }
-       rs.close();
+        rs.close();
         stmt.close();
         connection.close();
         return (tmp);
@@ -74,6 +74,5 @@ public class jdbcBookCatalog {
     }
 
     public void delete(int id) {
-
     }
 }

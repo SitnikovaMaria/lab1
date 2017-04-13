@@ -5,8 +5,10 @@
  */
 package servlets;
 
+import SSB.Export;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ExportOneLine extends HttpServlet {
 
+    @EJB
+    Export tmp;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,7 +42,7 @@ public class ExportOneLine extends HttpServlet {
             out.println("<title>Servlet ExportOneLine</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ExportOneLine at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Succesfully saved " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -70,6 +74,7 @@ public class ExportOneLine extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        tmp.ExportLine(Integer.valueOf(request.getParameter("id")));
         processRequest(request, response);
     }
 

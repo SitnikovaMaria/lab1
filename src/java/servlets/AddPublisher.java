@@ -69,19 +69,16 @@ public class AddPublisher extends HttpServlet {
         String mail = request.getParameter("mail");
         try {
             jdbcPublisher tmpPublisher = new jdbcPublisher();
-            Publisher publisher= new Publisher(1,name,address,mail);
+            Publisher publisher = new Publisher(1,name,address,mail);
             tmpPublisher.add(publisher);
         } catch (SQLException ex) {
             Logger.getLogger(AddBook.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(AddBook.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
         response.setContentType("text/html; charset=UTF-8 ");
-        
         RequestDispatcher view = request.getRequestDispatcher("admin.jsp");
-        view.forward(request,response); 
+        response.sendRedirect("admin.jsp#three-tab"); 
     }
 
     /**

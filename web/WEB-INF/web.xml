@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee          http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
@@ -36,8 +36,60 @@
         <servlet-class>servlets.DeletePublisher</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>DeleteUser</servlet-name>
+        <servlet-class>servlets.DeleteUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TakeCopy</servlet-name>
+        <servlet-class>servlets.TakeCopy</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReplaceCopy</servlet-name>
+        <servlet-class>servlets.ReplaceCopy</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangeBook</servlet-name>
+        <servlet-class>servlets.ChangeBook</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangeCopyOfBook</servlet-name>
+        <servlet-class>servlets.ChangeCopyOfBook</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangePublisher</servlet-name>
+        <servlet-class>servlets.ChangePublisher</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangeUser</servlet-name>
+        <servlet-class>servlets.ChangeUser</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ExportOneLine</servlet-name>
         <servlet-class>servlets.ExportOneLine</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ExportLine</servlet-name>
+        <servlet-class>servlets.ExportOneLine</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ExportAllLines</servlet-name>
+        <servlet-class>servlets.ExportAllLines</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ImportBooks</servlet-name>
+        <servlet-class>servlets.ImportBooks</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ImportCatalogsServlet</servlet-name>
+        <servlet-class>servlets.ImportCatalogsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ExportCatalogsServlet</servlet-name>
+        <servlet-class>servlets.ExportCatalogsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchBookServlet</servlet-name>
+        <servlet-class>servlets.SearchBookServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AddBook</servlet-name>
@@ -72,8 +124,60 @@
         <url-pattern>/DeletePublisher</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>DeleteUser</servlet-name>
+        <url-pattern>/DeleteUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TakeCopy</servlet-name>
+        <url-pattern>/TakeCopy</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReplaceCopy</servlet-name>
+        <url-pattern>/ReplaceCopy</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeBook</servlet-name>
+        <url-pattern>/ChangeBook</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeCopyOfBook</servlet-name>
+        <url-pattern>/ChangeCopyOfBook</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangePublisher</servlet-name>
+        <url-pattern>/ChangePublisher</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeUser</servlet-name>
+        <url-pattern>/ChangeUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ExportOneLine</servlet-name>
         <url-pattern>/ExportOneLine</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExportLine</servlet-name>
+        <url-pattern>/ExportLine</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExportAllLines</servlet-name>
+        <url-pattern>/ExportAllLines</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImportBooks</servlet-name>
+        <url-pattern>/ImportBooks</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImportCatalogsServlet</servlet-name>
+        <url-pattern>/ImportCatalogsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExportCatalogsServlet</servlet-name>
+        <url-pattern>/ExportCatalogsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchBookServlet</servlet-name>
+        <url-pattern>/SearchBookServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

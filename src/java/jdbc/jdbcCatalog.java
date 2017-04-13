@@ -71,12 +71,20 @@ public class jdbcCatalog {
         return (tmp);
     }
 
-    public void add(Model model) throws SQLException {
+    public void add(Model model) throws SQLException, ClassNotFoundException {
 	Statement stmt = connection.createStatement();
         String name = ((Catalog) model).getName();
-        //int idOfParent = ((Catalog) model).getIdOfParent();
-        /*stmt.executeUpdate("INSERT INTO test.catalog (name, idOfParent) \n" +
-                "VALUES ('"+name+"', '"+idOfParent+"');");*/
+        String nameOfParent = ((Catalog) model).getNameOfParent();
+        long idOfParent= 0;
+        jdbcCatalog c = new jdbcCatalog();
+        ArrayList<Catalog> tmpCatalog = c.get();
+        for (Catalog tmp: tmpCatalog){
+            if ((((Catalog) tmp).getName()).equals(nameOfParent)){
+                idOfParent=tmp.getIdCatalog();
+            }
+        }
+        stmt.executeUpdate("INSERT INTO test.catalog (name, idOfParent) \n" +
+                "VALUES ('"+name+"', '"+idOfParent+"');");
         
         stmt.close();
         connection.close();

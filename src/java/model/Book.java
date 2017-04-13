@@ -14,6 +14,7 @@ public class Book implements Serializable, Model{
     private int pages;
     private String catalog;
     private String publisher;
+    private int idPublisher;
 
     public Book(){}
 
@@ -30,6 +31,21 @@ public class Book implements Serializable, Model{
         this.pages = pages;
         this.catalog = catalog;
         this.publisher = publisher;
+    }
+
+    public Book(long idBook, String authors, String name, String year, int pages, String catalog, int idPublisher){
+        this.idBook = idBook;
+        this.authors = authors;
+        this.name = name;
+        try{
+            SimpleDateFormat format = new SimpleDateFormat("yyyy");
+            Date yearD = format.parse(year);
+            this.year = yearD;
+        }catch (ParseException e){
+        }
+        this.pages = pages;
+        this.catalog = catalog;
+        this.idPublisher = idPublisher;
     }
 
     public void setIdBook(long idBook){
@@ -91,5 +107,13 @@ public class Book implements Serializable, Model{
 
     public String getPublisher(){
         return publisher;
+    }
+
+    public void setIdPublisher(int idPublisher){
+        this.idPublisher = idPublisher;
+    }
+
+    public int getIdPublisher(){
+        return idPublisher;
     }
 }

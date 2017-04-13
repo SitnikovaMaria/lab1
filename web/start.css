@@ -42,6 +42,7 @@ background-color: #000000;
 #content {
 	font-size: 12pt;
 	overflow: hidden;
+
 }
 #name {
 	text-align: center;
@@ -54,14 +55,12 @@ background-color: #000000;
 	float: right;
 }
 #tab {
-	
-	margin: 0% 0%;
-
+	margin: 5% 0%;
 }
 
 #footer {
 
-height: 65px;
+height: 75px;
 	
 background-color: #000000;
 	
