@@ -1,17 +1,57 @@
 package model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import static javax.persistence.GenerationType.IDENTITY;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+    @Entity
+    @Table(name = "user")
 public class User implements Serializable, Model{
+   
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idUser", unique=true, nullable=false)
     private long idUser;
+    @Column(name = "name")
     private String name;
+    @Column(name = "middleName")
     private String middleName;
+    @Column(name = "lastName")
     private String lastName;
+    @Column(name = "type")
     private String type;
+    @Column(name = "login")
     private String login;
+    @Column(name = "pass")
     private String pass;
+    
+    @ManyToMany( fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = "meeting_user",
+            joinColumns = @JoinColumn(name = "idMeeting"),
+            inverseJoinColumns = @JoinColumn(name = "idUser"))
+    private Set<Meeting> meetings = new HashSet<>();
+    public Set<Meeting> getMeetings () {
+        return meetings;
+    }
+ 
+    public void setMeetings(Set<Meeting> cars) {
+        this.meetings = cars;
+    }
 
-    User(){}
 
     public User(long idUser, String name, String middleName, String lastName,String type, String login, String pass){
         this.idUser = idUser;
@@ -98,5 +138,8 @@ public class User implements Serializable, Model{
 
     public String getPass(){
         return pass;
+    }
+
+    public User() {
     }
 }

@@ -47,6 +47,32 @@ public class jdbcPublisher {
         connection.close();
         return (tmp);
     }
+    
+    public ArrayList<Publisher> get(String finder, String text) throws SQLException {
+        Statement stmt = connection.createStatement();
+        ArrayList<Publisher> tmp= new ArrayList<>();
+        ResultSet rs;
+        if (!text.equals(""))
+        {
+            rs = stmt.executeQuery("SELECT * FROM test.publisher WHERE " + finder + " = \"" + text + "\"");
+        }
+        else{
+            rs = stmt.executeQuery("SELECT * FROM test.publisher");
+        }
+        while (rs.next()) {
+            rs.getRow();
+            long id = rs.getLong("idPublisher");
+            String name = rs.getString("name");
+            String rAddress = rs.getString("registeredAddress");
+            String bAddress = rs.getString("businessAddress");
+            Publisher tmpPublisher = new Publisher(id,name,rAddress,bAddress);
+            tmp.add(tmpPublisher);
+        }
+        rs.close();
+        stmt.close();
+        connection.close();
+        return (tmp);
+    }
 
     public void add(Model model) throws SQLException {
         Statement stmt = connection.createStatement();

@@ -253,7 +253,7 @@
                     for (Map.Entry<Long, User> lUser : listUser.entrySet()) {
                         User user = lUser.getValue();
                 %>
-                    <% if (lUser.getKey()!=1){ %>
+                    <% if (lUser.getKey()!=0){ %>
                     <tr>
                         <td><%out.print(lUser.getKey());%></td>
                         <td><%out.print(user.getLastName());%></td>

@@ -4,14 +4,28 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 
 public class Book implements Serializable, Model{
 
     private long idBook;
+
     private String authors;
+
     private String name;
+
     private Date year;
+
     private int pages;
+
     private String catalog;
     private String publisher;
     private int idPublisher;

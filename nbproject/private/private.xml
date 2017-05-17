@@ -3,35 +3,57 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/SSB/SaveXML.xml</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/SSB/exceptions/IllegalOrphanException.java</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/conf/MANIFEST.MF</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/servlets/AddCopyOfBook.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/conf/persistence.xml</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/jdbc/jdbcBook.java</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/jdbc/jdbcPublisher.java</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/web/admin.jsp</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/servlets/DeleteBook.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/servlets/DeleteCopyOfBook.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/web/login.html</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/nbproject/build-impl.xml</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/web/index.jsp</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/model/CopyOfTheBook.java</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/SSB/ImportCatalogsBean.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/servlets/ExportOneLine.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/SSB/exceptions/RollbackFailureException.java</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/servlets/DeletePublisher.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/web/start.jsp</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/servlets/ImportCatalogsServlet.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/web/users_table.jsp</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/model/Model.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/test/TestUser.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/SSB/ExportCatalogs.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/SSB/UserJpaController.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/SSB/MeetingJpaController.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/SSB/SaveToXMLHome.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/model/Book.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/model/Publisher.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/web/newhtml.html</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/web/registration.html</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/SSB/SaveToXMLBean.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/servlets/CheckUser.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/SSB/SaveToXML.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/SSB/SaveXML.xml</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/web/helloworld.js</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/servlets/DeleteCopyOfBook.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/servlets/DeleteBook.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/web/login.html</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/model/User.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/jdbc/jdbcUser.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/model/Meeting.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/SSB/exceptions/PreexistingEntityException.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/servlets/ExportOneLine.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/web/start.jsp</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/servlets/AddUser.java</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/web/index.html</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/jdbc/jdbcCopyOfBook.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/SSB/ExportCatalogs.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/web/WEB-INF/web.xml</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/model/Book.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/web/user.jsp</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/web/resources.js</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/web/readers.jsp</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/servlets/AddBook.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/model/Publisher.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/web/registration.html</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/web/user.jsp</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/SSB/ImportCatalogs.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/SSB/exceptions/NonexistentEntityException.java</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/jdbc/jdbcCatalog.java</file>
-            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/servlets/CheckUser.java</file>
+            <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/web/WEB-INF/glassfish-resources.xml</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/SSB/ImportBooksBean.java</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/SSB/Export.java</file>
             <file>file:/C:/Users/admin/Documents/NetBeansProjects/nclab3/src/java/servlets/ExportAllLines.java</file>

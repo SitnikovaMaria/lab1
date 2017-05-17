@@ -76,12 +76,6 @@ public class jdbcCopyOfBook {
             long id = rs.getLong("idBook");
             boolean issue = rs.getBoolean("issue");
             long idUser = rs.getLong("idUser");
-            /*String reader;
-            if (idUser != 0) {
-                reader = (tmpUser.get(idUser - 1)).getLastName() + " " + (tmpUser.get(idUser - 1)).getName() + " " + (tmpUser.get(idUser - 1)).getMiddleName();
-            } else {
-                reader = "NULL";
-            }*/
             CopyOfTheBook tmpCopyOfBook = new CopyOfTheBook(inventoryNumber, id, issue, idUser);
             tmp.add(tmpCopyOfBook);
         }

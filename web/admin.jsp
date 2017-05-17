@@ -1,3 +1,7 @@
+<%@page import="model.Meeting"%>
+<%@page import="SSB.MeetingJpaController"%>
+<%@page import="java.util.List"%>
+<%@page import="SSB.UserJpaController"%>
 ﻿<%@ page language="java" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="model.Book" %>
@@ -190,7 +194,7 @@
             <li>
                 <img src="menu.png" height="50">
                 <ul>
-                    <li><a href="catalogsA.jsp">Каталоги</a></li>
+                    <li><a href="xedni.jsp">Каталоги</a></li>
                     <li><a href="users_table.jsp">Пользователи</a></li>
                     <li><a href="start.jsp">Выйти</a></li>
                 </ul>
@@ -226,7 +230,7 @@
                     <option value="catalog">Каталог</option>
                     <option value="idPublisher">Издательство</option>
                 </select>
-                <input type="text" name="text">
+                <input type="text" name="text" value="<%request.getParameter("text");%>">
                 <input type="submit" value="Поиск"></input>          
 				</div>
             </form>
@@ -269,7 +273,11 @@
                         <p1>Каталог</p1>
                         <select style="width:165px;" tabindex="1" name="catalog">
                             <option disabled>Выберите каталог</option>
-                            <% jdbcCatalog tmpCatalog = new jdbcCatalog();
+                            <%     MeetingJpaController test = new MeetingJpaController();    
+                            List<Meeting> testuserList = test.getAll();
+                            System.out.println(testuserList);
+    
+                                jdbcCatalog tmpCatalog = new jdbcCatalog();
                                 ArrayList<Catalog> listCatalog = tmpCatalog.get();
                                 for (Catalog catalog : listCatalog) {
                             %>
@@ -441,7 +449,7 @@
             </div>
 			<form method="POST" action="admin.jsp#two-tab">
 				<div id="search">
-					<select style="width:120px;" tabindex="1" name="finderCopy">
+					<select style="width:120px;" tabindex="1" name="findC">
 						<option disabled>Выберите параметр</option>
 						<option value="inventoryNumber">№</option>
 						<option value="idBook">№ книги</option>
@@ -523,9 +531,9 @@
                 </tr>
                 <% jdbcCopyOfBook tmpCopy = new jdbcCopyOfBook();
                     ArrayList<CopyOfTheBook> listCopy;
-                    if (request.getParameter("finderCopy") != null && request.getParameter("textCopy") != null)
+                    if (request.getParameter("findC") != null && request.getParameter("textCopy") != null)
 			{
-                            listCopy = tmpCopy.get(request.getParameter("finderСopy"), request.getParameter("textCopy"));
+                            listCopy = tmpCopy.get(request.getParameter("findC"), request.getParameter("textCopy"));
                         } else {
                             listCopy = tmpCopy.get();
                         }
@@ -648,17 +656,19 @@
             <div id="name">
                 <h2>Издательства</h2>
             </div>
+            <form method="POST" action="admin.jsp#three-tab">
             <div id="search">
-                <select style="width:120px;" tabindex="1">
+                <select style="width:120px;" tabindex="1" name="fPublisher">
                     <option disabled>Выберите параметр</option>
-                    <option value="ID">№</option>
-                    <option value="Name">Название</option>
-                    <option value="Registered address">Адрес</option>
-                    <option value="Business address">Почта</option>
+                    <option value="idPublisher">№</option>
+                    <option value="name">Название</option>
+                    <option value="registeredAddress">Адрес</option>
+                    <option value="businessAddress">Почта</option>
                 </select>
-                <input></input>
-                <input type="submit" value="Поиск"></input>
+                <input type="text" name="textPublisher">
+		<input type="submit" value="Поиск"></input>
             </div>
+            </form>
             <div id="add">
                 <a href="#win3">
                     <button><img src="add.png" height="15">Добавить</button>
@@ -706,6 +716,13 @@
                         </td>
                     </tr>
                     <%
+                        tmpPublisher = new jdbcPublisher();
+                        if (request.getParameter("fPublisher") != null && request.getParameter("textPublisher") != null)
+			{
+                            listPublisher = tmpPublisher.get(request.getParameter("fPublisher"), request.getParameter("textPublisher"));
+                        } else {
+                            listPublisher = tmpPublisher.get();
+                        }
                         for (Publisher publisher : listPublisher) {
                     %>
                     <tr>
