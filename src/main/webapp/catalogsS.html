@@ -1,0 +1,177 @@
+﻿<!DOCTYPE html>
+
+<html>
+
+<head>
+	<link rel="stylesheet" href="start.css">
+	<title>Библиотека</title>
+
+</head>
+<style>
+	p1 {
+		font: bold 110% serif; 
+	}
+	p2 {
+		font-style: italic; 
+	}
+	a { 
+		text-decoration: none;
+	}
+	.footer a{
+		color: #ADD8E6;
+	}
+	.footer a:visited {
+		color: #ADD8E6;
+	}
+	.footer a:link {
+		color: #ADD8E6;
+		padding: 2px;
+	}
+	.footer a:hover {
+		background: #786b59;  
+		color: #ffe;  
+	}
+	.headerLeft a {
+		color: #ADD8E6; /* Цвет текста */
+	}
+	.headerLeft ul {
+    		list-style: none; /* Для списка убираем маркеры */
+    		margin: 0; /* Нет отступов вокруг */
+    		padding: 0; /* Убираем поля вокруг текста */
+    		font-family: Arial, sans-serif; /* Рубленый шрифт для текста меню */
+    		font-size: 12pt; /* Размер названий в пункте меню */
+   	}
+   	.headerLeft li ul {
+    		position: absolute; /* Подменю позиционируются абсолютно */
+    		display: none; /* Скрываем подменю */
+	}
+	.headerLeft li a {
+    		display: block; /* Ссылка как блочный элемент */
+    		padding: 5px; /* Поля вокруг надписи */
+    		text-decoration: none; /* Подчеркивание у ссылок убираем */
+    		border: 1px solid #ccc; /* Рамка вокруг пунктов меню */
+    		background-color: #000000; /* Цвет фона */
+   	}
+   	.headerLeft li a:hover {
+		outline: none;
+    		color: #FFFFFF; /* Цвет текста активного пункта */
+    	}
+   	.headerLeft li:hover ul { 
+		border-color: black;
+    		display: block; /* При выделении пункта курсором мыши отображается подменю */
+   	}
+	div.content {
+		overflow: hidden;
+	}
+	#multi-derevo {
+		width: 220px; /* блок под дерево */
+		border-color: silver gray gray silver;
+		border-width: 2px;
+		padding: 0 0 1em 0; /* нижний отступ */
+		font-size: 1.3em;
+	}
+	span { /* обертка пункта */
+		text-decoration: none;
+		display: block; /* растянем до правого края блока */
+		margin: 0 0 0 1.2em;      
+		background-color: transparent; 
+		border-width: 0 0 1px 1px; /* границы: низ и лево */
+	}
+	span a {/* тест элемента дерева */
+		color: #000000;
+		display: block; 
+		position: relative;
+		top: .95em; /* смещаем узел на середину линии */
+		background-color: #ADD8E6; /* закраска в цвет фона обязательна иначе будет видно линию */
+		margin: 0 0 .2em .7em; /* делаем промежуток между узлами, отодвигаем левее  */
+		padding: 0 0.3em; /* небольшой отступ от линии */
+	}
+	ul, li {
+		border-style: none;
+		list-style-image:none;
+		list-style-position:outside;
+		list-style-type:none;
+		margin:0;
+		padding:0;
+	}
+	ul li {
+		line-height: 1.2em;
+	}
+        .content ul li ul li {
+		margin: 0 0 0 1.2em;
+		border-style: none;
+        }
+</style>
+<body>
+
+	<div id='header'>
+
+		<div id='headerLeft' class="headerLeft">
+			<ul>
+				<li>
+					<img src="menu.png" height="50">	
+					<ul>
+						<li><a href="index.html">Войти</a></li>
+						<li><a href="registration.html">Регистрация</a></li>
+						<li><a href="start.jsp">Назад</a></li>
+					</ul>
+				</li>
+			</ul>			
+		</div>
+		<div id='headerCenter'>
+			<img src="books.png" height="50">
+		</div>
+		<div id='headerRight'>
+			<h>Книжка - лучший товарищ</h>
+		</div>
+	</div>
+
+
+	<div id='content' class="content">
+		<div id="name">
+			<h2>Каталоги</h2>
+		</div>		
+		<div id="multi-derevo">
+			<ul>
+				<li><span><a href="#0">
+				Общий</a></span>
+					<ul>
+						<li><span><a href="#01">
+						Зарубежное</a></span>
+    							<ul>
+     								<li><span><a href="#011">Романы
+								</a></span></li>
+								<li><span><a href="#012">Поэзия
+								</a></span></li>
+								<li><span><a href="#013">Поэмы
+								</a></span></li>
+							</ul>
+   						</li>
+						<li><span><a href="#02">
+						Отечественное</a></span>
+    							<ul>
+     								<li><span><a href="#021">Романы
+								</a></span></li>
+								<li><span><a href="#022">Поэзия
+								</a></span></li>
+								<li><span><a href="#023">Поэмы
+								</a></span></li>
+							</ul>
+   						</li>
+   					</ul>
+  				</li>
+ 			</ul>
+		</div>
+	</div>
+
+
+	<div id='footer' class="footer">
+
+		</br>
+		</br>
+		<a href="google.com"><b>Сайт разработчиков</b></a><b> - </b>
+		<a href="google.com"><b>Вопросы и предложения</b></a><b> - </b>
+		<a href="google.com"><b>Партнёры</b></a></li><b> - </b>
+		<a href="google.com"><b>Справка</b></a></li><b> - </b> 
+	</div>
+</html>
